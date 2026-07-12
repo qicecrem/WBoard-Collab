@@ -77,7 +77,7 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     Delegate()->frame()->setOperationMode(WBGraphicsDelegateFrame::ResizingHorizontally);
 
     this->setSize(320, 26);
-    this->setMinimumSize(QSize(150, 26));
+    this->// setMinimumSize removed: QSize(150, 26));
 
     mMediaObject->// setNotifyInterval removed: 1000;
 
@@ -105,7 +105,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
     mMediaObject->// setNotifyInterval removed: 50;
 
-    setMinimumSize(QSize(320, 240));
+    // setMinimumSize removed: QSize(320, 240));
     setSize(320, 240);
 
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
