@@ -351,7 +351,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     qreal x1 = polygon.boundingRect().topLeft().x();
     qreal y1 = polygon.boundingRect().topLeft().y();
     //bounding rect dimensions
-    qreal width = polygon.boundingRect().width();
+    qreal width = polygon.boundingRect().horizontalAdvance();
     qreal height = polygon.boundingRect().height();
 
     QString strokeColorText = element.attribute(aStroke);
@@ -394,7 +394,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     }
     else // single CFF
     {
-        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QSvgGenerator *generator = createSvgGenerator(width + pen.horizontalAdvance(), height + pen.horizontalAdvance());
         QPainter painter;
 
         painter.begin(generator); //drawing to svg tmp file
@@ -468,7 +468,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     qreal y1 = polygon.boundingRect().topLeft().y();
 
     //bounding rect dimensions
-    qreal width = polygon.boundingRect().width();
+    qreal width = polygon.boundingRect().horizontalAdvance();
     qreal height = polygon.boundingRect().height();
 
     QString strokeColorText = element.attribute(aStroke);
@@ -513,7 +513,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     }
     else // simple CFF
     {
-        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QSvgGenerator *generator = createSvgGenerator(width + pen.horizontalAdvance(), height + pen.horizontalAdvance());
         QPainter painter;
 
         painter.begin(generator); //drawing to svg tmp file
@@ -724,11 +724,11 @@ void WBCFFSubsetAdaptor::WBCFFSubsetReader::parseTSpan(const QDomElement &parent
 
             QDomCharacterData textData = curNode.toCharacterData();
             QString text = textData.data().trimmed();
-//            width = painter.fontMetrics().width(text);
+//            width = painter.fontMetrics().horizontalAdvance(text);
             //get bounding rect to obtain desired text height
             lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
             painter.drawText(curX, curY, width, lastDrawnTextBoundingRect.height(), textAlign|Qt::TextWordWrap, text);
-            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.width();
+            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.horizontalAdvance();
         } else if (curNode.nodeType() == QDomNode::ElementNode
                    && curNode.toElement().tagName() == tBreak) {
 
@@ -902,7 +902,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
     }
 
     QString flashUrl = WBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(flashPath, tmpFlashDir, "application/x-shockwave-flash"
-                                                            ,QSize(mCurrentSceneRect.width(), mCurrentSceneRect.height()));
+                                                            ,QSize(mCurrentSceneRect.horizontalAdvance(), mCurrentSceneRect.height()));
     WBGraphicsWidgetItem *flashItem = mCurrentScene->addW3CWidget(QUrl::fromLocalFile(flashUrl));
     flashItem->setSourceUrl(urlPath);
 
@@ -972,7 +972,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform, audioItem);
     }
-    repositionSvgItem(audioItem, audioItem->boundingRect().width(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
+    repositionSvgItem(audioItem, audioItem->boundingRect().horizontalAdvance(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, audioItem);
 
     if (mGSectionContainer)
@@ -1027,7 +1027,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform, videoItem);
     }
-    repositionSvgItem(videoItem, videoItem->boundingRect().width(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
+    repositionSvgItem(videoItem, videoItem->boundingRect().horizontalAdvance(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, videoItem);
 
     if (mGSectionContainer)
@@ -1289,7 +1289,7 @@ void WBCFFSubsetAdaptor::WBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
 
     QRectF itemBounds = item->boundingRect();
 
-    qreal xScale = width  / itemBounds.width();
+    qreal xScale = width  / itemBounds.horizontalAdvance();
     qreal yScale = height / itemBounds.height();
 
     qreal fullScaleX = mVBTransFactor * xScale;
@@ -1320,7 +1320,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::createNewScene()
         mShiftVector = -mViewBox.center();
     }
     mCurrentSceneRect = mViewBox;
-    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().width()  / mViewPort.width(),
+    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().horizontalAdvance()  / mViewPort.horizontalAdvance(),
                           mCurrentScene->normalizedSceneRect().height() / mViewPort.height());
     return true;
 }
@@ -1365,7 +1365,7 @@ QColor WBCFFSubsetAdaptor::WBCFFSubsetReader::colorFromString(const QString& clr
     //init regexp with pattern
     //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
     QRegExp regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
-    if (regexp.exactMatch(clrString))
+    if (regexp.match(clrString))
     {
         if (regexp.capturedTexts().count() == 4 && regexp.capturedTexts().at(0).length() == clrString.length())
         {
@@ -1400,7 +1400,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
     {
         //check pattern for strings like 'rotate(10)'
         QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
+        if (regexp.match(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
             if (item)
             {    
@@ -1412,7 +1412,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
         
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
         regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
+        if (regexp.match(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
             dxr = regexp.capturedTexts().at(2).toDouble();
             dyr = regexp.capturedTexts().at(3).toDouble();
@@ -1426,7 +1426,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
 
         //check pattern for strings like 'translate(11.0, 12.34)'
         regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
-        if (regexp.exactMatch(trStr)) {
+        if (regexp.match(trStr)) {
             dx = regexp.capturedTexts().at(1).toDouble();
             dy = regexp.capturedTexts().at(2).toDouble();
             tr.translate(dx,dy);
@@ -1446,7 +1446,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::getViewBoxDimenstions(const QString&
             mViewBox = QRectF(capturedTexts.at(0).toDouble(), capturedTexts.at(1).toDouble(), capturedTexts.at(2).toDouble(), capturedTexts.at(3).toDouble());
             mViewPort = mViewBox;
             mViewPort.translate(- mViewPort.center());
-            mViewBoxCenter.setX(mViewBox.width() / 2);
+            mViewBoxCenter.setX(mViewBox.horizontalAdvance() / 2);
             mViewBoxCenter.setY(mViewBox.height() / 2);
 
             return true;
