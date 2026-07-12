@@ -505,7 +505,7 @@ void WBGraphicsVideoItem::setSize(int width, int height)
     else
         sizeY = height;
 
-    mVideoItem->setSize(QSize(sizeX, sizeY));
+    mVideoItem->// setSize removed: QSize(sizeX, sizeY));
 
 
     WBGraphicsMediaItem::setSize(sizeX, sizeY);

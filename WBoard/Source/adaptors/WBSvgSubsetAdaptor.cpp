@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return nullptr;
+            return 0;
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -228,7 +228,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         return scene;
     }
 
-    return nullptr;
+    return 0;
 }
 
 
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return nullptr;
+            return 0;
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -1752,7 +1752,7 @@ WBGraphicsPolygonItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItemFromLin
     else
     {
         qWarning() << "cannot make sense of 'line' value";
-        return nullptr;
+        return 0;
     }
 
     QStringView strokeWidth = mXmlReader.attributes().value("stroke-width");
@@ -1982,7 +1982,7 @@ WBGraphicsPixmapItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pixmapItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return nullptr;
+        return 0;
     }
 
     graphicsItemFromSvg(pixmapItem);
@@ -2023,7 +2023,7 @@ WBGraphicsSvgItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::svgItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return nullptr;
+        return 0;
     }
 
     graphicsItemFromSvg(svgItem);
@@ -2075,7 +2075,7 @@ WBGraphicsPDFItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pdfItemFromPDF()
     if (parts.count() != 2)
     {
         qWarning() << "invalid pdf href value" << href;
-        return nullptr;
+        return 0;
     }
 
     QString pdfPath = parts[0];
@@ -2143,7 +2143,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::audioItemFromSvg()
     if (audioHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return nullptr;
+        return 0;
     }
 
     QString href = mDocumentPath + "/" + audioHref.toString();
@@ -2178,7 +2178,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::videoItemFromSvg()
     if (videoHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return nullptr;
+        return 0;
     }
 
     QString href = mDocumentPath + "/" + videoHref.toString();
@@ -2472,7 +2472,7 @@ WBGraphicsAppleWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsAppleW
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return nullptr;
+        return 0;
     }
 
     QString href = widgetUrl.toString();
@@ -2498,7 +2498,7 @@ WBGraphicsW3CWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsW3CWidge
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return nullptr;
+        return 0;
     }
 
     QString href = widgetUrl.toString();
@@ -2611,7 +2611,7 @@ WBGraphicsTextItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::textItemFromSvg()
         {
             delete textItem;
             textItem = 0;
-            return nullptr;
+            return 0;
         }
 
         mXmlReader.readNext();

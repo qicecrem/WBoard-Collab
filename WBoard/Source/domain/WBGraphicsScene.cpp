@@ -142,7 +142,7 @@ qreal WBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
         return item->data(WBGraphicsItemData::ItemOwnZValue).toReal();
     }
 
-    QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
+    QMultiMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
 
     if (dest == up) {
         qDebug() << "item data zvalue= " << item->data(WBGraphicsItemData::ItemOwnZValue).toReal();
@@ -1342,7 +1342,7 @@ WBGraphicsScene* WBGraphicsScene::sceneDeepCopy() const
 
         if(group){
             WBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
-            groupCloned->resetMatrix();
+            groupCloned->resetTransform();
             groupCloned->resetTransform();
             groupCloned->setPos(0, 0);
             bool locked = groupCloned->Delegate()->isLocked();
@@ -1357,7 +1357,7 @@ WBGraphicsScene* WBGraphicsScene::sceneDeepCopy() const
                 groupCloned->setData(WBGraphicsItemData::ItemLocked, QVariant(true));
 
             copy->addItem(groupCloned);
-            groupCloned->setMatrix(group->matrix());
+            groupCloned->setTransform(group->transform());
             groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));
             groupCloned->setTransform(group->transform(), true);
         }
