@@ -66,7 +66,7 @@ class DelegateButton: public QGraphicsSvgItem
     private:
         QGraphicsItem* mDelegated;
 
-        QTime mPressedTime;
+        QElapsedTimer mPressedTime;
         bool mIsTransparentToMouseEvent;
         bool mIsPressed;
         int mProgressTimerId;

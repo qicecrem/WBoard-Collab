@@ -45,7 +45,7 @@ private:
 
     bool mRequestFileName;
     qint64 mBytesReceived;
-    QTime mDownloadTime;
+    QElapsedTimer mDownloadTime;
     QString mCustomDownloadPath;
 
 };

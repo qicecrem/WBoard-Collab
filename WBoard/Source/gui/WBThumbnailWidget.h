@@ -110,7 +110,7 @@ private:
     QSet<QGraphicsItem*> mSelectedThumbnailItems;
     QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItemsX;
     QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItemsY;
-    QTime mClickTime;
+    QElapsedTimer mClickTime;
 };
 
 class WBThumbnail

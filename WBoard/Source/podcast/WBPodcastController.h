@@ -94,7 +94,7 @@ class WBPodcastController : public QObject
 
         QPointer<WBAbstractVideoEncoder> mVideoEncoder;
 
-        QTime mRecordStartTime;
+        QElapsedTimer mRecordStartTime;
 
         bool mIsGrabbing;
 
@@ -130,7 +130,7 @@ class WBPodcastController : public QObject
 
         bool mApplicationIsClosing;
 
-        QTime mTimeAtPaused;
+        QElapsedTimer mTimeAtPaused;
         long mRecordingTimestampOffset;
 
         QAction *mDefaultAudioInputDeviceAction;

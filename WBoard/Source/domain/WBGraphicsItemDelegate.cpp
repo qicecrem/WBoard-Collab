@@ -1354,7 +1354,7 @@ QPainterPath DelegateMediaControl::shape() const
 
 void DelegateMediaControl::positionHandles()
 {
-    QTime tTotal;
+    QElapsedTimer tTotal;
     tTotal = tTotal.addMSecs(mTotalTimeInMs);
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
     int digitsCount = 2;
@@ -1390,7 +1390,7 @@ void DelegateMediaControl::positionHandles()
 
 void DelegateMediaControl::update()
 {
-    QTime tCurrent;
+    QElapsedTimer tCurrent;
     tCurrent = tCurrent.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
 
 
