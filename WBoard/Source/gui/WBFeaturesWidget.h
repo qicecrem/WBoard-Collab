@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QListView>
+#include <QRegExp>
 #include <QGraphicsView>
 #include <QAbstractListModel>
 #include <QPixmap>

@@ -2,6 +2,7 @@
 #include <QPointF>
 #include <QtWidgets>
 
+#include <QRegExp>
 #include "core/WBApplication.h"
 #include "board/WBBoardController.h"
 #include "WBFeaturesController.h"

@@ -2,6 +2,7 @@
 
 #include <QtWidgets>
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
 #include <QWebEngineView>
 #include <QtXml>
 #include <QFontDatabase>
@@ -240,7 +241,7 @@ int WBApplication::exec(const QString& pFileToImport)
 	//QWebEngineSettings::setIconDatabasePath(webDbPath);
  //   QWebEngineSettings::setOfflineStoragePath (webDbPath);
 
-    QWebEngineSettings *gs = QWebEngineSettings::globalSettings();
+    QWebEngineSettings *gs = QWebEngineProfile::defaultProfile()->settings();
     gs->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     gs->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     gs->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
@@ -617,7 +618,7 @@ QString WBApplication::urlFromHtml(QString html)
 
     //    We remove all the comments & CRLF of this html
     _html = html.remove(comments);
-    domDoc.setContent(_html.remove(QRegExp("[\\0]")));
+    domDoc.setContent(_html.remove(QRegularExpression("[\\0]")));
     QDomElement rootElem = domDoc.documentElement();
 
     //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag

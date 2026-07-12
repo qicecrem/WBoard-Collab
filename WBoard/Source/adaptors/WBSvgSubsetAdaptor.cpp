@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return nullptr;
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -228,7 +228,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         return scene;
     }
 
-    return 0;
+    return nullptr;
 }
 
 
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return nullptr;
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -408,7 +408,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                     proxy->setPageDpi(pageDpi.toInt());
 
                 else if (proxy->pageDpi() == 0) {
-                    proxy->setPageDpi((WBApplication::desktop()->physicalDpiX() + WBApplication::desktop()->physicalDpiY())/2);
+                    proxy->setPageDpi((QApplication::primaryScreen()->logicalDotsPerInchX() + QApplication::primaryScreen()->logicalDotsPerInchY())/2);
                     pageDpiSpecified = false;
                 }
 
@@ -1570,7 +1570,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::polygonItemToSvgPolygon(WBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->matrix()));
+        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->transform()));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
 
         qreal alpha = polygonItem->brush().color().alphaF();
@@ -1752,7 +1752,7 @@ WBGraphicsPolygonItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItemFromLin
     else
     {
         qWarning() << "cannot make sense of 'line' value";
-        return 0;
+        return nullptr;
     }
 
     QStringView strokeWidth = mXmlReader.attributes().value("stroke-width");
@@ -1982,7 +1982,7 @@ WBGraphicsPixmapItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pixmapItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return 0;
+        return nullptr;
     }
 
     graphicsItemFromSvg(pixmapItem);
@@ -2023,7 +2023,7 @@ WBGraphicsSvgItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::svgItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return 0;
+        return nullptr;
     }
 
     graphicsItemFromSvg(svgItem);
@@ -2075,7 +2075,7 @@ WBGraphicsPDFItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pdfItemFromPDF()
     if (parts.count() != 2)
     {
         qWarning() << "invalid pdf href value" << href;
-        return 0;
+        return nullptr;
     }
 
     QString pdfPath = parts[0];
@@ -2143,7 +2143,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::audioItemFromSvg()
     if (audioHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return 0;
+        return nullptr;
     }
 
     QString href = mDocumentPath + "/" + audioHref.toString();
@@ -2178,7 +2178,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::videoItemFromSvg()
     if (videoHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return 0;
+        return nullptr;
     }
 
     QString href = mDocumentPath + "/" + videoHref.toString();
@@ -2472,7 +2472,7 @@ WBGraphicsAppleWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsAppleW
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return 0;
+        return nullptr;
     }
 
     QString href = widgetUrl.toString();
@@ -2498,7 +2498,7 @@ WBGraphicsW3CWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsW3CWidge
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return 0;
+        return nullptr;
     }
 
     QString href = widgetUrl.toString();
@@ -2611,7 +2611,7 @@ WBGraphicsTextItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::textItemFromSvg()
         {
             delete textItem;
             textItem = 0;
-            return 0;
+            return nullptr;
         }
 
         mXmlReader.readNext();

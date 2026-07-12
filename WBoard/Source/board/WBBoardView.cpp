@@ -317,7 +317,7 @@ void WBBoardView::tabletEvent (QTabletEvent * event)
     WBStylusTool::Enum currentTool = (WBStylusTool::Enum)dc->stylusTool ();
 
     if (event->type() == QEvent::TabletPress || event->type() == QEvent::TabletEnterProximity) {
-        if (event->pointerType () == QTabletEvent::Eraser) {
+        if (event->pointerType () == QPointingDevice::PointerType::Eraser) {
             dc->setStylusTool (WBStylusTool::Eraser);
             mUsingTabletEraser = true;
         }
@@ -695,7 +695,7 @@ void WBBoardView::handleItemMousePress(QMouseEvent *event)
             QList<QGraphicsItem*> children = item->childItems();
 
             for( QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it )
-                if ((*it)->position().toPoint().x() < 0 || (*it)->position().toPoint().y() < 0)
+                if ((*it)->pos().toPoint().x() < 0 || (*it)->pos().toPoint().y() < 0)
                     (*it)->setPos(0,item->boundingRect().size().height());
         }
     }
@@ -730,7 +730,7 @@ void WBBoardView::handleItemMouseMove(QMouseEvent *event)
     if (movingItem && itemShouldBeMoved(movingItem) && (mMouseButtonIsPressed || mTabletStylusIsPressed))
     {
         QPointF scenePos = mapToScene(event->position().toPoint());
-        QPointF newPos = movingItem->position().toPoint() + scenePos - mLastPressedMousePos;
+        QPointF newPos = movingItem->pos().toPoint() + scenePos - mLastPressedMousePos;
         movingItem->setPos(newPos);
         mLastPressedMousePos = scenePos;
         mWidgetMoved = true;
@@ -742,12 +742,12 @@ void WBBoardView::handleItemMouseMove(QMouseEvent *event)
         QPointF posAfterMove;
 
         if (movingItem)
-            posBeforeMove = movingItem->position().toPoint();
+            posBeforeMove = movingItem->pos().toPoint();
 
         QGraphicsView::mouseMoveEvent (event);
 
         if (movingItem)
-            posAfterMove = movingItem->position().toPoint();
+            posAfterMove = movingItem->pos().toPoint();
 
         mWidgetMoved = ((posAfterMove-posBeforeMove).manhattanLength() != 0);
 
@@ -785,7 +785,7 @@ void WBBoardView::moveRubberedItems(QPointF movingVector)
                 || item->type() == WBGraphicsStrokesGroup::Type
                 || item->type() == WBGraphicsGroupContainerItem::Type)
         {
-            item->setPos(item->position().toPoint()+movingVector);
+            item->setPos(item->pos().toPoint()+movingVector);
         }
     }
 
@@ -803,7 +803,7 @@ bool WBBoardView::directTabletEvent(QEvent *event)
 {
     QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
     tEvent = new QTabletEvent(tEvent->type()
-                              , mapFromGlobal(tEvent->position().toPoint())
+                              , mapFromGlobal(tEvent->pos().toPoint())
                               , tEvent->globalPos()
                               , tEvent->device()
                               , tEvent->pointerType()
@@ -816,9 +816,9 @@ bool WBBoardView::directTabletEvent(QEvent *event)
                               , tEvent->modifiers()
                               , tEvent->uniqueId());
 
-    if (geometry().contains(tEvent->position().toPoint()))
+    if (geometry().contains(tEvent->pos().toPoint()))
     {
-        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->position().toPoint()))
+        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->pos().toPoint()))
         {
             tabletEvent(tEvent);
             return true;
@@ -1405,7 +1405,7 @@ void WBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QGraphicsItem * selItem = selItemsList[0];
 
         // get items list under mouse cursor
-        QPointF scenePos = mapToScene(wheelEvent->position().toPoint());
+        QPointF scenePos = mapToScene(wheelEvent->pos().toPoint());
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
 
         bool isSelectedAndMouseHower = itemsList.contains(selItem);
