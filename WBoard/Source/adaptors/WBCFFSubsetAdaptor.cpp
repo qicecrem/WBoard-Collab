@@ -411,7 +411,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
         
-        QUuid uuid = QUuid::fromString(QUuid::createUuid().toString());
+        QUuid uuid = QUuid::createUuid();
         mRefToUuidMap.insert(element.attribute(aId), uuid.toString());
         svgItem->setUuid(uuid);
 

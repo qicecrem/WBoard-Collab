@@ -691,7 +691,7 @@ void WBPersistenceManager::duplicateDocumentScene(WBDocumentProxy* proxy, int in
         if (mediaItem){
             QString source = mediaItem->mediaFileUrl().toLocalFile();
             QString destination = source;
-            QUuid newUuid = QUuid::fromString(QUuid::createUuid());
+            QUuid newUuid = QUuid::createUuid();
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
             QFile::copy(source,destination);
@@ -701,7 +701,7 @@ void WBPersistenceManager::duplicateDocumentScene(WBDocumentProxy* proxy, int in
 
         WBGraphicsWidgetItem* widget = qgraphicsitem_cast<WBGraphicsWidgetItem*>(item);
         if(widget){
-            QUuid newUUid = QUuid::fromString(QUuid::createUuid());
+            QUuid newUUid = QUuid::createUuid();
             QString newUUidString = newUUid.toString().remove("{").remove("}");
             QString actualUuidString = widget->uuid().toString().remove("{").remove("}");
 
@@ -727,7 +727,7 @@ void WBPersistenceManager::duplicateDocumentScene(WBDocumentProxy* proxy, int in
         if(pixmapItem){
             QString source = proxy->persistencePath() + "/" +  WBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
             QString destination = source;
-            QUuid newUuid = QUuid::fromString(QUuid::createUuid());
+            QUuid newUuid = QUuid::createUuid();
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
             QFile::copy(source,destination);
@@ -739,7 +739,7 @@ void WBPersistenceManager::duplicateDocumentScene(WBDocumentProxy* proxy, int in
         if(svgItem){
             QString source = proxy->persistencePath() + "/" +  WBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
             QString destination = source;
-            QUuid newUuid = QUuid::fromString(QUuid::createUuid());
+            QUuid newUuid = QUuid::createUuid();
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
             QFile::copy(source,destination);

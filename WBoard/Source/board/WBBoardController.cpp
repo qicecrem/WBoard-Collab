@@ -1208,7 +1208,7 @@ WBItem *WBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as video";
 
         WBGraphicsMediaItem *mediaVideoItem = 0;
-        QUuid uuid = QUuid::fromString(QUuid::createUuid());
+        QUuid uuid = QUuid::createUuid();
         if (pData.length() > 0)
         {
             QString destFile;
@@ -1253,7 +1253,7 @@ WBItem *WBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         WBGraphicsMediaItem *audioMediaItem = 0;
 
-        QUuid uuid = QUuid::fromString(QUuid::createUuid());
+        QUuid uuid = QUuid::createUuid();
         if (pData.length() > 0)
         {
             QString destFile;
@@ -2087,7 +2087,7 @@ void WBBoardController::grabScene(const QRectF& pSceneRect)
 
 WBGraphicsMediaItem* WBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
 {
-    QUuid uuid = QUuid::fromString(QUuid::createUuid());
+    QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
     // media file is not in document folder yet
@@ -2122,7 +2122,7 @@ WBGraphicsMediaItem* WBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
 WBGraphicsMediaItem* WBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
 {
-    QUuid uuid = QUuid::fromString(QUuid::createUuid());
+    QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
     // media file is not in document folder yet
@@ -2158,7 +2158,7 @@ WBGraphicsWidgetItem *WBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 {
     WBGraphicsWidgetItem* w3cWidgetItem = 0;
 
-    QUuid uuid = QUuid::fromString(QUuid::createUuid());
+    QUuid uuid = QUuid::createUuid();
 
     QString destPath;
     if (!WBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))

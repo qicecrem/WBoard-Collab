@@ -541,7 +541,7 @@ private:
         QString relative = relativePath;
         if (createNewUuid)
         {
-            QUuid newUuid = QUuid::fromString(QUuid::createUuid());
+            QUuid newUuid = QUuid::createUuid();
             QString newPath = relative.replace(QRegExp("\\{.*\\}"), newUuid.toString());
 
             cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + newPath);

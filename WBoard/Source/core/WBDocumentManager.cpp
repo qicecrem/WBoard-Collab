@@ -169,7 +169,7 @@ WBDocumentProxy* WBDocumentManager::importFile(const QFile& pFile, const QString
                                                                                       , true);
 				if (document)
 				{
-					QUuid uuid = QUuid::fromString(QUuid::createUuid());
+					QUuid uuid = QUuid::createUuid();
 					QString filepath = pFile.fileName();
 					if (importAdaptor->folderToCopy() != "")
 					{
@@ -241,7 +241,7 @@ int WBDocumentManager::addFilesToDocument(WBDocumentProxy* document, QStringList
                 {
                     WBPageBasedImportAdaptor* importAdaptor = (WBPageBasedImportAdaptor*)adaptor;
 
-                    QUuid uuid = QUuid::fromString(QUuid::createUuid());
+                    QUuid uuid = QUuid::createUuid();
                     QString filepath = file.fileName();
                     if (importAdaptor->folderToCopy() != "")
                     {
