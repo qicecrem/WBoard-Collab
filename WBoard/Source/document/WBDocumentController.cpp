@@ -710,7 +710,7 @@ bool WBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     WBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         WBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = mModel->index(i, 0, parent);
+        QModelIndex curChildIndex = this->model()->index(i, 0, parent);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -869,7 +869,7 @@ QPersistentModelIndex WBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = mModel->index(i, 0, source);
+            QModelIndex curNewParentIndexChild = this->model()->index(i, 0, source);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
@@ -1267,7 +1267,7 @@ void WBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
     QModelIndex indexCurrentDoc = pIndex;
     clearSelection();
 
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(this->model());
 
     QItemSelectionModel::SelectionFlags sel = pExpand
                                                 ? QItemSelectionModel::Select
@@ -1324,12 +1324,12 @@ void WBDocumentTreeView::dragLeaveEvent(QDragLeaveEvent *event)
 
     WBDocumentTreeModel *docModel = 0;
 
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(this->model());
 
     if(proxy){
         docModel = dynamic_cast<WBDocumentTreeModel*>(proxy->sourceModel());
     }else{
-        docModel =  dynamic_cast<WBDocumentTreeModel*>(model());
+        docModel =  dynamic_cast<WBDocumentTreeModel*>(this->model());
     }
 
     docModel->setHighLighted(QModelIndex());
@@ -1347,14 +1347,14 @@ void WBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
     bool acceptIt = isAcceptable(index, indexAt(event->pos()));
 
     if (event->mimeData()->hasFormat(WBApplication::mimeTypeUniboardPage)) {
-        WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(model());
+        WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(this->model());
 
         WBDocumentTreeModel *docModel = 0;
 
         if(proxy){
             docModel = dynamic_cast<WBDocumentTreeModel*>(proxy->sourceModel());
         }else{
-            docModel =  dynamic_cast<WBDocumentTreeModel*>(model());
+            docModel =  dynamic_cast<WBDocumentTreeModel*>(this->model());
         }
 
         QModelIndex targetIndex = mapIndexToSource(indexAt(event->pos()));
@@ -1381,7 +1381,7 @@ void WBDocumentTreeView::dropEvent(QDropEvent *event)
     event->setDropAction(Qt::IgnoreAction);
     WBDocumentTreeModel *docModel = 0;
 
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(this->model());
     if(proxy){
         docModel = dynamic_cast<WBDocumentTreeModel*>(proxy->sourceModel());
     }
@@ -1530,7 +1530,7 @@ void WBDocumentTreeView::updateIndexEnvirons(const QModelIndex &index)
 
 QModelIndex WBDocumentTreeView::mapIndexToSource(const QModelIndex &index)
 {
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(this->model());
 
     if(proxy){
         return proxy->mapToSource(index);
@@ -1541,7 +1541,7 @@ QModelIndex WBDocumentTreeView::mapIndexToSource(const QModelIndex &index)
 
 QModelIndexList WBDocumentTreeView::mapIndexesToSource(const QModelIndexList &indexes)
 {
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(this->model());
 
     if(proxy){
         QModelIndexList list;
@@ -1597,7 +1597,7 @@ QWidget *WBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
 
     if(index.column() == 0){
         mExistingFileNames.clear();
-        const WBDocumentTreeModel *indexModel = qobject_cast<const WBDocumentTreeModel*>(index.model());
+        const WBDocumentTreeModel *indexModel = qobject_cast<const WBDocumentTreeModel*>(index.this->model());
         if (indexModel) {
             mExistingFileNames = indexModel->nodeNameList(index.parent());
             mExistingFileNames.removeOne(index.data().toString());
@@ -1783,7 +1783,7 @@ void WBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, 
 
 QModelIndex WBDocumentController::mapIndexToSource(const QModelIndex &index)
 {
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(mDocumentUI->documentTreeView->model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(mDocumentUI->documentTreeView->this->model());
 
     if(proxy){
         return proxy->mapToSource(index);
@@ -1794,7 +1794,7 @@ QModelIndex WBDocumentController::mapIndexToSource(const QModelIndex &index)
 
 QModelIndexList WBDocumentController::mapIndexesToSource(const QModelIndexList &indexes)
 {
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(mDocumentUI->documentTreeView->model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(mDocumentUI->documentTreeView->this->model());
 
     if(proxy){
         QModelIndexList list;
@@ -2500,7 +2500,7 @@ QModelIndex WBDocumentController::findPreviousSiblingNotSelected(const QModelInd
         }
     }else{
         //if the parent exist keep searching, else stop the search
-        QModelIndex parent = index.mModel->parent(index);
+        QModelIndex parent = index.this->model()->parent(index);
 
         if(parent.isValid())
         {
@@ -3585,7 +3585,7 @@ void WBDocumentController::collapseAll()
     QPersistentModelIndex untiltedDocumentIndex = WBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->untitledDocumentsIndex();
     QPersistentModelIndex myDocumentIndex = WBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->myDocumentsIndex();
 
-    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(mDocumentUI->documentTreeView->model());
+    WBSortFilterProxyModel *proxy = dynamic_cast<WBSortFilterProxyModel*>(mDocumentUI->documentTreeView->this->model());
 
     if(proxy){
         mDocumentUI->documentTreeView->setExpanded(proxy->mapFromSource(myDocumentIndex), true);
