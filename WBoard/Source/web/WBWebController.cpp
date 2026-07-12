@@ -3,7 +3,6 @@
 // QXmlQuery removed in Qt6
 #include <QWebEnginePage>
 
-#include <QRegExp>
 #include "frameworks/WBPlatformUtils.h"
 
 #include "WBWebController.h"
@@ -310,12 +309,12 @@ void WBWebController::toogleMirroring(bool checked)
 
 QPixmap WBWebController::getScreenPixmap()
 {
-    QScreen *desktop = QApplication::primaryScreen();
+    QDesktopWidget *desktop = QApplication::desktop();
     // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->geometry(QCursor::pos());
+    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
     QCoreApplication::flush ();
 
-    return QApplication::primaryScreen()->grabWindow(desktop->winId(),
+    return QPixmap::grabWindow(desktop->winId(),
                                primaryScreenRect.x(), primaryScreenRect.y(),
                                primaryScreenRect.width(), primaryScreenRect.height());
 }

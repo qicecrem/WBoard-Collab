@@ -119,7 +119,7 @@ sOEmbedContent WBOEmbedParser::getJSONInfos(const QString &json)
     content.providerName = providerName;
     content.thumbUrl = thumbnailUrl;
     content.type = type;
-    content.thumbHeight = thumbnailHeight;
+    content.thumbHeight = QString::number(thumbnailHeight);
 
     if("photo" == content.type){
         content.url = scriptValue.property("url").toString();
@@ -178,7 +178,7 @@ sOEmbedContent WBOEmbedParser::getXMLInfos(const QString &xml)
         }else if("type" == tag){
             content.type = value;
         }else if("thumbnail_height" == tag){
-            content.thumbHeight = value.toInt();
+            content.thumbHeight = QString::number(value.toInt());
         }else if("url" == tag){
             content.url = value; // This case appears only for type = photo
         }
