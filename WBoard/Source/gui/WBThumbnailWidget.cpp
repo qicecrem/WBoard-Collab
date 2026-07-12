@@ -268,7 +268,7 @@ void WBThumbnailWidget::mousePressEvent(QMouseEvent *event)
                 int index2 = mGraphicItems.indexOf(underlyingItem);
                 if (-1 == index2)
                 {
-                    mSelectedThumbnailItems = selectedItems().toSet();
+                    mSelectedThumbnailItems = QSet<QGraphicsItem*>(selectedItems().begin(), selectedItems().end());
                     return;
                 }
                 mSelectionSpan = index2 - index1;

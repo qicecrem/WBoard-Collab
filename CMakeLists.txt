@@ -71,12 +71,16 @@ file(GLOB_RECURSE WBOARD_UI_FILES
 # Exclude Windows-only files
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*_win\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*windowsmedia/.*")
+# Exclude Windows lock files, use qtlockedfile_unix.cpp directly
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*qtlockedfile_win\\.cpp$")
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*qtsingleapplication/qtlockedfile\\.cpp$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBWindowCaptureDelegate_win.*")
 
-# Exclude UB*/QtWebKit legacy network files (Qt4/5, removed in Qt6)
+# Exclude UB*/QtWebKit legacy files (Qt4/5, removed in Qt6)
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*network/UB.*\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*pdf/UB.*\\.(cpp|h)$")
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/ffmpeg/.*")
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/WBPodcastController\\.(cpp|h)$")
 
 # Also exclude .rc files
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*\\.rc$")
