@@ -395,7 +395,7 @@ void WBGraphicsTextItem::undoCommandAdded()
 
 void WBGraphicsTextItem::documentSizeChanged(const QSizeF & newSize)
 {
-    resize(newSize.horizontalAdvance(), newSize.height());
+    resize(newSize.width(), newSize.height());
 }
 
 void WBGraphicsTextItem::activateTextEditor(bool activate)

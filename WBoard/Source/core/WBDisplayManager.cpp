@@ -32,8 +32,8 @@ WBDisplayManager::WBDisplayManager(QObject *parent)
 
     initScreenIndexes();
 
-    connect(mDesktop, &QScreen::geometryChanged, this, &WBDisplayManager::adjustScreens);
-    connect(mDesktop, &QScreen::availableGeometryChanged, this, &WBDisplayManager::adjustScreens);
+    connect(mDesktop, &QScreen::geometryChanged, this, [this](const QRect&){ adjustScreens(mControlScreenIndex); });
+    connect(mDesktop, &QScreen::availableGeometryChanged, this, [this](const QRect&){ adjustScreens(mControlScreenIndex); });
 }
 
 
