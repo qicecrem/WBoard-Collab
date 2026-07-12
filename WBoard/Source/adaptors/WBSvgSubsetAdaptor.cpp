@@ -89,7 +89,7 @@ QTransform WBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 
     if (sl.size() >= 6)
     {
-        matrix.setTransform(
+        matrix = QTransform(
                     sl.at(0).toFloat(),
                     sl.at(1).toFloat(),
                     sl.at(2).toFloat(),
@@ -117,7 +117,7 @@ void WBSvgSubsetAdaptor::upgradeScene(WBDocumentProxy* proxy, const int pageInde
     QDomElement elSvg = doc.documentElement(); // SVG tag
     QString ubVersion = elSvg.attributeNS(WBSettings::uniboardDocumentNamespaceUri, "version", "4.1"); // default to 4.1
 
-    if (ubVersion.startsWith("4.1") || ubVersion.startsWith("4.2") || ubVersion.startsWith("4.3"))
+    if (ubVersion.startsWith(QLatin1StringView("4.1")) || ubVersion.startsWith(QLatin1StringView("4.2")) || ubVersion.startsWith(QLatin1StringView("4.3")))
     {
         // migrate to 4.2.1 (or latter)
         WBGraphicsScene *scene = loadScene(proxy, pageIndex);
@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return QUuid();
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return QUuid();
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -1143,7 +1143,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
     // Get the items from the scene
     QList<QGraphicsItem*> items = mScene->items();
 
-    qSort(items.begin(), items.end(), itemZIndexComp);
+    std::sort(items.begin(), items.end(), itemZIndexComp);
 
     WBGraphicsStroke *openStroke = 0;
 
@@ -1570,7 +1570,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::polygonItemToSvgPolygon(WBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->matrix()));
+        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->transform()));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
 
         qreal alpha = polygonItem->brush().color().alphaF();
@@ -2150,7 +2150,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::audioItemFromSvg()
 
     //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
     //The absoult path doesn't work when you want to share Sankore documents.
-    if(!audioHref.startsWith("audios/")){
+    if(!audioHref.startsWith(QLatin1StringView("audios/"))){
         int indexOfAudioDirectory = href.lastIndexOf("audios");
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
@@ -2185,7 +2185,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::videoItemFromSvg()
 
     //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
     //The absoult path doesn't work when you want to share Sankore documents.
-    if(!videoHref.startsWith("videos/")){
+    if(!videoHref.startsWith(QLatin1StringView("videos/"))){
         int indexOfAudioDirectory = href.lastIndexOf("videos");
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
@@ -2218,7 +2218,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        gItem->setMatrix(itemMatrix);
+        gItem->setTransform(itemMatrix);
     }
 
     QStringView svgX = mXmlReader.attributes().value("x");
