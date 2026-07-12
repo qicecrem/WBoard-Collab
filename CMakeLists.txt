@@ -79,6 +79,10 @@ list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBWindowCaptureDelegate_win.*")
 # Exclude UB*/QtWebKit legacy files (Qt4/5, removed in Qt6)
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*network/UB.*\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*pdf/UB.*\\.(cpp|h)$")
+
+# Exclude web browser subsystem (QtWebEngine API major refactor needed)
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*web/browser/.*\\.(cpp|h)$")
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*web/WBWebController\\.cpp$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/ffmpeg/.*")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/WBPodcastController\\.(cpp|h)$")
 
@@ -102,15 +106,16 @@ else()
     # Linux platform sources
     list(APPEND WBOARD_SOURCES ${WBOARD_SOURCE_DIR}/frameworks/WBPlatformUtils_linux.cpp)
     list(APPEND WBOARD_SOURCES ${WBOARD_SOURCE_DIR}/frameworks/WBStubs_linux.cpp)
+    list(APPEND WBOARD_SOURCES ${WBOARD_SOURCE_DIR}/web/WBWebController_stub.cpp)
     list(APPEND WBOARD_SOURCES ${WBOARD_SOURCE_DIR}/podcast/WBPodcastController_stub.cpp)
     list(APPEND WBOARD_SOURCES ${WBOARD_SOURCE_DIR}/desktop/WBWindowCapture_stub.cpp)
+    list(APPEND WBOARD_SOURCES ${WBOARD_SOURCE_DIR}/gui/WBClockPalette_stub.cpp)
     # Exclude Windows-only source files that have platform-specific implementations
     list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBPlatformUtils_win\\.cpp$")
     list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBPlatformUtils\\.cpp$")
     # Exclude files that reference excluded subsystems
     list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBPodcastController\\.cpp$")
     list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBPodcastRecordingPalette\\.(cpp|h)$")
-    list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBClockPalette\\.(cpp|h)$")
 endif()
 
 # Create executable
