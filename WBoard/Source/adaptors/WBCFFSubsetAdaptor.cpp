@@ -322,10 +322,10 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QPolygonF polygon;
 
     if (!svgPoints.isNull()) {
-        QStringList ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        QStringList ts = svgPoints.split(QLatin1Char(' '), Qt::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -438,10 +438,10 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '),
-                                                    QString::SkipEmptyParts);
+                                                    Qt::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -561,7 +561,7 @@ void WBCFFSubsetAdaptor::WBCFFSubsetReader::parseTextAttributes(const QDomElemen
     //consider inch has 72 liens
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = element.attribute(aFontSize);
-    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->logicalDotsPerInchY();
+    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::primaryScreen()->logicalDotsPerInchY();
 
     QString fontColorText = element.attribute(aFill);
     if (!fontColorText.isNull()) fontColor = colorFromString(fontColorText);
@@ -656,7 +656,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     QFont startFont(fontFamily, fontSize, fontWeight, italic);
     height = QFontMetrics(startFont).height();
-    width = QFontMetrics(startFont).width(element.text()) + 5;
+    width = QFontMetrics(startFont).horizontalAdvance(element.text()) + 5;
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
@@ -1177,7 +1177,7 @@ WBGraphicsGroupContainerItem *WBCFFSubsetAdaptor::WBCFFSubsetReader::parseIwbGro
 
 
 
-    foreach (QString key, strokesGroupsContainer.keys().toSet())
+    foreach (QString key, QSet<QString>(strokesGroupsContainer.keys().begin(), strokesGroupsContainer.keys().end()))
     {
         WBGraphicsStrokesGroup* pStrokesGroup = new WBGraphicsStrokesGroup();
         WBGraphicsStroke *currentStroke = new WBGraphicsStroke();
@@ -1396,7 +1396,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+    foreach(QString trStr, trString.split(" ", Qt::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
         QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
@@ -1438,7 +1438,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
 
 bool WBCFFSubsetAdaptor::WBCFFSubsetReader::getViewBoxDimenstions(const QString& viewBox)
 {
-    QStringList capturedTexts = viewBox.split(" ", QString::SkipEmptyParts);
+    QStringList capturedTexts = viewBox.split(" ", Qt::SkipEmptyParts);
     if (capturedTexts.count())
     {
         if (4 == capturedTexts.count())
@@ -1463,7 +1463,7 @@ QSvgGenerator* WBCFFSubsetAdaptor::WBCFFSubsetReader::createSvgGenerator(qreal w
     QSvgGenerator* generator = new QSvgGenerator();
 //    qWarning() << QString("Making generator with file %1, size (%2, %3) and viewbox (%4 %5 %6 %7)").arg(mTempFilePath)
 //        .arg(width).arg(height).arg(0.0).arg(0.0).arg(width).arg(width);
-    generator->setResolution(QApplication::desktop()->logicalDotsPerInchY());
+    generator->setResolution(QApplication::primaryScreen()->logicalDotsPerInchY());
     generator->setFileName(mTempFilePath);
     generator->setSize(QSize(width, height));
     generator->setViewBox(QRectF(0, 0, width, height));
