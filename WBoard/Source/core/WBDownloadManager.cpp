@@ -50,7 +50,7 @@ void WBAsyncLocalFileDownloader::run()
     if (mDesc.originalSrcUrl.isEmpty())
         mDesc.originalSrcUrl = mDesc.srcUrl;
 
-    QString uuid = QUuid::createUuid().toString();
+    QUuid uuid = QUuid::createUuid();
     WBPersistenceManager::persistenceManager()->addFileToDocument(WBApplication::boardController->selectedDocument(), 
         mDesc.srcUrl,
         destDirectory,

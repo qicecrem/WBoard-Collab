@@ -547,7 +547,7 @@ QString WBFeaturesController::adjustName(const QString &str)
     }
 
     QString resultStr = str;
-    QRegExp invalidSymbols("[\\/\\s\\:\\?\\*\\|\\<\\>\\\"]+");
+    QRegularExpression invalidSymbols("[\\\\/\\\\s\\\\:\\\\?\\\\*\\\\|\\\\<\\\\>\\\\\\\"]+");
 
     return resultStr.replace(invalidSymbols, "_");
 }

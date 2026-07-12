@@ -1,4 +1,3 @@
-using std::endl;
 #include "WBForeignObjectsHandler.h"
 
 #include <QtWidgets>
@@ -37,11 +36,12 @@ static QString strIdFrom(const QString &filePath)
     }
 
     QRegularExpression rx("\\{.(?!.*\\{).*\\}");
-    if (QRegularExpressionMatch m = rx.match(filePath); m.capturedStart() == -1) {
+    QRegularExpressionMatch m = rx.match(filePath);
+    if (!m.hasMatch()) {
         return QString();
     }
 
-    return rx.cap();
+    return m.captured(0);
 }
 
 static bool rm_r(const QString &rmPath)

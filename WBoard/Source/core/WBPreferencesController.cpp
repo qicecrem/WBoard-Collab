@@ -57,7 +57,7 @@ WBPreferencesController::WBPreferencesController(QWidget *parent)
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens(1);
-    connect(mDesktop, &QScreen::screenCountChanged, this, &WBPreferencesController::adjustScreens);
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, [this](QScreen*){ adjustScreens(0); });
 
     wire();
 }
@@ -657,7 +657,7 @@ WBBrushPropertiesFrame::WBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     for (int i = 1 ; i < WBSettings::settings()->colorPaletteSize ; i++)
     {
         WBColorPicker *picker = new WBColorPicker(lightBackgroundFrame);
-        picker->setObjectName(QString::fromUtf8("penLightBackgroundColor") + i);
+        picker->setObjectName(QString::fromUtf8("penLightBackgroundColor") + QString::number(i));
         picker->setMinimumSize(QSize(32, 32));
         picker->setFrameShape(QFrame::StyledPanel);
         picker->setFrameShadow(QFrame::Raised);

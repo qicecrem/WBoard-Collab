@@ -644,7 +644,7 @@ void WBPersistenceManager::deleteDocumentScenes(WBDocumentProxy* proxy, const QL
 
     }
 
-    std::sort(compactedIndexes);
+    std::sort(compactedIndexes.begin(), compactedIndexes.end());
 
     int offset = 1;
 

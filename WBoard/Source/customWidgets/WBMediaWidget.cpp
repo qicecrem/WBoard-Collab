@@ -80,7 +80,7 @@ void WBMediaWidget::setFile(const QString &filePath)
     connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState)), this, SLOT(onStateChanged(QMediaPlayer::PlaybackState)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
-    mpMediaObject->setMedia(QUrl::fromLocalFile(filePath));
+    mpMediaObject->setSource(QUrl::fromLocalFile(filePath));
     createMediaPlayer();
 }
 
@@ -114,7 +114,7 @@ void WBMediaWidget::showEvent(QShowEvent* event)
 
 void WBMediaWidget::hideEvent(QHideEvent* event)
 {
-    if(mpMediaObject->state() == QMediaPlayer::PlayingState)
+    if(mpMediaObject->playbackState() == QMediaPlayer::PlayingState)
         mpMediaObject->stop();
     WBActionableWidget::hideEvent(event);
 }
@@ -234,7 +234,7 @@ void WBMediaWidget::onTick(qint64 currentTime)
 void WBMediaWidget::onSliderChanged(int value)
 {
     if(!mAutoUpdate){
-        mpMediaObject->setVolume(value);
+        mpMediaObject->audioOutput()->setVolume(value);
     }
 }
 
@@ -243,7 +243,7 @@ void WBMediaWidget::onSliderChanged(int value)
   */
 void WBMediaWidget::onPlayStopClicked()
 {
-    switch(mpMediaObject->state()){
+    switch(mpMediaObject->playbackState()){
     case QMediaPlayer::PlayingState:
         mpMediaObject->stop();
         break;

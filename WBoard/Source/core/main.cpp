@@ -26,12 +26,13 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
     // Suppress qDebug output in release builds
     if (type != QtDebugMsg)
     {
-        qDefaultMessageHandler(type, context, msg);
+        // qDefaultMessageHandler was removed in Qt6, use stderr directly
+        fprintf(stderr, "%s\n", qPrintable(msg));
     }
 
 #else
     // Default output in debug builds
-    qDefaultMessageHandler(type, context, msg);
+    fprintf(stderr, "%s\n", qPrintable(msg));
 #endif
 
     if (WBApplication::app() && WBApplication::app()->isVerbose()) {

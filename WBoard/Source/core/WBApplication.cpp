@@ -332,7 +332,7 @@ int WBApplication::exec(const QString& pFileToImport)
     emit WBDrawingController::drawingController()->colorPaletteChanged();
 
     onScreenCountChanged(1);
-    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
+    connect(QGuiApplication::primaryScreen(), &QScreen::geometryChanged, this, [this](){ onScreenCountChanged(QGuiApplication::screens().size()); });
     return QApplication::exec();
 }
 
@@ -612,12 +612,12 @@ void WBApplication::cleanup()
 QString WBApplication::urlFromHtml(QString html)
 {
     QString _html;
-    QRegExp comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
+    QRegularExpression comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
     QString url;
     QDomDocument domDoc;
 
     //    We remove all the comments & CRLF of this html
-    _html = html.remove(comments);
+    _html = html.remove(QRegularExpression(comments));
     domDoc.setContent(_html.remove(QRegularExpression("[\\0]")));
     QDomElement rootElem = domDoc.documentElement();
 

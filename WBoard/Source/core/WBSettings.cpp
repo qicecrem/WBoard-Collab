@@ -136,7 +136,7 @@ QSettings* WBSettings::getAppSettings()
         }
 
         WBSettings::sAppSettings = new QSettings(appSettings, QSettings::IniFormat, 0);
-        WBSettings::sAppSettings->setIniCodec("utf-8");
+        // setIniCodec removed in Qt6 — QSettings uses UTF-8 by default
 
         qDebug() << "sAppSettings location: " << appSettings;
     }
@@ -876,7 +876,7 @@ QString WBSettings::userDataDirectory()
                 qCritical() << "Impossible to create datadirpath " << dataDirPath;
 
         }
-        dataDirPath = WBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        dataDirPath = WBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
         if (qApp->organizationName().size() > 0)
             dataDirPath.replace(qApp->organizationName() + "/", "");
     }
