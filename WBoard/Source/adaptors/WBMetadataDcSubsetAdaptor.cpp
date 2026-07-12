@@ -126,16 +126,16 @@ QMap<QString, QVariant> WBMetadataDcSubsetAdaptor::load(QString pPath)
                 {
                     date = xml.readElementText();
                 }
-                else if (xml.name() == "identifier")
+                else if (xml.name() == QLatin1StringView("identifier"))
                 {
                         metadata.insert(WBSettings::documentIdentifer, xml.readElementText());
                 }
-                else if (xml.name() == "version"
+                else if (xml.name() == QLatin1StringView("version")
                         && xml.namespaceUri() == WBSettings::uniboardDocumentNamespaceUri)
                 {
                         docVersion = xml.readElementText();
                 }
-                else if (xml.name() == "size"
+                else if (xml.name() == QLatin1StringView("size")
                         && xml.namespaceUri() == WBSettings::uniboardDocumentNamespaceUri)
                 {
                     QString size = xml.readElementText();
@@ -166,13 +166,13 @@ QMap<QString, QVariant> WBMetadataDcSubsetAdaptor::load(QString pPath)
                     sizeFound = true;
 
                 }
-                else if (xml.name() == "updated-at"
+                else if (xml.name() == QLatin1StringView("updated-at")
                         && xml.namespaceUri() == WBSettings::uniboardDocumentNamespaceUri)
                 {
                     metadata.insert(WBSettings::documentUpdatedAt, xml.readElementText());
                     updatedAtFound = true;
                 }
-                else if (xml.name() == "page-count"
+                else if (xml.name() == QLatin1StringView("page-count")
                         && xml.namespaceUri() == WBSettings::uniboardDocumentNamespaceUri)
                 {
                     metadata.insert(WBSettings::documentPageCount, xml.readElementText());
