@@ -131,7 +131,8 @@ void WBPodcastRecordingPalette::recordingProgressChanged(qint64 ms)
 
 void WBPodcastRecordingPalette::audioLevelChanged(quint8 level)
 {
-    mLevelMeter->audioOutput()->setVolume(level);
+    // mLevelMeter->audioOutput() removed in Qt6
+    Q_UNUSED(level);
 }
 
 

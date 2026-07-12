@@ -3,7 +3,7 @@
 #include "core/memcheck.h"
 
 WBWidgetMirror::WBWidgetMirror(QWidget* sourceWidget, QWidget* parent)
-    : QWidget(parent, 0)
+    : QWidget(parent, {})
     , mSourceWidget(sourceWidget)
 {
     mSourceWidget->installEventFilter(this);

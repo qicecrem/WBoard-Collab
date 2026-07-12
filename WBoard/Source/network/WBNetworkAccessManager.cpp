@@ -136,7 +136,7 @@ void WBNetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy &pr
 void WBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslError> &error)
 {
     // check if SSL certificate has been trusted already
-    QString replyHost = reply->url().host() + ":" + reply->url().port();
+    QString replyHost = reply->url().host() + ":" + QString::number(reply->url().port());
     if(!sslTrustedHostList.contains(replyHost))
     {
         QWidget *mainWindow = QApplication::activeWindow();
