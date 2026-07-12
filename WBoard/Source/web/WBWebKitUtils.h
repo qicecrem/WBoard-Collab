@@ -1,7 +1,8 @@
 #ifndef WBWEBKITUTILS_H_
 #define WBWEBKITUTILS_H_
 
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEnginePage>
 
 class WBWebKitUtils

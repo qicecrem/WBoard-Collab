@@ -35,7 +35,7 @@ WBExportFullPDF::WBExportFullPDF(QObject *parent)
 {
     //need to calculate screen resolution
     QScreen* desktop = QApplication::primaryScreen();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    int dpiCommon = (desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2;
     mScaleFactor = 72.0f / dpiCommon; // 1pt = 1/72 inch
 
     mSimpleExporter = new WBExportPDF();

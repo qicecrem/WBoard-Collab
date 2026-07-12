@@ -30,7 +30,7 @@
 #ifndef UBWEBPLUGINPDFWIDGET_H
 #define UBWEBPLUGINPDFWIDGET_H
 
-#include "web/UBWebPluginWidget.h"
+#include "web/WBWebPluginWidget.h"
 
 class PDFRenderer;
 class QProgressBar;

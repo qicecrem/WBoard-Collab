@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QtSvg>
+#include <QtSvgWidgets/QGraphicsSvgItem>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsPolygonItem>
 

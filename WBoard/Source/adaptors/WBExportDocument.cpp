@@ -66,7 +66,7 @@ bool WBExportDocument::persistsDocument(WBDocumentProxy* pDocumentProxy, const Q
 
 void WBExportDocument::processing(const QString& pObjectName, int pCurrent, int pTotal)
 {
-    QString localized = WBExportDocument::trUtf8(pObjectName.toUtf8());
+    QString localized = WBExportDocument::tr(pObjectName.toUtf8());
 
     if (mIsVerbose)
         WBApplication::showMessage(tr("Exporting %1 %2 of %3").arg(localized).arg(pCurrent).arg(pTotal));

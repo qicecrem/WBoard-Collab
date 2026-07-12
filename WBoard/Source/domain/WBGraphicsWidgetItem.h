@@ -2,7 +2,8 @@
 #define WBGRAPHICSWIDGETITEM_H
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineView>
 #include <QDomElement>
 #include <QGraphicsView>

@@ -73,7 +73,8 @@
 #include "WBBrowserWindow.h"
 
 #include <QtGui>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineSettings>
 
 #include "core/UBSettings.h"
@@ -138,7 +139,7 @@ void WBHistoryManager::setHistory(const QList<WBHistoryItem> &history, bool load
 
     // verify that it is sorted by date
     if (!loadedAndSorted)
-        qSort(m_history.begin(), m_history.end());
+        std::sort(m_history.begin(), m_history.end());
 
     checkForExpired();
 
@@ -312,7 +313,7 @@ void WBHistoryManager::load()
         lastInsertedItem = item;
     }
     if (needToSort)
-        qSort(list.begin(), list.end());
+        std::sort(list.begin(), list.end());
 
     setHistory(list, true);
 

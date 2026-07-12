@@ -12,7 +12,8 @@
 #include "network/UBCookieJar.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QtUiTools/QUiLoader>
 #include <QMessageBox>
 #include <QWebChannel>

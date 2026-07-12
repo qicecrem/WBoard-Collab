@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QtSvg>
+#include <QtSvgWidgets/QGraphicsSvgItem>
 
 #include "WBItem.h"
 

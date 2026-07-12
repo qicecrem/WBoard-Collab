@@ -2,7 +2,8 @@
 #define WBWEBCONTROLLER_H_
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineView>
 

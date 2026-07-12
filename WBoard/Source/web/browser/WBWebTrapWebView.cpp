@@ -1,7 +1,8 @@
 #include "WBWebTrapWebView.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 //#include <QWebHitTestResult>
 #include <QWebEnginePage>
 

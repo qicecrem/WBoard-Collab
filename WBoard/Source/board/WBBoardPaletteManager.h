@@ -2,7 +2,8 @@
 #define WBBOARDPALETTEMANAGER_H_
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 
 #include "gui/WBLeftPalette.h"
 #include "gui/WBRightPalette.h"

@@ -5,6 +5,7 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsView>
 #include <QtSvg>
+#include <QtSvgWidgets/QGraphicsSvgItem>
 
 #include "core/WB.h"
 #include "tools/WBAbstractDrawRuler.h"

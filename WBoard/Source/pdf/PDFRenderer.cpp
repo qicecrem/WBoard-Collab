@@ -41,7 +41,7 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
         sRenderers.insert(newRenderer->fileUuid(), newRenderer);
 
         QScreen* desktop = QApplication::primaryScreen();
-        int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+        int dpiCommon = (desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2;
         newRenderer->setDPI(dpiCommon);
 
         return newRenderer;

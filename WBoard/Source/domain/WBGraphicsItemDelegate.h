@@ -12,6 +12,7 @@
 
 #include <QtWidgets>
 #include <QtSvg>
+#include <QtSvgWidgets/QGraphicsSvgItem>
 #include <QMimeData>
 #include <QGraphicsVideoItem>
 
@@ -204,7 +205,7 @@ class WBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-		WBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, WBGraphicsFlags fls = 0);
+		WBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, WBGraphicsFlags fls = WBGraphicsFlags());
 
         virtual ~WBGraphicsItemDelegate();
 

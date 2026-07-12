@@ -26,12 +26,12 @@ QStringList WBStringUtils::sortByLastDigit(const QStringList& sourceList)
     QStringList result;
 
     QList<int> keys = elements.keys();
-    qSort(keys);
+    std::sort(keys.begin(), keys.end());
 
     foreach(int key, keys)
     {
         QList<QString> values = elements.values(key);
-        qSort(values);
+        std::sort(values.begin(), values.end());
         foreach(QString val, values)
         {
             if (!result.contains(val))

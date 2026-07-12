@@ -1,7 +1,8 @@
 #include "WBW3CWidgetAPI.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 
 #include "core/WBApplication.h"
 #include "core/WBApplicationController.h"

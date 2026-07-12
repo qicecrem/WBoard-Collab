@@ -15,7 +15,7 @@ WBImportPDF::WBImportPDF(QObject *parent)
     : WBPageBasedImportAdaptor(parent)
 {
     QScreen* desktop = QApplication::primaryScreen();
-    this->dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    this->dpi = (desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2;
 }
 
 

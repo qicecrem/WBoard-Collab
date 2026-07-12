@@ -1,5 +1,6 @@
 #include "WBAbstractDrawRuler.h"
 #include <QtSvg>
+#include <QtSvgWidgets/QGraphicsSvgItem>
 #include "core/WB.h"
 #include "gui/WBResources.h"
 #include "domain/WBGraphicsScene.h"

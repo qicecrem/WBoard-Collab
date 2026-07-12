@@ -25,7 +25,8 @@
 #include "api/WBWidgetUniboardAPI.h"
 #include "WBFeaturesActionBar.h"
 #include "WBRubberBand.h"
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineView>
 #include <QWebEngineSettings>
 
@@ -242,7 +243,7 @@ private slots:
 
 private:
     QLineEdit *mLineEdit;
-    QRegExpValidator *mValidator;
+    QRegularExpressionValidator *mValidator;
     QStringList mFileNameList;
     QPushButton *acceptButton;
     const QString acceptText;

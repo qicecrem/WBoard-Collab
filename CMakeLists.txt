@@ -104,7 +104,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${WBOARD_SOURCE_DIR}
     ${WBOARD_UI_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}  # for generated ui_*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/WBoard/ThirdParty/quazip/include
 )
 
 # Link Qt6 libraries

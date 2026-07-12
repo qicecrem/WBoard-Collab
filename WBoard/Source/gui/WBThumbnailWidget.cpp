@@ -191,7 +191,7 @@ void WBThumbnailWidget::refreshScene()
 QList<QGraphicsItem*> WBThumbnailWidget::selectedItems()
 {
     QList<QGraphicsItem*> sortedSelectedItems = mThumbnailsScene.selectedItems();
-    qSort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
+    std::sort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
     return sortedSelectedItems;
 }
 

@@ -2,7 +2,8 @@
 #define WBWEBTRAPWEBVIEW_H_
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineView>
 
 

@@ -45,7 +45,8 @@ private:
     QPoint mDragStartPos;
 };
 
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 
 
 class WBWebView;

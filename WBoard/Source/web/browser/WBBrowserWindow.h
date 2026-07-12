@@ -2,7 +2,8 @@
 #define WBBROWSERMAINWINDOW_H
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 
 class WBChaseWidget;
 class WBTabWidget;

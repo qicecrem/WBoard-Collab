@@ -2,6 +2,9 @@
 #define WBDOCUMENTCONTROLLER_H_
 
 #include <QtWidgets>
+#include <QRegExp>
+#include <QRegExp>
+#include <QValidator>
 #include "document/WBDocumentContainer.h"
 #include "core/WBApplicationController.h"
 #include "core/WBApplication.h"
@@ -48,7 +51,7 @@ private slots:
 
 private:
     QLineEdit *mLineEdit;
-    QRegExpValidator *mValidator;
+    QRegularExpressionValidator *mValidator;
     QStringList mFileNameList;
     QString mIncommingName;
     QPushButton *acceptButton;

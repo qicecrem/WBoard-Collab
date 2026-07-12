@@ -49,9 +49,9 @@ public:
     qint64 mediaDuration() const;
     qint64 mediaPosition() const;
 
-    QMediaPlayer::State playerState() const;
-    bool isPlaying() const { return (mMediaObject->state() == QMediaPlayer::PlayingState); }
-    bool isPaused() const { return (mMediaObject->state() == QMediaPlayer::PausedState); }
+    QMediaPlayer::PlaybackState playerState() const;
+    bool isPlaying() const { return (mMediaObject->playbackState() == QMediaPlayer::PlayingState); }
+    bool isPaused() const { return (mMediaObject->playbackState() == QMediaPlayer::PausedState); }
     bool isStopped() const;
 
     QRectF boundingRect() const;
@@ -159,7 +159,7 @@ public:
 public slots:
     void videoSizeChanged(QSizeF newSize);
     void hasVideoChanged(bool hasVideo);
-    void mediaStateChanged(QMediaPlayer::State state);
+    void mediaStateChanged(QMediaPlayer::PlaybackState state);
     void activeSceneChanged();
 
 protected slots:

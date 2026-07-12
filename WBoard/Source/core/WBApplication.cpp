@@ -1,7 +1,8 @@
 #include "WBApplication.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QtXml>
 #include <QFontDatabase>
 #include <QStyleFactory>

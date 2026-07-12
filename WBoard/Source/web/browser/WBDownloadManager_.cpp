@@ -1,7 +1,8 @@
 #include "WBDownloadManager_.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineSettings>
 #include <QFileDialog>
 

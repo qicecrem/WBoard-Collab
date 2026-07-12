@@ -4,7 +4,8 @@
 #include "WBModelMenu.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineHistory>
 
 class WBHistoryItem

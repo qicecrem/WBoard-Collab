@@ -411,7 +411,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
         
-        QUuid uuid = QUuid::createUuid().toString();
+        QUuid uuid = QUuid::fromString(QUuid::createUuid().toString());
         mRefToUuidMap.insert(element.attribute(aId), uuid.toString());
         svgItem->setUuid(uuid);
 
@@ -561,7 +561,7 @@ void WBCFFSubsetAdaptor::WBCFFSubsetReader::parseTextAttributes(const QDomElemen
     //consider inch has 72 liens
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = element.attribute(aFontSize);
-    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::primaryScreen()->logicalDotsPerInchY();
 
     QString fontColorText = element.attribute(aFill);
     if (!fontColorText.isNull()) fontColor = colorFromString(fontColorText);
@@ -1177,7 +1177,9 @@ WBGraphicsGroupContainerItem *WBCFFSubsetAdaptor::WBCFFSubsetReader::parseIwbGro
 
 
 
-    foreach (QString key, strokesGroupsContainer.keys().toSet())
+    const QStringList keys = strokesGroupsContainer.keys();
+    const QSet<QString> keySet(keys.begin(), keys.end());
+    foreach (QString key, keySet)
     {
         WBGraphicsStrokesGroup* pStrokesGroup = new WBGraphicsStrokesGroup();
         WBGraphicsStroke *currentStroke = new WBGraphicsStroke();
@@ -1463,7 +1465,7 @@ QSvgGenerator* WBCFFSubsetAdaptor::WBCFFSubsetReader::createSvgGenerator(qreal w
     QSvgGenerator* generator = new QSvgGenerator();
 //    qWarning() << QString("Making generator with file %1, size (%2, %3) and viewbox (%4 %5 %6 %7)").arg(mTempFilePath)
 //        .arg(width).arg(height).arg(0.0).arg(0.0).arg(width).arg(width);
-    generator->setResolution(QApplication::desktop()->physicalDpiY());
+    generator->setResolution(QApplication::primaryScreen()->logicalDotsPerInchY());
     generator->setFileName(mTempFilePath);
     generator->setSize(QSize(width, height));
     generator->setViewBox(QRectF(0, 0, width, height));

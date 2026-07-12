@@ -1052,7 +1052,7 @@ void WBCFFAdaptor::WBToCFFConverter::setCoordinatesFromWBZ(const QDomElement &ub
     item.setRect(0,0, width, height);
     item.setTransform(tr);
     item.setRotation(-alpha);
-    QMatrix sceneMatrix = item.sceneMatrix();
+    QTransform sceneMatrix = item.sceneTransform();
  
     iwbElement.setAttribute(aX, x);
     iwbElement.setAttribute(aY, y);
@@ -1558,7 +1558,7 @@ bool WBCFFAdaptor::WBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     while (nextSVGElement.hasNext()) 
         layers << nextSVGElement.next().key();
 
-    qSort(layers);
+    std::sort(layers.begin(), layers.end());
     int layer = layers.at(0);
 
     nextSVGElement.toFront();
@@ -1947,7 +1947,7 @@ QSize WBCFFAdaptor::WBToCFFConverter::getSVGDimentions(const QString &element)
 
     QStringList dimList;
 
-    dimList = element.split(dimensionsDelimiter1, QString::KeepEmptyParts);
+    dimList = element.split(dimensionsDelimiter1, Qt::KeepEmptyParts);
     if (dimList.count() != 2)
         return QSize();
 
@@ -1968,7 +1968,7 @@ QRect WBCFFAdaptor::WBToCFFConverter::getViewboxRect(const QString &element) con
 {
     QStringList dimList;
 
-    dimList = element.split(dimensionsDelimiter2, QString::KeepEmptyParts);
+    dimList = element.split(dimensionsDelimiter2, Qt::KeepEmptyParts);
     if (dimList.count() != 4)
         return QRect();
     

@@ -408,7 +408,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                     proxy->setPageDpi(pageDpi.toInt());
 
                 else if (proxy->pageDpi() == 0) {
-                    proxy->setPageDpi((WBApplication::desktop()->physicalDpiX() + WBApplication::desktop()->physicalDpiY())/2);
+                    proxy->setPageDpi((WBApplication::desktop()->logicalDotsPerInchX() + WBApplication::desktop()->logicalDotsPerInchY())/2);
                     pageDpiSpecified = false;
                 }
 
@@ -775,8 +775,8 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                     if (pdfItem)
                     {
                         QScreen* desktop = QApplication::primaryScreen();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        // qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
+                        qreal currentDpi = (desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2;
+                        // qDebug() << "currentDpi (" << desktop->logicalDotsPerInchX() << " + " << desktop->logicalDotsPerInchY() << ")/2 = " << currentDpi;
                         qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
                         // qDebug() << "pdfScale " << pdfScale;
 
@@ -849,7 +849,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                     if (textDelegate)
                     {
                         QScreen* desktop = QApplication::primaryScreen();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        qreal currentDpi = (desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2;
                         qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
                         //textDelegate->scaleTextSize(textSizeMultiplier);
                     }
@@ -1102,7 +1102,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::writeSvgElement(WBDocumentProxy* pro
     QScreen* desktop = QApplication::primaryScreen();
 
     if (proxy->pageDpi() == 0)
-        proxy->setPageDpi((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2);
+        proxy->setPageDpi((desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2);
 
     mXmlWriter.writeAttribute("pageDpi", QString::number(proxy->pageDpi()));
 
@@ -1143,7 +1143,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
     // Get the items from the scene
     QList<QGraphicsItem*> items = mScene->items();
 
-    qSort(items.begin(), items.end(), itemZIndexComp);
+    std::sort(items.begin(), items.end(), itemZIndexComp);
 
     WBGraphicsStroke *openStroke = 0;
 
@@ -1417,7 +1417,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
 
 void WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *groupDomDocument)
 {
-    QUuid uuid = WBGraphicsScene::getPersonalUuid(groupItem);
+    QUuid uuid = QUuid::fromString(WBGraphicsScene::getPersonalUuid(groupItem));
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
         curGroupElement.setAttribute(aId, uuid.toString());
@@ -1432,7 +1432,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
-            QUuid tmpUuid = WBGraphicsScene::getPersonalUuid(item);
+            QUuid tmpUuid = QUuid::fromString(WBGraphicsScene::getPersonalUuid(item));
             if (!tmpUuid.isNull()) {
                 if (item->type() == WBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);

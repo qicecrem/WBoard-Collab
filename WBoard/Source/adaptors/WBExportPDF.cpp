@@ -61,7 +61,7 @@ bool WBExportPDF::persistsDocument(WBDocumentProxy* pDocumentProxy, const QStrin
 
     //need to calculate screen resolution
     QScreen* desktop = QApplication::primaryScreen();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    int dpiCommon = (desktop->logicalDotsPerInchX() + desktop->logicalDotsPerInchY()) / 2;
     float scaleFactor = 72.0f / dpiCommon;
 
     QPainter pdfPainter;

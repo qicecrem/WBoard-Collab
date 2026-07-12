@@ -1,7 +1,8 @@
 #include "WBBrowserWindow.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineSettings>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>

@@ -2,6 +2,7 @@
 
 #include <QtWidgets>
 #include <QtSvg>
+#include <QtSvgWidgets/QGraphicsSvgItem>
 
 #include "core/WBApplication.h"
 #include "core/WBSettings.h"
