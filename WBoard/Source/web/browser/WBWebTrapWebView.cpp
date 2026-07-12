@@ -385,7 +385,7 @@ void WBWebTrapWebView::paintEvent ( QPaintEvent * event )
     QWebEngineView::paintEvent(event);
 
     if (mIsTrapping && mDomElementRect.isValid()
-            && page() && page()->view())
+            && page())
     {
         QPainter p(this);
 

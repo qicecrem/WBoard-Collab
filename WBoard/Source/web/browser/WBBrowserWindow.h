@@ -12,7 +12,7 @@ class WBToolbarSearch;
 class WBWebView;
 class WBHistoryManager;
 class WBDownloadManager_;
-class UBCookieJar;
+class QNetworkCookieJar;
 
 #include "ui_mainWindow.h"
 
@@ -32,8 +32,8 @@ public:
 
     //void adaptToolBar(bool wideRes);
 
-    //static WBHistoryManager *page()->history()();
-    static UBCookieJar *cookieJar();
+    static WBHistoryManager *historyManager();
+    static QNetworkCookieJar *cookieJar();
     static WBDownloadManager_ *downloadManager();
 
 public slots:

@@ -6,7 +6,6 @@
 #include <QtWidgets>
 #include <QWebEnginePage>
 #include <QWebEngineView>
-#include <QWebEngineHistory>
 
 class WBHistoryItem
 {
@@ -35,7 +34,7 @@ class WBHistoryModel;
 class WBHistoryFilterModel;
 class WBHistoryTreeModel;
 
-class WBHistoryManager : public QWebEngineHistory
+class WBHistoryManager : public QObject
 {
     Q_OBJECT;
     Q_PROPERTY(int historyLimit READ historyLimit WRITE setHistoryLimit);

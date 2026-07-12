@@ -68,7 +68,7 @@
 **
 ****************************************************************************/
 
-#include "UBCookieJar.h"
+#include "QNetworkCookieJar.h"
 
 #include "WBAutoSaver.h"
 
@@ -120,7 +120,7 @@ QDataStream &operator>>(QDataStream &stream, QList<QNetworkCookie> &list)
 }
 QT_END_NAMESPACE
 
-UBCookieJar::UBCookieJar(QObject *parent)
+QNetworkCookieJar::QNetworkCookieJar(QObject *parent)
     : QNetworkCookieJar(parent)
     , mLoaded(false)
     , mSaveTimer(new UBAutoSaver(this))
@@ -129,21 +129,21 @@ UBCookieJar::UBCookieJar(QObject *parent)
     // NOOP
 }
 
-UBCookieJar::~UBCookieJar()
+QNetworkCookieJar::~QNetworkCookieJar()
 {
     if (mKeepCookies == KeepUntilExit)
         clear();
     mSaveTimer->saveIfNeccessary();
 }
 
-void UBCookieJar::clear()
+void QNetworkCookieJar::clear()
 {
     setAllCookies(QList<QNetworkCookie>());
     mSaveTimer->changeOccurred();
     emit cookiesChanged();
 }
 
-void UBCookieJar::load()
+void QNetworkCookieJar::load()
 {
     if (mLoaded)
         return;
@@ -166,7 +166,7 @@ void UBCookieJar::load()
     loadSettings();
 }
 
-void UBCookieJar::loadSettings()
+void QNetworkCookieJar::loadSettings()
 {
     QSettings settings;
     settings.beginGroup(QLatin1String("cookies"));
@@ -190,7 +190,7 @@ void UBCookieJar::loadSettings()
     emit cookiesChanged();
 }
 
-void UBCookieJar::save()
+void QNetworkCookieJar::save()
 {
     if (!mLoaded)
         return;
@@ -224,7 +224,7 @@ void UBCookieJar::save()
     settings.setValue(QLatin1String("keepCookiesUntil"), QLatin1String(keepPolicyEnum.valueToKey(mKeepCookies)));
 }
 
-void UBCookieJar::purgeOldCookies()
+void QNetworkCookieJar::purgeOldCookies()
 {
     QList<QNetworkCookie> cookies = allCookies();
     if (cookies.isEmpty())
@@ -241,9 +241,9 @@ void UBCookieJar::purgeOldCookies()
     emit cookiesChanged();
 }
 
-QList<QNetworkCookie> UBCookieJar::cookiesForUrl(const QUrl &url) const
+QList<QNetworkCookie> QNetworkCookieJar::cookiesForUrl(const QUrl &url) const
 {
-    UBCookieJar *that = const_cast<UBCookieJar*>(this);
+    QNetworkCookieJar *that = const_cast<QNetworkCookieJar*>(this);
     if (!mLoaded)
         that->load();
 
@@ -256,7 +256,7 @@ QList<QNetworkCookie> UBCookieJar::cookiesForUrl(const QUrl &url) const
     return QNetworkCookieJar::cookiesForUrl(url);
 }
 
-bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
+bool QNetworkCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
 {
     if (!mLoaded)
         load();
@@ -311,14 +311,14 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
     return addedCookies;
 }
 
-UBCookieJar::AcceptPolicy UBCookieJar::acceptPolicy() const
+QNetworkCookieJar::AcceptPolicy QNetworkCookieJar::acceptPolicy() const
 {
     if (!mLoaded)
-        (const_cast<UBCookieJar*>(this))->load();
+        (const_cast<QNetworkCookieJar*>(this))->load();
     return mAcceptCookies;
 }
 
-void UBCookieJar::setAcceptPolicy(AcceptPolicy policy)
+void QNetworkCookieJar::setAcceptPolicy(AcceptPolicy policy)
 {
     if (!mLoaded)
         load();
@@ -328,14 +328,14 @@ void UBCookieJar::setAcceptPolicy(AcceptPolicy policy)
     mSaveTimer->changeOccurred();
 }
 
-UBCookieJar::KeepPolicy UBCookieJar::keepPolicy() const
+QNetworkCookieJar::KeepPolicy QNetworkCookieJar::keepPolicy() const
 {
     if (!mLoaded)
-        (const_cast<UBCookieJar*>(this))->load();
+        (const_cast<QNetworkCookieJar*>(this))->load();
     return mKeepCookies;
 }
 
-void UBCookieJar::setKeepPolicy(KeepPolicy policy)
+void QNetworkCookieJar::setKeepPolicy(KeepPolicy policy)
 {
     if (!mLoaded)
         load();
@@ -345,28 +345,28 @@ void UBCookieJar::setKeepPolicy(KeepPolicy policy)
     mSaveTimer->changeOccurred();
 }
 
-QStringList UBCookieJar::blockedCookies() const
+QStringList QNetworkCookieJar::blockedCookies() const
 {
     if (!mLoaded)
-        (const_cast<UBCookieJar*>(this))->load();
+        (const_cast<QNetworkCookieJar*>(this))->load();
     return mExceptionsBlock;
 }
 
-QStringList UBCookieJar::allowedCookies() const
+QStringList QNetworkCookieJar::allowedCookies() const
 {
     if (!mLoaded)
-        (const_cast<UBCookieJar*>(this))->load();
+        (const_cast<QNetworkCookieJar*>(this))->load();
     return mExceptionsAllow;
 }
 
-QStringList UBCookieJar::allowForSessionCookies() const
+QStringList QNetworkCookieJar::allowForSessionCookies() const
 {
     if (!mLoaded)
-        (const_cast<UBCookieJar*>(this))->load();
+        (const_cast<QNetworkCookieJar*>(this))->load();
     return mExceptionsAllowForSession;
 }
 
-void UBCookieJar::setBlockedCookies(const QStringList &list)
+void QNetworkCookieJar::setBlockedCookies(const QStringList &list)
 {
     if (!mLoaded)
         load();
@@ -375,7 +375,7 @@ void UBCookieJar::setBlockedCookies(const QStringList &list)
     mSaveTimer->changeOccurred();
 }
 
-void UBCookieJar::setAllowedCookies(const QStringList &list)
+void QNetworkCookieJar::setAllowedCookies(const QStringList &list)
 {
     if (!mLoaded)
         load();
@@ -384,7 +384,7 @@ void UBCookieJar::setAllowedCookies(const QStringList &list)
     mSaveTimer->changeOccurred();
 }
 
-void UBCookieJar::setAllowForSessionCookies(const QStringList &list)
+void QNetworkCookieJar::setAllowForSessionCookies(const QStringList &list)
 {
     if (!mLoaded)
         load();

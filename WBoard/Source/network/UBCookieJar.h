@@ -7,7 +7,7 @@
 
 class UBAutoSaver;
 
-class UBCookieJar : public QNetworkCookieJar
+class QNetworkCookieJar : public QNetworkCookieJar
 {
     friend class UBCookieModel;
     Q_OBJECT
@@ -35,8 +35,8 @@ class UBCookieJar : public QNetworkCookieJar
             KeepUntilTimeLimit
         };
 
-        UBCookieJar(QObject *parent = 0);
-        ~UBCookieJar();
+        QNetworkCookieJar(QObject *parent = 0);
+        ~QNetworkCookieJar();
 
         QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const;
         bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);

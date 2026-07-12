@@ -12,7 +12,7 @@
 //#include "GeneratedFiles/ui_passworddialog.h"
 //#include "GeneratedFiles/ui_proxy.h"
 
-#include "UBCookieJar.h"
+#include <QNetworkCookieJar>
 
 
 #include "core/memcheck.h"
@@ -23,7 +23,7 @@ WBNetworkAccessManager *WBNetworkAccessManager::defaultAccessManager()
 {
     if (!sNetworkAccessManager) {
         sNetworkAccessManager = new WBNetworkAccessManager(qApp);
-        //sNetworkAccessManager->setCookieJar(new UBCookieJar(sNetworkAccessManager));
+        //sNetworkAccessManager->setCookieJar(new QNetworkCookieJar(sNetworkAccessManager));
     }
     return sNetworkAccessManager;
 }

@@ -200,7 +200,7 @@ QPixmap WBWebController::captureCurrentPage()
 
         QSize vieportSize = mCurrentWebBrowser->currentTabWebView()->page()->viewportSize();
         mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(frame->contentsSize());
-        pix = QPixmap(frame->geometry().width(), frame->geometry().height());
+        pix = QPixmap(frame->geometry().horizontalAdvance(), frame->geometry().height());
 
         {
             QPainter p(&pix);

@@ -12,7 +12,7 @@
 #include "core/WBSettings.h"
 
 #include "network/WBNetworkAccessManager.h"
-#include "network/UBCookieJar.h"
+#include <QNetworkCookieJar>
 
 #include <QtWidgets>
 #include <QWebEnginePage>
@@ -94,7 +94,7 @@ QObject *WBWebPage::createPlugin(const QString &classId, const QUrl &url, const 
 
     QUiLoader loader;
 
-    return loader.createWidget(classId, view());
+    return loader.createWidget(classId, qobject_cast<QWidget*>(parent()));
 }
 
 
@@ -246,7 +246,7 @@ void WBWebView::wheelEvent(QWheelEvent *event)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier)
     {
-        int numDegrees = event->delta() / 8;
+        int numDegrees = event->angleDelta().y() / 8;
         int numSteps = numDegrees / 15;
         //setTextSizeMultiplier(textSizeMultiplier() + numSteps * 0.1);
         event->accept();

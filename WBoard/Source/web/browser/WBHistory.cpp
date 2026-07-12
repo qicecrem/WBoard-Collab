@@ -86,7 +86,7 @@
 static const unsigned int HISTORY_VERSION = 23;
 
 WBHistoryManager::WBHistoryManager(QObject *parent)
-    : /* QWebEngineHistory(parent) removed */
+    : QObject(parent)
     //, m_saveTimer(new WBAutoSaver(this))
     , m_historyLimit(30)
     , m_historyModel(0)
@@ -651,7 +651,7 @@ bool WBHistoryMenu::prePopulated()
 {
     if (!m_history)
     {
-        m_history = WBBrowserWindow::page()->history()();
+        m_history = WBBrowserWindow::historyManager();
         m_historyMenuModel = new WBHistoryMenuModel(m_history->historyTreeModel(), this);
         setModel(m_historyMenuModel);
     }

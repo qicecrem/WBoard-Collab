@@ -88,9 +88,9 @@ WBBrowserWindow::~WBBrowserWindow()
     }
 }
 
-UBCookieJar *WBBrowserWindow::cookieJar()
+QNetworkCookieJar *WBBrowserWindow::cookieJar()
 {
-    return (UBCookieJar*)WBNetworkAccessManager::defaultAccessManager()->cookieJar();
+    return (QNetworkCookieJar*)WBNetworkAccessManager::defaultAccessManager()->cookieJar();
 }
 
 WBDownloadManager_ *WBBrowserWindow::downloadManager()
@@ -101,14 +101,14 @@ WBDownloadManager_ *WBBrowserWindow::downloadManager()
     return sDownloadManager;
 }
 
-//WBHistoryManager *WBBrowserWindow::page()->history()()
-//{
-//    if (!sHistoryManager) {
-//        sHistoryManager = new WBHistoryManager();
-//        //QWebHistoryInterface::setDefaultInterface(sHistoryManager);
-//    }
-//    return sHistoryManager;
-//}
+WBHistoryManager *WBBrowserWindow::historyManager()
+{
+    if (!sHistoryManager) {
+        sHistoryManager = new WBHistoryManager();
+        //QWebHistoryInterface::setDefaultInterface(sHistoryManager);
+    }
+    return sHistoryManager;
+}
 
 QSize WBBrowserWindow::sizeHint() const
 {
@@ -310,7 +310,7 @@ void WBBrowserWindow::slotViewZoomIn()
     if (!currentWebView)
         return;
 
-    QWidget *view = currentWebView->page()->view();
+    QWidget *view = currentWebView;
 
     //UBWebPluginPDFWidget *pdfPluginWidget = view ? view->findChild<UBWebPluginPDFWidget *>("PDFWebPluginWidget") : 0;
     //if (pdfPluginWidget)
@@ -330,7 +330,7 @@ void WBBrowserWindow::slotViewZoomOut()
     if (!currentWebView)
         return;
 
-    QWidget *view = currentWebView->page()->view();
+    QWidget *view = currentWebView;
 
     //UBWebPluginPDFWidget *pdfPluginWidget = view ? view->findChild<UBWebPluginPDFWidget *>("PDFWebPluginWidget") : 0;
 

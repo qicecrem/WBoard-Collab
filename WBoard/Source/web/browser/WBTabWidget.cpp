@@ -331,7 +331,7 @@ WBWebView *WBTabWidget::newTab(bool makeCurrent)
     if (!mLineEditCompleter && count() > 0)
     {
         //WBHistoryCompletionModel *completionModel = new WBHistoryCompletionModel(this);
-        //completionModel->setSourceModel(WBBrowserWindow::page()->history()()->historyFilterModel());
+        //completionModel->setSourceModel(WBBrowserWindow::historyManager()->historyFilterModel());
         mLineEditCompleter = new QCompleter(this);
         // Should this be in Qt by default?
         QAbstractItemView *popup = mLineEditCompleter->popup();
@@ -420,7 +420,7 @@ void WBTabWidget::lineEditReturnPressed()
 void WBTabWidget::windowCloseRequested()
 {
     WBWebPage *webPage = qobject_cast<WBWebPage*>(sender());
-    WBWebView *webView = qobject_cast<WBWebView*>(webPage->view());
+    WBWebView *webView = qobject_cast<WBWebView*>(webPage->parent());
     int index = webViewIndex(webView);
     if (index >= 0)
     {
@@ -530,7 +530,7 @@ void WBTabWidget::webViewTitleChanged(const QString &title)
     }
     if (currentIndex() == index)
         emit setCurrentTitle(title);
-    //WBBrowserWindow::page()->history()()->updateHistoryItem(webView->url(), title);
+    //WBBrowserWindow::historyManager()->updateHistoryItem(webView->url(), title);
 }
 
 void WBTabWidget::webViewUrlChanged(const QUrl &url)
