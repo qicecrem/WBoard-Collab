@@ -5,6 +5,9 @@
 #include <QWebEnginePage>
 #include <QWebEngineView>
 
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include "WBWebTrapWebView.h"
 #include "web/WBWebPage_.h"
 
@@ -103,7 +106,7 @@ private:
     QUrl mInitialUrl;
     int mProgress;
     WBWebPage *mPage;
-    QTime mLoadStartTime;
+    QElapsedTimer mLoadStartTime;
 };
 
 #endif //WBWEBVIEW_H

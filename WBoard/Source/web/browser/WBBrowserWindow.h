@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include <QWebEnginePage>
 #include <QWebEngineView>
+#include <QWebEngineProfile>
 
 class WBChaseWidget;
 class WBTabWidget;

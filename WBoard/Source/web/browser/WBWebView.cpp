@@ -1,3 +1,6 @@
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include "WBBrowserWindow.h"
 #include "WBDownloadManager_.h"
 #include "WBTabWidget.h"

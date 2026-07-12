@@ -1,4 +1,7 @@
 #include <QWebEngineProfile>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include "WBDownloadManager_.h"
 
 #include <QtWidgets>
@@ -440,7 +443,7 @@ void WBDownloadManager_::addItem(WBDownloadItem *item)
 
     if (!mIconProvider)
         mIconProvider = new QFileIconProvider();
-    QIcon icon = mIconProvider->icon(item->m_output.fileName());
+    QIcon icon = mIconProvider->icon(QFileInfo(item->m_output.fileName()));
     if (icon.isNull())
         icon = style()->standardIcon(QStyle::SP_FileIcon);
     item->fileIcon->setPixmap(icon.pixmap(48, 48));
@@ -458,7 +461,7 @@ void WBDownloadManager_::updateRow()
     if (!mIconProvider)
         mIconProvider = new QFileIconProvider();
 
-    QIcon icon = mIconProvider->icon(item->m_output.fileName());
+    QIcon icon = mIconProvider->icon(QFileInfo(item->m_output.fileName()));
     if (icon.isNull())
         icon = style()->standardIcon(QStyle::SP_FileIcon);
 

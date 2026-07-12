@@ -1,14 +1,13 @@
-#include <QWebEngineProfile>
-#include <QRegExp>
 #include "WBBrowserWindow.h"
 
 #include <QtWidgets>
 #include <QWebEnginePage>
 #include <QWebEngineView>
+#include <QWebEngineProfile>
 #include <QWebEngineSettings>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
-#include <QScreen>
+#include <QRegExp>
 
 #include "core/WBSettings.h"
 #include "core/WBSetting.h"
@@ -53,7 +52,7 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     layout->addWidget(mTabWidget);
 
@@ -113,7 +112,8 @@ WBDownloadManager_ *WBBrowserWindow::downloadManager()
 
 QSize WBBrowserWindow::sizeHint() const
 {
-    QRect desktopRect = QApplication::primaryScreen()->geometry(WBApplication::controlScreenIndex());
+    QScreen* deskScreen = QGuiApplication::screens().value(WBApplication::controlScreenIndex(), QGuiApplication::primaryScreen());
+    QRect desktopRect = deskScreen->geometry();
     QSize size = desktopRect.size() * qreal(0.9);
     return size;
 }
@@ -199,7 +199,7 @@ QUrl WBBrowserWindow::guessUrlFromString(const QString &string)
     QRegExp test(QLatin1String("^[a-zA-Z]+\\:.*"));
 
     // Check if it looks like a qualified URL. Try parsing it and see.
-    bool hasSchema = test.match(urlStr);
+    bool hasSchema = test.exactMatch(urlStr);
     if (hasSchema)
     {
         int dotCount = urlStr.count(".");

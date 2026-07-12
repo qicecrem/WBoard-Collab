@@ -1,6 +1,9 @@
 #ifndef WBDOWNLOADMANAGER_H_
 #define WBDOWNLOADMANAGER_H_
 
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include "ui_downloads.h"
 #include "ui_downloaditem.h"
 
@@ -45,7 +48,7 @@ private:
 
     bool mRequestFileName;
     qint64 mBytesReceived;
-    QTime mDownloadTime;
+    QElapsedTimer mDownloadTime;
     QString mCustomDownloadPath;
 
 };

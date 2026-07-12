@@ -80,6 +80,10 @@ list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBWindowCaptureDelegate_win.*")
 # Exclude UB*/QtWebKit legacy files (Qt4/5, removed in Qt6)
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*network/UB.*\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*pdf/UB.*\\.(cpp|h)$")
+
+# Exclude web browser subsystem (depends on excluded UB network files)
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*web/browser/.*\\.(cpp|h)$")
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*web/WBWebController\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/ffmpeg/.*")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/WBPodcastController\\.(cpp|h)$")
 

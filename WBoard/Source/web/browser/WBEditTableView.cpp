@@ -1,6 +1,6 @@
 #include "WBEditTableView.h"
 //#include <QtWidgets/QKeyEvent>
-#include <QKeyEventTransition>
+#include <QEvent>
 
 #include "core/memcheck.h"
 
