@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QListView>
-#include <QRegExp>
 #include <QGraphicsView>
 #include <QAbstractListModel>
 #include <QPixmap>
@@ -229,7 +228,7 @@ class WBFeaturesNewFolderDialog : public QWidget
 
 public:
     WBFeaturesNewFolderDialog(QWidget *parent = 0);
-    void setRegexp(const QRegExp pRegExp);
+    void setRegexp(const QRegularExpression pRegExp);
     bool validString(const QString &pStr);
 
 signals:

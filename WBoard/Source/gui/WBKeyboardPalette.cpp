@@ -246,7 +246,7 @@ void  WBKeyboardPalette::paintEvent( QPaintEvent* event)
     QRect r = this->geometry();
 
     int lleft, ltop, lright, lbottom;
-    getContentsMargins ( &lleft, &ltop, &lright, &lbottom ) ;
+    QMargins m = contentsMargins(); lleft = m.left(); ltop = m.top(); lright = m.right(); lbottom = m.bottom();
 
     //------------------------------------------------
     // calculate start offset from left, and from top

@@ -3,8 +3,6 @@
 #include <QtWebChannel/QWebChannel>
 #include <QWidget>
 
-using std::endl;
-#include <QRegularExpression>
 #include "WBFeaturesWidget.h"
 #include "gui/WBThumbnailWidget.h"
 #include "frameworks/WBFileSystemUtils.h"
@@ -614,7 +612,7 @@ WBFeaturesNewFolderDialog::WBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
 
     mLineEdit = new QLineEdit(this);
 
-    mValidator = new QRegularExpressionValidator(QRegularExpression("[^\\\\/\\\\:\\\\?\\\\*\\\\|\\\\<\\\\>\\\\\\\"]{2,}"), this);
+    mValidator = new QRegularExpressionValidator(QRegularExpression("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
     mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);
@@ -638,7 +636,7 @@ WBFeaturesNewFolderDialog::WBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     reactOnTextChanged(QString());
 }
 
-void WBFeaturesNewFolderDialog::setRegexp(const QRegExp pRegExp)
+void WBFeaturesNewFolderDialog::setRegexp(const QRegularExpression pRegExp)
 {
     mValidator->setRegExp(pRegExp);
 }
@@ -1382,7 +1380,7 @@ bool WBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegularExpression().exactMatch(path);
+    return filterRegularExpression().match(path);
 }
 
 bool WBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1401,7 +1399,7 @@ bool WBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegularExpression().exactMatch( feature.getName() );
+            && filterRegularExpression().match( feature.getName() );
 }
 
 bool WBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const

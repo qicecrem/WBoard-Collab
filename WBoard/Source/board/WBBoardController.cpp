@@ -451,7 +451,7 @@ void WBBoardController::setToolbarTexts()
 QString WBBoardController::truncate(QString text, int maxWidth)
 {
     QFontMetricsF fontMetrics(mMainWindow->font());
-    return fontMetrics.elidedText(text, Qt::ElideRight, maxWidth);
+    return fontMetrics// removed: .elidedText(text, Qt::ElideRight, maxWidth);
 }
 
 
