@@ -271,7 +271,7 @@ void WBBoardPaletteManager::setupPalettes()
 
 void WBBoardPaletteManager::pagePaletteButtonPressed()
 {
-    mPageButtonPressedTime = QElapsedTimer::currentTime();
+    mPageButtonPressedTime = QTime::currentTime();
 
     mPendingPageButtonPressed = true;
     QTimer::singleShot(1000, this, SLOT(pagePaletteButtonReleased()));
@@ -282,7 +282,7 @@ void WBBoardPaletteManager::pagePaletteButtonReleased()
 {
     if (mPendingPageButtonPressed)
     {
-        if( mPageButtonPressedTime.msecsTo(QElapsedTimer::currentTime()) > 900)
+        if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
             // The palette is reinstanciated because the duplication depends on the current scene
             delete(mPagePalette);
@@ -317,7 +317,7 @@ void WBBoardPaletteManager::pagePaletteButtonReleased()
 
 void WBBoardPaletteManager::erasePaletteButtonPressed()
 {
-    mEraseButtonPressedTime = QElapsedTimer::currentTime();
+    mEraseButtonPressedTime = QTime::currentTime();
 
     mPendingEraseButtonPressed = true;
     QTimer::singleShot(1000, this, SLOT(erasePaletteButtonReleased()));
@@ -328,7 +328,7 @@ void WBBoardPaletteManager::erasePaletteButtonReleased()
 {
     if (mPendingEraseButtonPressed)
     {
-        if( mEraseButtonPressedTime.msecsTo(QElapsedTimer::currentTime()) > 900)
+        if( mEraseButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
             toggleErasePalette(true);
         }
@@ -866,7 +866,7 @@ void WBBoardPaletteManager::addItemToLibrary()
 
 void WBBoardPaletteManager::zoomButtonPressed()
 {
-    mZoomButtonPressedTime = QElapsedTimer::currentTime();
+    mZoomButtonPressedTime = QTime::currentTime();
 
     mPendingZoomButtonPressed = true;
     QTimer::singleShot(1000, this, SLOT(zoomButtonReleased()));
@@ -877,7 +877,7 @@ void WBBoardPaletteManager::zoomButtonReleased()
 {
     if (mPendingZoomButtonPressed)
     {
-        if(mZoomButtonPressedTime.msecsTo(QElapsedTimer::currentTime()) > 900)
+        if(mZoomButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
             mBoardControler->zoomRestore();
         }
@@ -888,7 +888,7 @@ void WBBoardPaletteManager::zoomButtonReleased()
 
 void WBBoardPaletteManager::panButtonPressed()
 {
-    mPanButtonPressedTime = QElapsedTimer::currentTime();
+    mPanButtonPressedTime = QTime::currentTime();
 
     mPendingPanButtonPressed = true;
     QTimer::singleShot(1000, this, SLOT(panButtonReleased()));
@@ -899,7 +899,7 @@ void WBBoardPaletteManager::panButtonReleased()
 {
     if (mPendingPanButtonPressed)
     {
-        if(mPanButtonPressedTime.msecsTo(QElapsedTimer::currentTime()) > 900)
+        if(mPanButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
             mBoardControler->centerRestore();
         }

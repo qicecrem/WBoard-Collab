@@ -421,7 +421,7 @@ WBDocumentProxy* WBPersistenceManager::createDocument(const QString& pGroupName
         QDir dir(doc->persistencePath());
         if (!dir.mkpath(doc->persistencePath()))
         {
-            return 0; // if we can't create the path, abort function.
+            return QUuid(); // if we can't create the path, abort function.
         }
     }
 
@@ -993,7 +993,7 @@ int WBPersistenceManager::sceneCount(const WBDocumentProxy* proxy)
     if(pageIndex == 1 && addedMissingZeroPage){
         // increment is done only to check if there are other pages than the missing zero page
         // This situation means -> no pages on the document
-        return 0;
+        return QUuid();
     }
 
     return pageIndex;

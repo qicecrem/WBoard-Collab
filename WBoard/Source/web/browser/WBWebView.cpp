@@ -218,7 +218,7 @@ WBWebView::WBWebView(QWidget* parent)
 
 void WBWebView::contextMenuEvent(QContextMenuEvent *event)
 {
-    //QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+    //QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->position().toPoint());
 
     //if (!r.linkUrl().isEmpty())
     //{
@@ -232,7 +232,7 @@ void WBWebView::contextMenuEvent(QContextMenuEvent *event)
     //    menu.addAction(pageAction(QWebEnginePage::CopyLinkToClipboard));
     //    if (page()->settings()->testAttribute(QWebEngineSettings::DeveloperExtrasEnabled))
     //        menu.addAction(pageAction(QWebEnginePage::InspectElement));
-    //    menu.exec(mapToGlobal(event->pos()));
+    //    menu.exec(mapToGlobal(event->position().toPoint()));
     //    return;
     //}
     WBWebTrapWebView::contextMenuEvent(event);

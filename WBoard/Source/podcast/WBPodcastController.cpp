@@ -339,7 +339,7 @@ void WBPodcastController::start()
 
             mLatestCapture = QImage(mVideoFrameSizeAtStart, QImage::Format_RGB32); //0xffRRGGBB
 
-            mRecordStartTime = QElapsedTimer::currentTime();
+            mRecordStartTime = QTime::currentTime();
 
             mRecordingProgressTimerEventID = startTimer(100);
 
@@ -376,7 +376,7 @@ void WBPodcastController::pause()
     {
         sendLatestPixmapToEncoder();
 
-        mTimeAtPaused = QElapsedTimer::currentTime();
+        mTimeAtPaused = QTime::currentTime();
 
         if (mVideoEncoder->pause())
         {
@@ -392,7 +392,7 @@ void WBPodcastController::unpause()
     {
         if (mVideoEncoder->unpause())
         {
-             mRecordingTimestampOffset += mTimeAtPaused.msecsTo(QElapsedTimer::currentTime());
+             mRecordingTimestampOffset += mTimeAtPaused.msecsTo(QTime::currentTime());
              sendLatestPixmapToEncoder();
 
              setRecordingState(Recording);
@@ -523,7 +523,7 @@ void WBPodcastController::sceneBackgroundChanged()
 
 long WBPodcastController::elapsedRecordingMs()
 {
-    QTime now = QElapsedTimer::currentTime();
+    QTime now = QTime::currentTime();
     long msFromStart = mRecordStartTime.msecsTo(now);
 
     return msFromStart - mRecordingTimestampOffset;

@@ -158,17 +158,17 @@ void WBFeaturesComputingThread::run()
             break;
         }
 
-//        QTime curTime = QElapsedTimer::currentTime();
+//        QTime curTime = QTime::currentTime();
         int fsCnt = featuresCountAll(searchData);
-//        int msecsto = curTime.msecsTo(QElapsedTimer::currentTime());
+//        int msecsto = curTime.msecsTo(QTime::currentTime());
 //        qDebug() << "time on evaluation" << msecsto;
 
         emit maxFilesCountEvaluated(fsCnt);
 
         emit scanStarted();
-//        curTime = QElapsedTimer::currentTime();
+//        curTime = QTime::currentTime();
         scanAll(searchData, favoriteSet);
-//        qDebug() << "Time on finishing" << curTime.msecsTo(QElapsedTimer::currentTime());
+//        qDebug() << "Time on finishing" << curTime.msecsTo(QTime::currentTime());
         emit scanFinished();
 
         mMutex.lock();

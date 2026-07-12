@@ -47,7 +47,7 @@ class WBItem
 
         virtual WBGraphicsScene* scene() 
         {
-            return 0;
+            return nullptr;
         }
 
         virtual QUrl sourceUrl() const

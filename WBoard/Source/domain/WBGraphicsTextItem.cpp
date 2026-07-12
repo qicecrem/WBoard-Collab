@@ -19,7 +19,7 @@ WBGraphicsTextItem::WBGraphicsTextItem(QGraphicsItem * parent)
     , WBGraphicsItem()
     , mTypeTextHereLabel(tr("<Type Text Here>"))
     , mMultiClickState(0)
-    , mLastMousePressTime(QElapsedTimer::currentTime())
+    , mLastMousePressTime(QTime::currentTime())
     , isActivatedTextEditor(true)
 {
     setDelegate(new WBGraphicsTextItemDelegate(this, 0));
@@ -119,7 +119,7 @@ void WBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
 
-    int elapsed = mLastMousePressTime.msecsTo(QElapsedTimer::currentTime());
+    int elapsed = mLastMousePressTime.msecsTo(QTime::currentTime());
 
     if (elapsed < WBApplication::app()->doubleClickInterval())
     {
@@ -132,7 +132,7 @@ void WBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         mMultiClickState = 1;
     }
 
-    mLastMousePressTime = QElapsedTimer::currentTime();
+    mLastMousePressTime = QTime::currentTime();
 
     if (mMultiClickState == 1)
     {
@@ -324,7 +324,7 @@ qreal WBGraphicsTextItem::pixelsPerPoint() const
 {
     QTextCursor cursor = textCursor();
     if (cursor.isNull())
-        return 0;
+        return nullptr;
 
     cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
@@ -340,7 +340,7 @@ qreal WBGraphicsTextItem::pixelsPerPoint() const
     //qDebug() << "Point size: " << pointSize;
 
     if (pointSize == 0)
-        return 0;
+        return QUuid();
 
     return pixelSize/pointSize;
 }

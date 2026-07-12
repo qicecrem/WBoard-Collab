@@ -1608,7 +1608,7 @@ WBGraphicsWidgetItem* WBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
     else
     {
         qDebug() << "WBGraphicsScene::addWidget: Unknown widget Type";
-        return 0;
+        return QUuid();
     }
 }
 

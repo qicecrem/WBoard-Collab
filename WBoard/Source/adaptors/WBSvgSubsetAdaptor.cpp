@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return QUuid();
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -228,7 +228,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         return scene;
     }
 
-    return 0;
+    return QUuid();
 }
 
 
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return 0;
+            return QUuid();
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -408,7 +408,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                     proxy->setPageDpi(pageDpi.toInt());
 
                 else if (proxy->pageDpi() == 0) {
-                    proxy->setPageDpi((WBApplication::desktop()->logicalDotsPerInchX() + WBApplication::desktop()->logicalDotsPerInchY())/2);
+                    proxy->setPageDpi((QApplication::primaryScreen()->logicalDotsPerInchX() + QApplication::primaryScreen()->logicalDotsPerInchY())/2);
                     pageDpiSpecified = false;
                 }
 
@@ -1199,7 +1199,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
                         QVariant layer = sg->data(WBGraphicsItemData::ItemLayerType);
                         mXmlWriter.writeAttribute(WBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
-                        QMatrix matrix = sg->sceneMatrix();
+                        QMatrix matrix = sg->sceneTransform();
                         if (!matrix.isIdentity())
                             mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
 
@@ -1752,7 +1752,7 @@ WBGraphicsPolygonItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItemFromLin
     else
     {
         qWarning() << "cannot make sense of 'line' value";
-        return 0;
+        return QUuid();
     }
 
     QStringRef strokeWidth = mXmlReader.attributes().value("stroke-width");
@@ -1982,7 +1982,7 @@ WBGraphicsPixmapItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pixmapItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return 0;
+        return QUuid();
     }
 
     graphicsItemFromSvg(pixmapItem);
@@ -2023,7 +2023,7 @@ WBGraphicsSvgItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::svgItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return 0;
+        return QUuid();
     }
 
     graphicsItemFromSvg(svgItem);
@@ -2075,7 +2075,7 @@ WBGraphicsPDFItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pdfItemFromPDF()
     if (parts.count() != 2)
     {
         qWarning() << "invalid pdf href value" << href;
-        return 0;
+        return QUuid();
     }
 
     QString pdfPath = parts[0];
@@ -2143,7 +2143,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::audioItemFromSvg()
     if (audioHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return 0;
+        return QUuid();
     }
 
     QString href = mDocumentPath + "/" + audioHref.toString();
@@ -2178,7 +2178,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::videoItemFromSvg()
     if (videoHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return 0;
+        return QUuid();
     }
 
     QString href = mDocumentPath + "/" + videoHref.toString();
@@ -2322,7 +2322,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
 
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -2472,7 +2472,7 @@ WBGraphicsAppleWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsAppleW
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return 0;
+        return QUuid();
     }
 
     QString href = widgetUrl.toString();
@@ -2498,7 +2498,7 @@ WBGraphicsW3CWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsW3CWidge
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return 0;
+        return QUuid();
     }
 
     QString href = widgetUrl.toString();
@@ -2611,7 +2611,7 @@ WBGraphicsTextItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::textItemFromSvg()
         {
             delete textItem;
             textItem = 0;
-            return 0;
+            return QUuid();
         }
 
         mXmlReader.readNext();
@@ -2750,7 +2750,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::curtainItemToSvg(WBGraphicsCurtainIt
     mXmlWriter.writeAttribute("y", QString("%1").arg(curtainItem->boundingRect().center().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(curtainItem->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(curtainItem->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneTransform()));
 
     //graphicsItemToSvg(curtainItem);
     QString zs;
@@ -2810,7 +2810,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::rulerToSvg(WBGraphicsRuler* item)
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -2867,7 +2867,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::compassToSvg(WBGraphicsCompass* item
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -2926,7 +2926,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::protractorToSvg(WBGraphicsProtractor
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->rect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->rect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->rect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString angle;
     angle.setNum(item->angle(), 'f'); // 'f' keeps precision
@@ -3001,7 +3001,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::triangleToSvg(WBGraphicsTriangle *it
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
     mXmlWriter.writeAttribute("orientation", WBGraphicsTriangle::orientationToStr(item->getOrientation()));
 
     QString zs;

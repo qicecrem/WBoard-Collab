@@ -506,7 +506,7 @@ void WBDesktopAnnotationController::penActionPressed()
     mDesktopMarkerPalette->hide();
     mDesktopEraserPalette->hide();
     WBDrawingController::drawingController()->setStylusTool(WBStylusTool::Pen);
-    mPenHoldTimer = QElapsedTimer::currentTime();
+    mPenHoldTimer = QTime::currentTime();
     mPendingPenButtonPressed = true;
 
     // Check if the mouse cursor is on the little arrow
@@ -536,7 +536,7 @@ void WBDesktopAnnotationController::penActionReleased()
     mHoldTimerPen.stop();
     if(mPendingPenButtonPressed)
     {
-        if(mbArrowClicked || mPenHoldTimer.msecsTo(QElapsedTimer::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
+        if(mbArrowClicked || mPenHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
         {
             togglePropertyPalette(mDesktopPenPalette);
         }
@@ -560,7 +560,7 @@ void WBDesktopAnnotationController::eraserActionPressed()
     mDesktopPenPalette->hide();
     mDesktopMarkerPalette->hide();
     WBDrawingController::drawingController()->setStylusTool(WBStylusTool::Eraser);
-    mEraserHoldTimer = QElapsedTimer::currentTime();
+    mEraserHoldTimer = QTime::currentTime();
     mPendingEraserButtonPressed = true;
 
     // Check if the mouse cursor is on the little arrow
@@ -590,7 +590,7 @@ void WBDesktopAnnotationController::eraserActionReleased()
     mHoldTimerEraser.stop();
     if(mPendingEraserButtonPressed)
     {
-        if(mbArrowClicked || mEraserHoldTimer.msecsTo(QElapsedTimer::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
+        if(mbArrowClicked || mEraserHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
         {
             togglePropertyPalette(mDesktopEraserPalette);
         }
@@ -615,7 +615,7 @@ void WBDesktopAnnotationController::markerActionPressed()
     mDesktopPenPalette->hide();
     mDesktopEraserPalette->hide();
     WBDrawingController::drawingController()->setStylusTool(WBStylusTool::Marker);
-    mMarkerHoldTimer = QElapsedTimer::currentTime();
+    mMarkerHoldTimer = QTime::currentTime();
     mPendingMarkerButtonPressed = true;
 
     // Check if the mouse cursor is on the little arrow
@@ -646,7 +646,7 @@ void WBDesktopAnnotationController::markerActionReleased()
     mHoldTimerMarker.stop();
     if(mPendingMarkerButtonPressed)
     {
-        if(mbArrowClicked || mMarkerHoldTimer.msecsTo(QElapsedTimer::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
+        if(mbArrowClicked || mMarkerHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
         {
             togglePropertyPalette(mDesktopMarkerPalette);
         }

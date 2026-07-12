@@ -1052,15 +1052,15 @@ void WBCFFAdaptor::WBToCFFConverter::setCoordinatesFromWBZ(const QDomElement &ub
     item.setRect(0,0, width, height);
     item.setTransform(tr);
     item.setRotation(-alpha);
-    QTransform sceneMatrix = item.sceneTransform();
+    QTransform sceneTransform = item.sceneTransform();
  
     iwbElement.setAttribute(aX, x);
     iwbElement.setAttribute(aY, y);
-    iwbElement.setAttribute(aHeight, height*sceneMatrix.m22());
-    iwbElement.setAttribute(aWidth, width*sceneMatrix.m11());
+    iwbElement.setAttribute(aHeight, height*sceneTransform.m22());
+    iwbElement.setAttribute(aWidth, width*sceneTransform.m11());
     iwbElement.setAttribute(aTransform, QString("rotate(%1) translate(%2,%3)").arg(alpha)
-                                                                              .arg(sceneMatrix.dx())
-                                                                              .arg(sceneMatrix.dy()));
+                                                                              .arg(sceneTransform.dx())
+                                                                              .arg(sceneTransform.dy()));
 }
 
 bool WBCFFAdaptor::WBToCFFConverter::setContentFromWBZ(const QDomElement &ubzElement, QDomElement &svgElement)

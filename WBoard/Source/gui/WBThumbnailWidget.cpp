@@ -198,7 +198,7 @@ QList<QGraphicsItem*> WBThumbnailWidget::selectedItems()
 
 void WBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 {
-    mClickTime = QElapsedTimer::currentTime();
+    mClickTime = QTime::currentTime();
     mMousePressPos = event->pos();
 
     WBThumbnailPixmap* sceneItem = dynamic_cast<WBThumbnailPixmap*>(itemAt(mMousePressPos));

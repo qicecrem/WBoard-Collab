@@ -60,7 +60,7 @@ void WBCustomCaptureWindow::mouseMoveEvent ( QMouseEvent * event )
 {
     if (mIsSelecting)
     {
-        mSelectionBand->setGeometry(QRect(mOrigin, event->pos()).normalized());
+        mSelectionBand->setGeometry(QRect(mOrigin, event->position().toPoint()).normalized());
     }
 
     event->accept();
@@ -72,7 +72,7 @@ void WBCustomCaptureWindow::mousePressEvent ( QMouseEvent * event )
     if (!mIsSelecting)
     {
         mIsSelecting = true;
-        mOrigin = event->pos();
+        mOrigin = event->position().toPoint();
 
         if (!mSelectionBand)
         {

@@ -72,7 +72,7 @@ Qt::DropActions WBDocumentTreeWidget::supportedDropActions() const
 
 void WBDocumentTreeWidget::mousePressEvent(QMouseEvent *event)
 {
-    QTreeWidgetItem* twItem = this->itemAt(event->pos());
+    QTreeWidgetItem* twItem = this->itemAt(event->position().toPoint());
 
     mSelectedProxyTi = dynamic_cast<WBDocumentProxyTreeItem*>(twItem);
 
@@ -109,7 +109,7 @@ void WBDocumentTreeWidget::dragMoveEvent(QDragMoveEvent *event)
     QRect boundingFrame = frameRect();
     //setting up automatic scrolling
     const int SCROLL_DISTANCE = 4;
-    int bottomDist = boundingFrame.bottom() - event->pos().y(), topDist = boundingFrame.top() - event->pos().y();
+    int bottomDist = boundingFrame.bottom() - event->position().toPoint().y(), topDist = boundingFrame.top() - event->position().toPoint().y();
     if(qAbs(bottomDist) <= SCROLL_DISTANCE)
     {
         mScrollMagnitude = (SCROLL_DISTANCE - bottomDist)*4;
@@ -127,7 +127,7 @@ void WBDocumentTreeWidget::dragMoveEvent(QDragMoveEvent *event)
     }
 
 
-    QTreeWidgetItem* underlyingItem = this->itemAt(event->pos());
+    QTreeWidgetItem* underlyingItem = this->itemAt(event->position().toPoint());
 
     if (event->mimeData()->hasFormat(WBApplication::mimeTypeUniboardPage))
     {
@@ -191,7 +191,7 @@ void WBDocumentTreeWidget::dropEvent(QDropEvent *event)
         mDropTargetProxyTi = 0;
     }
 
-    QTreeWidgetItem * underlyingItem = this->itemAt(event->pos());
+    QTreeWidgetItem * underlyingItem = this->itemAt(event->position().toPoint());
 
     // If the destination is a folder, move the selected document(s) there
     WBDocumentGroupTreeItem * destinationFolder = dynamic_cast<WBDocumentGroupTreeItem*>(underlyingItem);
@@ -217,7 +217,7 @@ void WBDocumentTreeWidget::dropEvent(QDropEvent *event)
 
     // If the destination is a document and the dropped item is a page, copy the page to that document
     else {
-        QTreeWidgetItem* underlyingTreeItem = this->itemAt(event->pos());
+        QTreeWidgetItem* underlyingTreeItem = this->itemAt(event->position().toPoint());
 
         WBDocumentProxyTreeItem *targetProxyTreeItem = dynamic_cast<WBDocumentProxyTreeItem*>(underlyingTreeItem);
         if (targetProxyTreeItem && targetProxyTreeItem != mSelectedProxyTi)

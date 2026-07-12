@@ -90,7 +90,7 @@ void WBDraggableThumbnail::dropEvent(QDropEvent *event)
 
 void WBDraggableThumbnail::mousePressEvent(QMouseEvent *event)
 {
-    QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
+    QLabel *child = static_cast<QLabel*>(childAt(event->position().toPoint()));
     if (!child)
       return;
 
@@ -98,7 +98,7 @@ void WBDraggableThumbnail::mousePressEvent(QMouseEvent *event)
 
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << pixmap << QPoint(event->pos() - child->pos());
+    dataStream << pixmap << QPoint(event->position().toPoint() - child->position().toPoint());
 
     QMimeData *mimeData = new QMimeData;
     mimeData->setData("application/x-dnditemdata", itemData);
@@ -106,7 +106,7 @@ void WBDraggableThumbnail::mousePressEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(pixmap);
-    drag->setHotSpot(event->pos() - child->pos());
+    drag->setHotSpot(event->position().toPoint() - child->position().toPoint());
 
     QPixmap tempPixmap = pixmap;
     QPainter painter;

@@ -113,22 +113,22 @@ void WBTabBar::closeOtherTabs()
 void WBTabBar::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
-        mDragStartPos = event->pos();
+        mDragStartPos = event->position().toPoint();
     QTabBar::mousePressEvent(event);
 }
 
 void WBTabBar::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::LeftButton) {
-        int diffX = event->pos().x() - mDragStartPos.x();
-        int diffY = event->pos().y() - mDragStartPos.y();
-        if ((event->pos() - mDragStartPos).manhattanLength() > QApplication::startDragDistance()
+        int diffX = event->position().toPoint().x() - mDragStartPos.x();
+        int diffY = event->position().toPoint().y() - mDragStartPos.y();
+        if ((event->position().toPoint() - mDragStartPos).manhattanLength() > QApplication::startDragDistance()
             && diffX < 3 && diffX > -3
             && diffY < -10) {
             QDrag *drag = new QDrag(this);
             QMimeData *mimeData = new QMimeData;
             QList<QUrl> urls;
-            int index = tabAt(event->pos());
+            int index = tabAt(event->position().toPoint());
             QUrl url = tabData(index).toUrl();
             urls.append(url);
             mimeData->setUrls(urls);
@@ -568,9 +568,9 @@ void WBTabWidget::aboutToShowRecentTriggeredAction(QAction *action)
 
 void WBTabWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (!childAt(event->pos())
+    if (!childAt(event->position().toPoint())
             // Remove the line below when QTabWidget does not have a one pixel frame
-            && event->pos().y() < (tabBar()->y() + tabBar()->height()))
+            && event->position().toPoint().y() < (tabBar()->y() + tabBar()->height()))
     {
         newTab();
         return;
@@ -580,9 +580,9 @@ void WBTabWidget::mouseDoubleClickEvent(QMouseEvent *event)
 
 void WBTabWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    if (!childAt(event->pos()))
+    if (!childAt(event->position().toPoint()))
     {
-        mTabBar->contextMenuRequested(event->pos());
+        mTabBar->contextMenuRequested(event->position().toPoint());
         return;
     }
     QTabWidget::contextMenuEvent(event);
@@ -592,13 +592,13 @@ void WBTabWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     QRect addTabRect = addTabButtonRect();
 
-    if (addTabRect.contains(event->pos()))
+    if (addTabRect.contains(event->position().toPoint()))
     {
         newTab();
     }
-    else if (event->button() == Qt::MidButton && !childAt(event->pos())
+    else if (event->button() == Qt::MidButton && !childAt(event->position().toPoint())
             // Remove the line below when QTabWidget does not have a one pixel frame
-            && event->pos().y() < (tabBar()->y() + tabBar()->height()))
+            && event->position().toPoint().y() < (tabBar()->y() + tabBar()->height()))
     {
         QUrl url(QApplication::clipboard()->text(QClipboard::Selection));
         if (!url.isEmpty() && url.isValid() && !url.scheme().isEmpty())

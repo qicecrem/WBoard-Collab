@@ -86,8 +86,8 @@ WBDesktopPalette::~WBDesktopPalette()
 
 void WBDesktopPalette::adjustPosition()
 {
-    QPoint pos = this->pos();
-    if(this->pos().y() < 30){
+    QPoint pos = this->position().toPoint();
+    if(this->position().toPoint().y() < 30){
         pos.setY(30);
         moveInsideParent(pos);
     }
@@ -228,7 +228,7 @@ QPoint WBDesktopPalette::buttonPos(QAction *action)
     WBActionPaletteButton* pB = mMapActionToButton[action];
     if(NULL != pB)
     {
-        p = pB->pos();
+        p = pB->position().toPoint();
     }
 
     return p;

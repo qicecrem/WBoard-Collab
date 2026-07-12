@@ -109,7 +109,7 @@ void WBPageNavigationWidget::timerEvent(QTimerEvent *event)
 void WBPageNavigationWidget::updateTime()
 {
     if (mClock)
-        mClock->setText(QLocale::system().toString (QElapsedTimer::currentTime(), mTimeFormat));
+        mClock->setText(QLocale::system().toString (QTime::currentTime(), mTimeFormat));
 }
 
 /**
