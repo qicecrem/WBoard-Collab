@@ -2,7 +2,8 @@
 #define WBLIBRARYAPI_H_
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QWebEngineView>
 
 class WBLibraryAPI : public QObject

@@ -595,7 +595,7 @@ QDomElement WBCFFAdaptor::WBToCFFConverter::parsePageset(const QStringList &page
 
     QDomElement svgPagesetElement = mDocumentToWrite->createElementNS(svgIWBNS,":"+ tIWBPageSet);
 
-    QMapIterator<int, QDomElement> nextSVGElement(pageList);
+    QMultiMapIterator<int, QDomElement> nextSVGElement(pageList);
     nextSVGElement.toFront();
     while (nextSVGElement.hasNext()) 
         svgPagesetElement.appendChild(nextSVGElement.next().value());
@@ -645,7 +645,7 @@ QDomElement WBCFFAdaptor::WBToCFFConverter::parseSvgPageSection(const QDomElemen
     if (0 == svgElements.count())
         return QDomElement();
 
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
+    QMultiMapIterator<int, QDomElement> nextSVGElement(svgElements);
     nextSVGElement.toFront();
     while (nextSVGElement.hasNext()) 
         svgElementPart.appendChild(nextSVGElement.next().value());
@@ -768,7 +768,7 @@ QString WBCFFAdaptor::WBToCFFConverter::getSrcContentFolderName(QString href)
 QString WBCFFAdaptor::WBToCFFConverter::getFileNameFromPath(const QString sPath)
 {
     QString sRet;
-    QStringList sl = sPath.split("/",QString::SkipEmptyParts);
+    QStringList sl = sPath.split("/",Qt::SkipEmptyParts);
 
     if (0 < sl.count())
     {
@@ -791,7 +791,7 @@ QString WBCFFAdaptor::WBToCFFConverter::getFileNameFromPath(const QString sPath)
 
 QString WBCFFAdaptor::WBToCFFConverter::getExtentionFromFileName(const QString &filename)
 {
-    QStringList sl = filename.split("/",QString::SkipEmptyParts);
+    QStringList sl = filename.split("/",Qt::SkipEmptyParts);
 
     if (0 < sl.count())
     {
@@ -838,7 +838,7 @@ QString WBCFFAdaptor::WBToCFFConverter::getElementTypeFromUBZ(const QDomElement 
             if (element.hasAttribute(aWBZHref))
                 sPath = element.attribute(aWBZHref);
 
-            QStringList tsl = sPath.split(".", QString::SkipEmptyParts);
+            QStringList tsl = sPath.split(".", Qt::SkipEmptyParts);
             if (0 < tsl.count())
             {
                 QString elementType = tsl.at(tsl.count()-1);
@@ -874,7 +874,7 @@ bool WBCFFAdaptor::WBToCFFConverter::itIsSupportedFormat(const QString &format) 
 {
     bool bRet;
 
-    QStringList tsl = format.split(".", QString::SkipEmptyParts);
+    QStringList tsl = format.split(".", Qt::SkipEmptyParts);
     if (0 < tsl.count())
         bRet = cffSupportedFileFormats.contains(tsl.at(tsl.count()-1).toLower());       
     else
@@ -981,7 +981,7 @@ QTransform WBCFFAdaptor::WBToCFFConverter::getTransformFromWBZ(const QDomElement
     ubzTransform.remove("(");
     ubzTransform.remove(")");
 
-    transformParameters = ubzTransform.split(",", QString::SkipEmptyParts);
+    transformParameters = ubzTransform.split(",", Qt::SkipEmptyParts);
 
     if (6 <= transformParameters.count())
     {
@@ -1189,12 +1189,12 @@ void WBCFFAdaptor::WBToCFFConverter::setCFFTextFromHTMLTextNode(const QDomElemen
                     {
                         for (int i = 0; i < attrCount; i++)
                         {
-                            QStringList cffAttributes = spanNode.attributes().item(i).nodeValue().split(";", QString::SkipEmptyParts);
+                            QStringList cffAttributes = spanNode.attributes().item(i).nodeValue().split(";", Qt::SkipEmptyParts);
                             {
                                 for (int i = 0; i < cffAttributes.count(); i++)
                                 {                       
                                     QString attr = cffAttributes.at(i).trimmed();
-                                    QStringList AttrVal = attr.split(":", QString::SkipEmptyParts);
+                                    QStringList AttrVal = attr.split(":", Qt::SkipEmptyParts);
                                     if(1 < AttrVal.count())
                                     {    
                                         QString sAttr = ubzAttrNameToCFFAttrName(AttrVal.at(0));
@@ -1554,7 +1554,7 @@ bool WBCFFAdaptor::WBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     }
 
     QList<int> layers;
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
+    QMultiMapIterator<int, QDomElement> nextSVGElement(svgElements);
     while (nextSVGElement.hasNext()) 
         layers << nextSVGElement.next().key();
 
@@ -1757,10 +1757,10 @@ bool WBCFFAdaptor::WBToCFFConverter::parseWBZText(const QDomElement &element, QM
             commonParams.remove(" ");
             commonParams.remove("'");
 
-            QStringList commonAttributes = commonParams.split(";", QString::SkipEmptyParts);
+            QStringList commonAttributes = commonParams.split(";", Qt::SkipEmptyParts);
             for (int i = 0; i < commonAttributes.count(); i++)
             {
-                QStringList AttrVal = commonAttributes.at(i).split(":", QString::SkipEmptyParts);
+                QStringList AttrVal = commonAttributes.at(i).split(":", Qt::SkipEmptyParts);
                 if (1 < AttrVal.count())
                 {                
                     QString sAttr = ubzAttrNameToCFFAttrName(AttrVal.at(0));
