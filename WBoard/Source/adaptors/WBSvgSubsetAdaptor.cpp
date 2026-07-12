@@ -838,7 +838,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                         currentWidget = w3cWidgetItem;
                     }
                 }
-                else if (type == "text")
+                else if (type == QLatin1StringView("text"))
                 {
                     WBGraphicsTextItem* textItem = textItemFromSvg();
                     WBGraphicsTextItemDelegate *textDelegate = 0;
@@ -1722,7 +1722,7 @@ WBGraphicsPolygonItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItemFromPol
 
     QStringView fillRule = mXmlReader.attributes().value("fill-rule");
 
-    if (!fillRule.isNull() && fillRule.toString() == "evenodd")
+    if (!fillRule.isNull() && fillRule.toString() == QLatin1StringView("evenodd"))
         polygonItem->setFillRule(Qt::OddEvenFill);
     else
         polygonItem->setFillRule(Qt::WindingFill);
@@ -2290,7 +2290,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     if (!ubLocked.isNull())
     {
-        bool isLocked = (ubLocked.toString() == xmlTrue || ubLocked.toString() == "1");
+        bool isLocked = (ubLocked.toString() == xmlTrue || ubLocked.toString() == QLatin1StringView("1"));
         gItem->setData(WBGraphicsItemData::ItemLocked, QVariant(isLocked));
     }
 
@@ -2298,7 +2298,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     if (!ubEditable.isNull())
     {
-        bool isEditable = (ubEditable.toString() == xmlTrue || ubEditable.toString() == "1");
+        bool isEditable = (ubEditable.toString() == xmlTrue || ubEditable.toString() == QLatin1StringView("1"));
         gItem->setData(WBGraphicsItemData::ItemEditable, QVariant(isEditable));
     }
 

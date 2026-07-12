@@ -41,7 +41,7 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mErrorString = "";
 
     mMediaObject = new QMediaPlayer(this);
-    mMediaObject->setMedia(pMediaFileUrl);
+    mMediaObject->setSource(pMediaFileUrl);
 
     setDelegate(new WBGraphicsMediaItemDelegate(this));
 
@@ -79,7 +79,7 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     this->setSize(320, 26);
     this->setMinimumSize(QSize(150, 26));
 
-    mMediaObject->setNotifyInterval(1000);
+    mMediaObject->// setNotifyInterval removed in Qt6: setNotifyInterval(1000);
 
 }
 
@@ -103,7 +103,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     //mMediaObject->setVideoOutput(mVideoItem);
     mHasVideoOutput = false;
 
-    mMediaObject->setNotifyInterval(50);
+    mMediaObject->// setNotifyInterval removed in Qt6: setNotifyInterval(50);
 
     setMinimumSize(QSize(320, 240));
     setSize(320, 240);
@@ -155,7 +155,7 @@ QVariant WBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
-                  mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
+                  mMediaObject->setSource(QUrl::fromLocalFile(absoluteMediaFilename));
 
         }
     }
@@ -179,7 +179,7 @@ void WBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 QMediaPlayer::PlaybackState WBGraphicsMediaItem::playerState() const
 {
-    return mMediaObject->state();
+    return mMediaObject->playbackState();
 }
 
 /**
@@ -338,10 +338,10 @@ void WBGraphicsMediaItem::togglePlayPause()
         return;
     }
 
-    if (mMediaObject->state() == QMediaPlayer::StoppedState)
+    if (mMediaObject->playbackState() == QMediaPlayer::StoppedState)
         mMediaObject->play();
 
-    else if (mMediaObject->state() == QMediaPlayer::PlayingState) {
+    else if (mMediaObject->playbackState() == QMediaPlayer::PlayingState) {
 
         if ((mMediaObject->duration() - mMediaObject->position()) <= 0) {
             mMediaObject->stop();
@@ -355,7 +355,7 @@ void WBGraphicsMediaItem::togglePlayPause()
         }
     }
 
-    else if (mMediaObject->state() == QMediaPlayer::PausedState) {
+    else if (mMediaObject->playbackState() == QMediaPlayer::PausedState) {
         if ((mMediaObject->duration() - mMediaObject->position()) <= 0)
             mMediaObject->stop();
 
@@ -363,7 +363,7 @@ void WBGraphicsMediaItem::togglePlayPause()
     }
 
     else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
-        mMediaObject->setMedia(mediaFileUrl());
+        mMediaObject->setSource(mediaFileUrl());
         mMediaObject->play();
     }
 }
@@ -608,7 +608,7 @@ void WBGraphicsVideoItem::activeSceneChanged()
     // Call setVideoOutput, if the video is visible and if it hasn't been called already
     if (!mHasVideoOutput && WBApplication::boardController->activeScene() == scene()) {
         //qDebug() << "setting video output";
-        mMediaObject->setMedia(mMediaFileUrl);
+        mMediaObject->setSource(mMediaFileUrl);
         mMediaObject->setVideoOutput(mVideoItem);
         mHasVideoOutput = true;
     }
@@ -616,7 +616,7 @@ void WBGraphicsVideoItem::activeSceneChanged()
     WBGraphicsMediaItem::activeSceneChanged();
 }
 
-void WBGraphicsVideoItem::mediaError(QMediaPlayer::Error errorCode)
+void WBGraphicsVideoItem::mediaError(int errorCode)
 {
     setPlaceholderVisible(errorCode != QMediaPlayer::NoError);
 }

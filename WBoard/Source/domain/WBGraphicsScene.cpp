@@ -1924,7 +1924,7 @@ void WBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
     mItemCount += items.size();
 
-    mFastAccessItems += items.toList();
+    mFastAccessItems += items.values();
 }
 
 void WBGraphicsScene::removeItem(QGraphicsItem* item)

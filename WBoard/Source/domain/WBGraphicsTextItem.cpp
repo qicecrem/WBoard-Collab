@@ -324,7 +324,7 @@ qreal WBGraphicsTextItem::pixelsPerPoint() const
 {
     QTextCursor cursor = textCursor();
     if (cursor.isNull())
-        return nullptr;
+        return 0.0;
 
     cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
@@ -340,7 +340,7 @@ qreal WBGraphicsTextItem::pixelsPerPoint() const
     //qDebug() << "Point size: " << pointSize;
 
     if (pointSize == 0)
-        return nullptr;
+        return 0.0;
 
     return pixelSize/pointSize;
 }
