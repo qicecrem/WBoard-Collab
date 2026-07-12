@@ -66,10 +66,20 @@ public slots:
     void onStrokeCompleted(WBGraphicsStroke *stroke, int tool);
     void onItemsRemoved(const QJsonArray &removedUuids, const QJsonArray &addedData);
 
+    // --- Page operation notification (called by WBBoardController) ---
+    void notifyPageAdded(int index);
+    void notifyPageDeleted(int index);
+    void notifyPageDuplicated(int sourceIndex, int targetIndex);
+    void notifyPageSwitched(int index);
+
 private slots:
     void onRemoteStrokeReceived(const QJsonObject &data);
     void onRemoteEraseReceived(const QJsonObject &data);
+    void onRemoteCommandReceived(const QJsonObject &data);
     void onRemoteCursorReceived(const QString &userName, const QJsonObject &data);
+    void onRemotePageAddReceived(int index);
+    void onRemotePageDeleteReceived(int index);
+    void onRemotePageSwitchReceived(int index);
     void onClientUserJoined(const QString &userName);
     void onClientUserLeft(const QString &userName);
     void onClientUserListReceived(const QStringList &users);
@@ -77,7 +87,6 @@ private slots:
     void onClientDisconnected();
     void onClientError(const QString &error);
     void onUndoStackIndexChanged(int index);
-    void onRemoteCommandReceived(const QJsonObject &data);
 
 private:
     void applyRemoteStroke(const QJsonObject &data);

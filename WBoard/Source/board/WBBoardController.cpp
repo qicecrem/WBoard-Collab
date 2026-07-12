@@ -484,6 +484,9 @@ void WBBoardController::addScene()
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
+
+    if (WBApplication::collaborationManager)
+        WBApplication::collaborationManager->notifyPageAdded(mActiveSceneIndex);
 }
 
 void WBBoardController::addScene(WBGraphicsScene* scene, bool replaceActiveIfEmpty)
@@ -509,6 +512,9 @@ void WBBoardController::addScene(WBGraphicsScene* scene, bool replaceActiveIfEmp
             emit addThumbnailRequired(this, mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
             deleteScene(mActiveSceneIndex + 1);
+
+            if (WBApplication::collaborationManager)
+                WBApplication::collaborationManager->notifyPageAdded(mActiveSceneIndex);
         }
         else
         {
@@ -516,6 +522,9 @@ void WBBoardController::addScene(WBGraphicsScene* scene, bool replaceActiveIfEmp
             WBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
             emit addThumbnailRequired(this, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
+
+            if (WBApplication::collaborationManager)
+                WBApplication::collaborationManager->notifyPageAdded(mActiveSceneIndex);
         }
 
         selectedDocument()->setMetaData(WBSettings::documentUpdatedAt, WBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -548,6 +557,9 @@ void WBBoardController::duplicateScene(int nIndex)
 
     setActiveDocumentScene(nIndex + 1);
     QApplication::restoreOverrideCursor();
+
+    if (WBApplication::collaborationManager)
+        WBApplication::collaborationManager->notifyPageAdded(mActiveSceneIndex);
 }
 
 void WBBoardController::duplicateScene()
@@ -744,6 +756,10 @@ void WBBoardController::deleteScene(int nIndex)
         setActiveDocumentScene(nIndex);
         showMessage(tr("Page %1 deleted").arg(nIndex+1));
         QApplication::restoreOverrideCursor();
+
+        if (WBApplication::collaborationManager)
+            WBApplication::collaborationManager->notifyPageDeleted(mDeletingSceneIndex);
+
         mDeletingSceneIndex = -1;
     }
 }
@@ -1471,6 +1487,9 @@ void WBBoardController::setActiveDocumentScene(WBDocumentProxy* pDocumentProxy, 
             connect(mActiveScene, &WBGraphicsScene::itemsRemoved,
                     WBApplication::collaborationManager, &WBCollaborationManager::onItemsRemoved,
                     Qt::UniqueConnection);
+
+            // Notify remote peers of page switch
+            WBApplication::collaborationManager->notifyPageSwitched(index);
         }
 
         setDocument(pDocumentProxy, forceReload);

@@ -78,6 +78,12 @@ void WBCollaborationManager::startHosting(const QString &roomId,
             this, &WBCollaborationManager::onRemoteEraseReceived);
     connect(mClient, &WBCollaborationClient::commandReceived,
             this, &WBCollaborationManager::onRemoteCommandReceived);
+    connect(mClient, &WBCollaborationClient::pageAddReceived,
+            this, &WBCollaborationManager::onRemotePageAddReceived);
+    connect(mClient, &WBCollaborationClient::pageDeleteReceived,
+            this, &WBCollaborationManager::onRemotePageDeleteReceived);
+    connect(mClient, &WBCollaborationClient::pageSwitchReceived,
+            this, &WBCollaborationManager::onRemotePageSwitchReceived);
     connect(mClient, &WBCollaborationClient::cursorReceived,
             this, &WBCollaborationManager::onRemoteCursorReceived);
 
@@ -165,6 +171,12 @@ void WBCollaborationManager::joinRoom(const QString &hostAddress,
             this, &WBCollaborationManager::onRemoteEraseReceived);
     connect(mClient, &WBCollaborationClient::commandReceived,
             this, &WBCollaborationManager::onRemoteCommandReceived);
+    connect(mClient, &WBCollaborationClient::pageAddReceived,
+            this, &WBCollaborationManager::onRemotePageAddReceived);
+    connect(mClient, &WBCollaborationClient::pageDeleteReceived,
+            this, &WBCollaborationManager::onRemotePageDeleteReceived);
+    connect(mClient, &WBCollaborationClient::pageSwitchReceived,
+            this, &WBCollaborationManager::onRemotePageSwitchReceived);
     connect(mClient, &WBCollaborationClient::cursorReceived,
             this, &WBCollaborationManager::onRemoteCursorReceived);
 
@@ -548,4 +560,84 @@ void WBCollaborationManager::onRemoteCommandReceived(const QJsonObject &data)
     mUndoIndex = WBApplication::undoStack->index();
 
     qDebug() << "[Collaboration] Applied remote" << action << "x" << count;
+}
+
+// ===== Page operation sync =====
+
+void WBCollaborationManager::notifyPageAdded(int index)
+{
+    if (mApplyingRemote || !mClient || !mClient->isConnected()) return;
+
+    QJsonObject msg;
+    msg[QStringLiteral("type")] = WBCollaborationMessage::TypePageAdd;
+    msg[QStringLiteral("index")] = index;
+    mClient->sendMessage(msg);
+
+    qDebug() << "[Collaboration] Sent pageAdd at" << index;
+}
+
+void WBCollaborationManager::notifyPageDeleted(int index)
+{
+    if (mApplyingRemote || !mClient || !mClient->isConnected()) return;
+
+    QJsonObject msg;
+    msg[QStringLiteral("type")] = WBCollaborationMessage::TypePageDelete;
+    msg[QStringLiteral("index")] = index;
+    mClient->sendMessage(msg);
+
+    qDebug() << "[Collaboration] Sent pageDelete at" << index;
+}
+
+void WBCollaborationManager::notifyPageDuplicated(int sourceIndex, int targetIndex)
+{
+    // Duplication = add page at targetIndex (remote side duplicates source)
+    notifyPageAdded(targetIndex);
+    Q_UNUSED(sourceIndex);
+}
+
+void WBCollaborationManager::notifyPageSwitched(int index)
+{
+    if (mApplyingRemote || !mClient || !mClient->isConnected()) return;
+
+    QJsonObject msg;
+    msg[QStringLiteral("type")] = WBCollaborationMessage::TypePageSwitch;
+    msg[QStringLiteral("index")] = index;
+    mClient->sendMessage(msg);
+
+    qDebug() << "[Collaboration] Sent pageSwitch to" << index;
+}
+
+void WBCollaborationManager::onRemotePageAddReceived(int index)
+{
+    if (!WBApplication::boardController) return;
+
+    mApplyingRemote = true;
+    // Navigate to the page before the insertion point, add, then navigate to new page
+    WBApplication::boardController->setActiveDocumentScene(index - 1);
+    WBApplication::boardController->addScene();
+    mApplyingRemote = false;
+
+    qDebug() << "[Collaboration] Applied remote pageAdd at" << index;
+}
+
+void WBCollaborationManager::onRemotePageDeleteReceived(int index)
+{
+    if (!WBApplication::boardController) return;
+
+    mApplyingRemote = true;
+    WBApplication::boardController->deleteScene(index);
+    mApplyingRemote = false;
+
+    qDebug() << "[Collaboration] Applied remote pageDelete at" << index;
+}
+
+void WBCollaborationManager::onRemotePageSwitchReceived(int index)
+{
+    if (!WBApplication::boardController) return;
+
+    mApplyingRemote = true;
+    WBApplication::boardController->setActiveDocumentScene(index);
+    mApplyingRemote = false;
+
+    qDebug() << "[Collaboration] Applied remote pageSwitch to" << index;
 }
