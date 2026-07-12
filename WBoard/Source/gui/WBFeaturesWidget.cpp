@@ -453,7 +453,7 @@ WBFeaturesNavigatorWidget::WBFeaturesNavigatorWidget(QWidget *parent, const char
 
     mainLayer->addWidget(mListView, 1);
     mainLayer->addWidget(mListSlider, 0);
-    mainLayer->setMargin(0);
+    mainLayer->setContentsMargins(0, 0, 0, 0);
 
     connect(mListSlider, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
 }
@@ -639,7 +639,7 @@ WBFeaturesNewFolderDialog::WBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
 
 void WBFeaturesNewFolderDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool WBFeaturesNewFolderDialog::validString(const QString &pStr)
 {
@@ -759,7 +759,7 @@ WBFeaturesWebView::WBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpWebSettings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
 
     mpLayout->addWidget(mpView);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0, 0, 0, 0);
 
     connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
 }
@@ -884,7 +884,7 @@ WBFeatureProperties::WBFeatureProperties( QWidget *parent, const char *name ) : 
     mpObjInfos->setObjectName("DockPaletteWidgetBox");
     mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0, 0, 0, 0);
 
     connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
     connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
@@ -1381,7 +1381,7 @@ bool WBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegularExpression().match(path);
+    return filterRegularExpression().match(path).hasMatch();
 }
 
 bool WBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1400,7 +1400,7 @@ bool WBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegularExpression().match( feature.getName() );
+            && filterRegularExpression().match( feature.getName() ).hasMatch();
 }
 
 bool WBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1427,7 +1427,7 @@ QString    WBFeaturesItemDelegate::displayText ( const QVariant & value, const Q
     {
         const QFontMetrics fm = listView->fontMetrics();
         const QSize iSize = listView->gridSize();
-        return elidedText( fm, iSize.width(), Qt::ElideRight, text );
+        return fm.elidedText(text, Qt::ElideRight, iSize.width());
     }
     return text;
 }

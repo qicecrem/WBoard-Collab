@@ -1029,7 +1029,7 @@ QString WBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
         outConfig << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << Qt::endl;
     outConfig << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << Qt::endl;
     outConfig << "    xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << Qt::endl;
-    outConfig << "    id=\"http://uniboard.mnemis.com/" << pName << "\"" <<endl;
+    outConfig << "    id=\"http://uniboard.mnemis.com/" << pName << "\"" << Qt::endl;
 
     outConfig << "    version=\"1.0\"" << Qt::endl;
     outConfig << "    width=\"" << sizeHint.width() << "\"" << Qt::endl;

@@ -86,7 +86,8 @@ void WBScreenMirror::setSourceWidget(QWidget *sourceWidget)
 {
     mSourceWidget = sourceWidget;
 
-    mScreenIndex = QApplication::primaryScreen()->screenNumber(sourceWidget);
+    QScreen* screen = QGuiApplication::screenAt(sourceWidget->pos());
+    mScreenIndex = screen ? QGuiApplication::screens().indexOf(screen) : 0;
 
     grabPixmap();
 

@@ -58,7 +58,7 @@ void WBMessageWindow::showMessage(const QString& message, bool showSpinningWheel
     // showMessage may have been called from the GUI thread, so make sure the message window is drawn right now
     repaint();
     // I mean it, *right now*, also on Mac
-    qApp->flush();
+    QApplication::processEvents();
     //qApp->sendPostedEvents();
 }
 
@@ -88,5 +88,5 @@ void WBMessageWindow::hideMessage()
 {
     mFadingStep = 0;
     hide();
-    qApp->flush();
+    QApplication::processEvents();
 }
