@@ -32,3 +32,6 @@ test_collaboration
 # OS
 .DS_Store
 Thumbs.db
+
+# CodeGraph
+.codegraph/

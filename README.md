@@ -1,6 +1,6 @@
 # WBoard-Collab
 
-> 基于开源项目 [WBoard](https://github.com/qicecrem/WBoard-Collab) 开发的交互式电子白板教学系统，新增实时多人协作功能。
+> 基于开源项目 [WBoard](https://github.com/sining1989/WBoard) 开发的交互式电子白板教学系统，新增实时多人协作功能。
 
 WBoard 原为 Windows Qt5 平台的白板教学软件（OpenBoard/Open-Sankore 分支）。本项目在完成 Qt5→Qt6+CMake 跨平台迁移的基础上，独立设计实现了基于 WebSocket 的实时多人协作模块。
 
@@ -160,7 +160,7 @@ g++ -std=c++17 -I WBoard/Source -I WBoard/Source/collaboration \
 
 ## 致谢
 
-- 原始项目 [WBoard](https://github.com/) — GPL 开源白板软件
+- 原始项目 [WBoard](https://github.com/sining1989/WBoard) — GPL 开源白板软件
 - 上游 [OpenBoard](https://github.com/OpenBoard-org/OpenBoard) — 交互式白板教学平台
 - [Open-Sankoré](https://en.wikipedia.org/wiki/Open-Sankor%C3%A9) — 原始项目起源
 
