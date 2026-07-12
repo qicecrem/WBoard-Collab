@@ -113,7 +113,7 @@ WBDocumentReplaceDialog::WBDocumentReplaceDialog(const QString &pIncommingName, 
     reactOnTextChanged(mIncommingName);
 }
 
-void WBDocumentReplaceDialog::setRegexp(const QRegularExpression pRegExp)
+void WBDocumentReplaceDialog::setRegexp(const QRegularExpression& pRegExp)
 {
     mValidator->setRegularExpression(pRegExp);
 }
