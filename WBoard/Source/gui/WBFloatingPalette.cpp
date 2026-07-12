@@ -207,7 +207,7 @@ void WBFloatingPalette::adjustSizeAndPosition(bool pUp)
         moveInsideParent(pos());
         foreach(WBFloatingPalette* palette, mAssociatedPalette)
         {
-            palette->move(pos().x(), palette->position().toPoint().y());
+            palette->move(pos().x(), palette->pos().y());
             palette->resize(newPreferredSize.width(), palette->size().height());
         }
     }

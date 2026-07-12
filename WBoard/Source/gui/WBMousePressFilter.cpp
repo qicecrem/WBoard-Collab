@@ -36,7 +36,7 @@ bool WBMousePressFilter::eventFilter(QObject *obj, QEvent *event)
             }
 
             mPendingEvent = new QMouseEvent(QEvent::MouseButtonDblClick,
-                mouseEvent->position().toPoint(), mouseEvent->globalPos(),
+                mouseEvent->pos(), mouseEvent->globalPos(),
                 mouseEvent->button(), mouseEvent->buttons(),
                 mouseEvent->modifiers());
 

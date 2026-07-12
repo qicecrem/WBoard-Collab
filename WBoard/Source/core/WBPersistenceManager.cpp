@@ -117,14 +117,14 @@ void WBPersistenceManager::createDocumentProxiesStructure(bool interactive)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 loadFolderTreeFromXml("", xmlDom.firstChildElement());
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << std::endl
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << std::endl
                      << "Error:" << inFile.errorString();
         }
     }
@@ -277,7 +277,7 @@ void WBPersistenceManager::closing()
 
         outFile.close();
     } else {
-        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << endl
+        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << std::endl
                  << "Error string:" << outFile.errorString();
     }
 }
@@ -421,7 +421,7 @@ WBDocumentProxy* WBPersistenceManager::createDocument(const QString& pGroupName
         QDir dir(doc->persistencePath());
         if (!dir.mkpath(doc->persistencePath()))
         {
-            return nullptr; // if we can't create the path, abort function.
+            return 0; // if we can't create the path, abort function.
         }
     }
 
@@ -644,7 +644,7 @@ void WBPersistenceManager::deleteDocumentScenes(WBDocumentProxy* proxy, const QL
 
     }
 
-    std::sort(compactedIndexes.begin(), compactedIndexes.end());
+    std::sort(compactedIndexes);
 
     int offset = 1;
 
@@ -993,7 +993,7 @@ int WBPersistenceManager::sceneCount(const WBDocumentProxy* proxy)
     if(pageIndex == 1 && addedMissingZeroPage){
         // increment is done only to check if there are other pages than the missing zero page
         // This situation means -> no pages on the document
-        return nullptr;
+        return 0;
     }
 
     return pageIndex;

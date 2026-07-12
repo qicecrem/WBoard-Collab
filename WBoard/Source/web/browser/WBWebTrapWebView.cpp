@@ -293,7 +293,7 @@ void WBWebTrapWebView::mouseMoveEvent ( QMouseEvent * event )
 {
     if (mIsTrapping)
     {
-        highliteElementAtPos(event->position().toPoint());
+        highliteElementAtPos(event->pos());
     }
     else
     {
@@ -318,11 +318,11 @@ void WBWebTrapWebView::mouseReleaseEvent ( QMouseEvent * event )
 {
     //bool eventConsumed = false;
 
-    //qDebug() << "mouse release" << event->position().toPoint();
+    //qDebug() << "mouse release" << event->pos();
 
     if (mIsTrapping)
     {
-        trapElementAtPos(event->position().toPoint());
+        trapElementAtPos(event->pos());
     }
     else
     {
@@ -334,7 +334,7 @@ void WBWebTrapWebView::mouseReleaseEvent ( QMouseEvent * event )
 
         /*
         QString script;
-        script += QString("var element = document.elementFromPoint(%1, %2);").arg(event->position().toPoint().x()).arg(event->position().toPoint().y());
+        script += QString("var element = document.elementFromPoint(%1, %2);").arg(event->pos().x()).arg(event->pos().y());
 
         script += "var path = '';";
         script += "var currentNode = element;";
@@ -456,7 +456,7 @@ void UBWebTrapMouseEventMask::mouseMoveEvent ( QMouseEvent * event )
 {
     if (mTrappedWebView && mTrappedWebView->isTrapping())
     {
-        mTrappedWebView->highliteElementAtPos(event->position().toPoint());
+        mTrappedWebView->highliteElementAtPos(event->pos());
     }
     else
     {
@@ -469,7 +469,7 @@ void UBWebTrapMouseEventMask::mouseReleaseEvent ( QMouseEvent * event )
 {
     if (mTrappedWebView && mTrappedWebView->isTrapping())
     {
-        mTrappedWebView->trapElementAtPos(event->position().toPoint());
+        mTrappedWebView->trapElementAtPos(event->pos());
     }
     else
     {

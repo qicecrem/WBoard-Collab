@@ -242,7 +242,7 @@ void WBFeaturesActionBar::dropEvent(QDropEvent *event)
         return;
     }
 
-    QWidget *dest = childAt(event->position().toPoint());
+    QWidget *dest = childAt(event->pos());
     if (dest == mpDeleteBtn) {
         QList<WBFeature> featuresList = fMimeData->features();
         foreach (WBFeature curFeature, featuresList) {

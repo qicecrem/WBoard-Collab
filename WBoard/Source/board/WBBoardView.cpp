@@ -313,7 +313,7 @@ void WBBoardView::tabletEvent (QTabletEvent * event)
 
     WBDrawingController *dc = WBDrawingController::drawingController ();
 
-    QPointF tabletPos = event->position().toPoint();
+    QPointF tabletPos = event->pos();
     WBStylusTool::Enum currentTool = (WBStylusTool::Enum)dc->stylusTool ();
 
     if (event->type() == QEvent::TabletPress || event->type() == QEvent::TabletEnterProximity) {
@@ -347,7 +347,7 @@ void WBBoardView::tabletEvent (QTabletEvent * event)
     //stylus palette.
     Q_ASSERT(WBApplication::applicationController->uninotesController());
     if (WBApplication::applicationController->uninotesController()->drawingView() == this) {
-        if (WBApplication::applicationController->uninotesController()->desktopPalettePath().contains(event->position().toPoint())) {
+        if (WBApplication::applicationController->uninotesController()->desktopPalettePath().contains(event->pos())) {
             acceptEvent = false;
         }
     }
@@ -677,7 +677,7 @@ QGraphicsItem* WBBoardView::determineItemToMove(QGraphicsItem *item)
 
 void WBBoardView::handleItemMousePress(QMouseEvent *event)
 {
-    mLastPressedMousePos = mapToScene(event->position().toPoint());
+    mLastPressedMousePos = mapToScene(event->pos());
 
     movingItem = determineItemToPress(movingItem);
     handleItemsSelection(movingItem);
@@ -688,14 +688,14 @@ void WBBoardView::handleItemMousePress(QMouseEvent *event)
     if (itemShouldReceiveMousePressEvent(movingItem)){
         QGraphicsView::mousePressEvent (event);
 
-        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), transform()));
+        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos()), transform()));
   
         if (item && (item->type() == QGraphicsProxyWidget::Type) && item->parentObject() && item->parentObject()->type() != QGraphicsProxyWidget::Type)
         {
             QList<QGraphicsItem*> children = item->childItems();
 
             for( QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it )
-                if ((*it)->pos().toPoint().x() < 0 || (*it)->pos().toPoint().y() < 0)
+                if ((*it)->pos().x() < 0 || (*it)->pos().y() < 0)
                     (*it)->setPos(0,item->boundingRect().size().height());
         }
     }
@@ -718,7 +718,7 @@ void WBBoardView::handleItemMousePress(QMouseEvent *event)
 
         if (itemShouldReceiveSuspendedMousePressEvent(movingItem))
         {
-            suspendedMousePressEvent = new QMouseEvent(event->type(), event->position().toPoint(), event->button(), event->buttons(), event->modifiers());
+            suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers());
         }
     }
 }
@@ -729,8 +729,8 @@ void WBBoardView::handleItemMouseMove(QMouseEvent *event)
 
     if (movingItem && itemShouldBeMoved(movingItem) && (mMouseButtonIsPressed || mTabletStylusIsPressed))
     {
-        QPointF scenePos = mapToScene(event->position().toPoint());
-        QPointF newPos = movingItem->pos().toPoint() + scenePos - mLastPressedMousePos;
+        QPointF scenePos = mapToScene(event->pos());
+        QPointF newPos = movingItem->pos() + scenePos - mLastPressedMousePos;
         movingItem->setPos(newPos);
         mLastPressedMousePos = scenePos;
         mWidgetMoved = true;
@@ -742,12 +742,12 @@ void WBBoardView::handleItemMouseMove(QMouseEvent *event)
         QPointF posAfterMove;
 
         if (movingItem)
-            posBeforeMove = movingItem->pos().toPoint();
+            posBeforeMove = movingItem->pos();
 
         QGraphicsView::mouseMoveEvent (event);
 
         if (movingItem)
-            posAfterMove = movingItem->pos().toPoint();
+            posAfterMove = movingItem->pos();
 
         mWidgetMoved = ((posAfterMove-posBeforeMove).manhattanLength() != 0);
 
@@ -785,7 +785,7 @@ void WBBoardView::moveRubberedItems(QPointF movingVector)
                 || item->type() == WBGraphicsStrokesGroup::Type
                 || item->type() == WBGraphicsGroupContainerItem::Type)
         {
-            item->setPos(item->pos().toPoint()+movingVector);
+            item->setPos(item->pos()+movingVector);
         }
     }
 
@@ -803,7 +803,7 @@ bool WBBoardView::directTabletEvent(QEvent *event)
 {
     QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
     tEvent = new QTabletEvent(tEvent->type()
-                              , mapFromGlobal(tEvent->pos().toPoint())
+                              , mapFromGlobal(tEvent->pos())
                               , tEvent->globalPos()
                               , tEvent->device()
                               , tEvent->pointerType()
@@ -816,9 +816,9 @@ bool WBBoardView::directTabletEvent(QEvent *event)
                               , tEvent->modifiers()
                               , tEvent->uniqueId());
 
-    if (geometry().contains(tEvent->pos().toPoint()))
+    if (geometry().contains(tEvent->pos()))
     {
-        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->pos().toPoint()))
+        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->pos()))
         {
             tabletEvent(tEvent);
             return true;
@@ -904,7 +904,7 @@ void WBBoardView::mousePressEvent (QMouseEvent *event)
     }
 
     mMouseDownPos = event->pos ();
-    movingItem = scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform());
+    movingItem = scene()->itemAt(this->mapToScene(event->localPos()), QTransform());
 
     if (event->button () == Qt::LeftButton && isInteractive())
     {
@@ -999,7 +999,7 @@ void WBBoardView::mousePressEvent (QMouseEvent *event)
                     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
                     mLongPressTimer.start();
                 }
-                scene()->inputDevicePress(mapToScene(WBGeometryUtils::pointConstrainedInRect(event->position().toPoint(), rect())));
+                scene()->inputDevicePress(mapToScene(WBGeometryUtils::pointConstrainedInRect(event->pos(), rect())));
             }
             event->accept ();
         }
@@ -1009,13 +1009,13 @@ void WBBoardView::mousePressEvent (QMouseEvent *event)
 
 void WBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
-    //    static QElapsedTimer lastCallTime;
+    //    static QTime lastCallTime;
     //    if (!lastCallTime.isNull()) {
     //        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
     //    }
 
-    //  QElapsedTimer mouseMoveTime = QTime::currentTime();
-    if(!mIsDragInProgress && ((mapToScene(event->position().toPoint()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
+    //  QTime mouseMoveTime = QTime::currentTime();
+    if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
         return;
     }
 
@@ -1058,7 +1058,7 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
                 && !movingItem;
 
         if (rubberMove) {
-            QRect bandRect(mMouseDownPos, event->position().toPoint());
+            QRect bandRect(mMouseDownPos, event->pos());
 
             bandRect = bandRect.normalized();
 
@@ -1068,8 +1068,8 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
             mUBRubberBand->setGeometry(bandRect);
             mUBRubberBand->show();
 
-            //          QElapsedTimer startTime = QTime::currentTime();
-            //          QElapsedTimer testTime = QTime::currentTime();
+            //          QTime startTime = QTime::currentTime();
+            //          QTime testTime = QTime::currentTime();
             QList<QGraphicsItem *> rubberItems = items(bandRect);
             //          qDebug() << "==================";
             //          qDebug() << "| ====rubber items" << testTime.msecsTo(QTime::currentTime());
@@ -1109,9 +1109,9 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
                 }
             }
 
-            //          qDebug() << "| ==selected items count" << counter << endl
-            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << endl
-            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << endl
+            //          qDebug() << "| ==selected items count" << counter << std::endl
+            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << std::endl
+            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << std::endl
             //                   << "==================";
             //          QCoreApplication::removePostedEvents(scene(), 0);
         }
@@ -1121,7 +1121,7 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
     case WBStylusTool::Text :
     case WBStylusTool::Capture : {
         if (mRubberBand && (mIsCreatingTextZone || mIsCreatingSceneGrabZone)) {
-            mRubberBand->setGeometry(QRect(mMouseDownPos, event->position().toPoint()).normalized());
+            mRubberBand->setGeometry(QRect(mMouseDownPos, event->pos()).normalized());
             event->accept();
         }
         else
@@ -1131,7 +1131,7 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     default:
         if (!mTabletStylusIsPressed && scene()) {
-            scene()->inputDeviceMove(mapToScene(WBGeometryUtils::pointConstrainedInRect(event->position().toPoint(), rect())) , mMouseButtonIsPressed);
+            scene()->inputDeviceMove(mapToScene(WBGeometryUtils::pointConstrainedInRect(event->pos(), rect())) , mMouseButtonIsPressed);
         }
         event->accept ();
     }
@@ -1162,7 +1162,7 @@ void WBBoardView::mouseReleaseEvent (QMouseEvent *event)
             graphicsItem->Delegate()->commitUndoStep();
 
         bool bReleaseIsNeed = true;
-        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos()), QTransform())))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
@@ -1227,7 +1227,7 @@ void WBBoardView::mouseReleaseEvent (QMouseEvent *event)
     else if (currentTool == WBStylusTool::Text)
     {
         bool bReleaseIsNeed = true;
-        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos()), QTransform())))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
@@ -1405,7 +1405,7 @@ void WBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QGraphicsItem * selItem = selItemsList[0];
 
         // get items list under mouse cursor
-        QPointF scenePos = mapToScene(wheelEvent->pos().toPoint());
+        QPointF scenePos = mapToScene(wheelEvent->position().toPoint());
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
 
         bool isSelectedAndMouseHower = itemsList.contains(selItem);
@@ -1466,7 +1466,7 @@ void WBBoardView::dragMoveEvent(QDragMoveEvent *event)
 
 void WBBoardView::dropEvent (QDropEvent *event)
 {
-    QGraphicsItem *onItem = itemAt(event->position().toPoint().x(),event->position().toPoint().y());
+    QGraphicsItem *onItem = itemAt(event->pos().x(),event->pos().y());
     if (onItem && onItem->type() == WBGraphicsWidgetItem::Type) {
         QGraphicsView::dropEvent(event);
     }
@@ -1612,12 +1612,12 @@ void WBBoardView::virtualKeyboardActivated(bool b)
 
 bool WBBoardView::isAbsurdPoint(QPoint point)
 {
+    QScreen *desktop = qApp->desktop ();
     bool isValidPoint = false;
-    const QList<QScreen*> screens = QGuiApplication::screens();
 
-    for (int i = 0; i < screens.size(); i++)
+    for (int i = 0; i < desktop->numScreens (); i++)
     {
-        QRect screenRect = screens.at(i)->geometry();
+        QRect screenRect = desktop->screenGeometry (i);
         isValidPoint = isValidPoint || screenRect.contains (mapToGlobal(point));
     }
 

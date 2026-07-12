@@ -220,7 +220,7 @@ void WBKeyboardPalette::leaveEvent ( QEvent * )
 void  WBKeyboardPalette::moveEvent ( QMoveEvent * event )
 {
     WBActionPalette::moveEvent(event);
-    emit moved(event->position().toPoint());
+    emit moved(event->pos());
 }
 
 void WBKeyboardPalette::adjustSizeAndPosition(bool pUp)

@@ -1,4 +1,5 @@
 #include <QtWidgets>
+using std::endl;
 #include "WBMagnifer.h"
 
 #include "core/WBApplication.h"
@@ -218,10 +219,10 @@ void WBMagnifier::mousePressEvent ( QMouseEvent * event )
 
         QWidget::mousePressEvent(event);
 
-        if (event->position().toPoint().x() >= size().width() - mResizeItem->width() - 14 &&
-            event->position().toPoint().x() < size().width() - 14 &&
-            event->position().toPoint().y() >= size().height() - mResizeItem->height() - 14 &&
-            event->position().toPoint().y() < size().height() - - 14)
+        if (event->pos().x() >= size().width() - mResizeItem->width() - 14 &&
+            event->pos().x() < size().width() - 14 &&
+            event->pos().y() >= size().height() - mResizeItem->height() - 14 &&
+            event->pos().y() < size().height() - - 14)
         {
             mShouldResizeWidget = true;
         }
@@ -230,7 +231,7 @@ void WBMagnifier::mousePressEvent ( QMouseEvent * event )
             mShouldMoveWidget = !event->isAccepted() && (event->buttons() & Qt::LeftButton);
         }
 
-        mMousePressPos = event->position().toPoint();
+        mMousePressPos = event->pos();
         mMousePressDelta = (qreal)updPointGrab.x() + (qreal)size().width() / 2 - (qreal)event->globalPos().x();
 
         event->accept();
@@ -247,11 +248,11 @@ void WBMagnifier::mouseMoveEvent ( QMouseEvent * event )
     {
         if(mShouldMoveWidget && (event->buttons() & Qt::LeftButton))
         {
-            move(pos() - mMousePressPos + event->position().toPoint());
+            move(pos() - mMousePressPos + event->pos());
             event->accept();
 
             QWidget::mouseMoveEvent(event);
-            emit magnifierMoved_Signal(QPoint(this->position().toPoint().x() + size().width() / 2, this->position().toPoint().y() + size().height() / 2 ));
+            emit magnifierMoved_Signal(QPoint(this->pos().x() + size().width() / 2, this->pos().y() + size().height() / 2 ));
             return;
         }
 
@@ -270,7 +271,7 @@ void WBMagnifier::mouseMoveEvent ( QMouseEvent * event )
             return;
         }
 
-        if (mResizeItemButtonRect.contains(event->position().toPoint())&&
+        if (mResizeItemButtonRect.contains(event->pos())&&
             isCusrsorAlreadyStored == false
            )
         {
@@ -292,25 +293,25 @@ void WBMagnifier::mouseReleaseEvent(QMouseEvent * event)
         mShouldMoveWidget = false;
         mShouldResizeWidget = false;
 
-        if (sClosePixmapButtonRect.contains(event->position().toPoint()))
+        if (sClosePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierClose_Signal();
         }
         else
-        if (sIncreasePixmapButtonRect.contains(event->position().toPoint()))
+        if (sIncreasePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierZoomIn_Signal();
         }
         else
-        if (sDecreasePixmapButtonRect.contains(event->position().toPoint()))
+        if (sDecreasePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierZoomOut_Signal();
         }
         else
-        if (sChangeModePixmapButtonRect.contains(event->position().toPoint()))
+        if (sChangeModePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierDrawingModeChange_Signal(static_cast<int>(mDrawingMode+1)%modesCount);

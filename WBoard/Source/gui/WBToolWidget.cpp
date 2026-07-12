@@ -113,7 +113,7 @@ bool WBToolWidget::eventFilter(QObject *obj, QEvent *event)
 
         if (mouseMoveEvent->buttons() & Qt::LeftButton)
         {
-            move(pos() - mMousePressPos + mWebView->mapTo(this, mouseMoveEvent->position().toPoint()));
+            move(pos() - mMousePressPos + mWebView->mapTo(this, mouseMoveEvent->pos()));
 
             event->accept();
             return true;
@@ -130,7 +130,7 @@ void WBToolWidget::mousePressEvent(QMouseEvent *event)
 
     /* did webkit consume the mouse press ? */
     mShouldMoveWidget = !event->isAccepted() && (event->buttons() & Qt::LeftButton);
-    mMousePressPos = event->position().toPoint();
+    mMousePressPos = event->pos();
     event->accept();
     update();
 }
@@ -138,7 +138,7 @@ void WBToolWidget::mousePressEvent(QMouseEvent *event)
 void WBToolWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if(mShouldMoveWidget && (event->buttons() & Qt::LeftButton)) {
-        move(pos() - mMousePressPos + event->position().toPoint());
+        move(pos() - mMousePressPos + event->pos());
         event->accept();
     }
     QWidget::mouseMoveEvent(event);
@@ -148,11 +148,11 @@ void WBToolWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     mShouldMoveWidget = false;
 
-    if (event->position().toPoint().x() >= 0 && event->position().toPoint().x() < sClosePixmap->width() && event->position().toPoint().y() >= 0 && event->position().toPoint().y() < sClosePixmap->height()) {
+    if (event->pos().x() >= 0 && event->pos().x() < sClosePixmap->width() && event->pos().y() >= 0 && event->pos().y() < sClosePixmap->height()) {
         WBApplication::boardController->removeTool(this);
         event->accept();
     }
-    else if (mToolWidget->canBeContent() && event->position().toPoint().x() >= mContentMargin && event->position().toPoint().x() < mContentMargin + sUnpinPixmap->width() && event->position().toPoint().y() >= 0 && event->position().toPoint().y() < sUnpinPixmap->height()) {
+    else if (mToolWidget->canBeContent() && event->pos().x() >= mContentMargin && event->pos().x() < mContentMargin + sUnpinPixmap->width() && event->pos().y() >= 0 && event->pos().y() < sUnpinPixmap->height()) {
         WBApplication::boardController->moveToolWidgetToScene(this);
         event->accept();
     }

@@ -2,6 +2,7 @@
 #include <QtXml>
 #include <QtWebChannel/QWebChannel>
 
+using std::endl;
 #include "WBGraphicsWidgetItem.h"
 #include "WBGraphicsScene.h"
 #include "WBGraphicsItemDelegate.h"

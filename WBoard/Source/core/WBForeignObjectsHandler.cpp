@@ -1,3 +1,4 @@
+using std::endl;
 #include "WBForeignObjectsHandler.h"
 
 #include <QtWidgets>
@@ -35,8 +36,8 @@ static QString strIdFrom(const QString &filePath)
         return QString();
     }
 
-    QRegExp rx("\\{.(?!.*\\{).*\\}");
-    if (rx.indexIn(filePath) == -1) {
+    QRegularExpression rx("\\{.(?!.*\\{).*\\}");
+    if (QRegularExpressionMatch m = rx.match(filePath); m.capturedStart() == -1) {
         return QString();
     }
 
@@ -121,7 +122,7 @@ static QString thumbFileNameFrom(const QString &filePath)
     }
 
     QString thumbPath = filePath;
-    thumbPath.replace(QRegExp("[\\{\\}]"), "").replace(wgtSuff, thumbSuff);
+    thumbPath.replace(QRegularExpression("[\\{\\}]"), "").replace(wgtSuff, thumbSuff);
 
     return thumbPath;
 }
@@ -149,14 +150,14 @@ static QDomDocument createDomFromSvg(const QString &svgUrl)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 return xmlDom;
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << std::endl
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << std::endl
                      << "Error:" << inFile.errorString();
         }
     }
@@ -512,7 +513,7 @@ private:
                 if (ref.isEmpty()) {
                     return;
                 }
-                ref.replace(QRegExp("^(.*pdf\\#page\\=).*$"), QString("\\1%1").arg(mToIndex));
+                ref.replace(QRegularExpression("^(.*pdf\\#page\\=).*$"), QString("\\1%1").arg(mToIndex));
                 return;
             }
 
@@ -542,7 +543,7 @@ private:
         if (createNewUuid)
         {
             QUuid newUuid = QUuid::createUuid();
-            QString newPath = relative.replace(QRegExp("\\{.*\\}"), newUuid.toString());
+            QString newPath = relative.replace(QRegularExpression("\\{.*\\}"), newUuid.toString());
 
             cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + newPath);
 

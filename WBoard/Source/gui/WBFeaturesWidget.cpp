@@ -3,6 +3,7 @@
 #include <QtWebChannel/QWebChannel>
 #include <QWidget>
 
+using std::endl;
 #include "WBFeaturesWidget.h"
 #include "gui/WBThumbnailWidget.h"
 #include "frameworks/WBFileSystemUtils.h"
@@ -389,7 +390,7 @@ void WBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 void WBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
 {
     const WBFeaturesMimeData *fMimeData = qobject_cast<const WBFeaturesMimeData*>(event->mimeData());
-    QModelIndex index = indexAt(event->position().toPoint());
+    QModelIndex index = indexAt(event->pos());
     WBFeature onFeature = model()->data(index, Qt::UserRole + 1).value<WBFeature>();
     if (fMimeData) {
         if (!index.isValid() || !onFeature.isFolder()) {

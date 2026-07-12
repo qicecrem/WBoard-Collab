@@ -647,7 +647,7 @@ void WBTabDockPalette::mousePressEvent(QMouseEvent *event)
     dock->mClickTime = QTime::currentTime();
     // The goal here is to verify if the user can resize the widget.
     // It is only possible to resize it if the border is selected
-    QPoint p = event->position().toPoint();
+    QPoint p = event->pos();
     dock->mMousePressPos = p;
     dock->mResized = false;
 
@@ -670,14 +670,14 @@ void WBTabDockPalette::mousePressEvent(QMouseEvent *event)
 }
 void WBTabDockPalette::mouseMoveEvent(QMouseEvent *event)
 {
-    QPoint p = event->position().toPoint();
+    QPoint p = event->pos();
 
     if(dock->mCanResize && ((dock->mMousePressPos - p).manhattanLength() > QApplication::startDragDistance()))
     {
         if (qAbs(dock->mMousePressPos.y() - p.y()) > 10 && mFlotable) {
             qDebug() << "y differences" << dock->mMousePressPos.y() << p.y();
             mVerticalOffset += p.y() - dock->mMousePressPos.y();
-            move(this->position().toPoint().x(),  p.y());
+            move(this->pos().x(),  p.y());
         }
 
         switch(dock->mOrientation) {

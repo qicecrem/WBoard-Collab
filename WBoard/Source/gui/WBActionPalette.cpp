@@ -208,8 +208,8 @@ void WBActionPalette::close()
 
 void WBActionPalette::mouseReleaseEvent(QMouseEvent * event)
 {
-    if (mIsClosable && event->position().toPoint().x() >= 0 && event->position().toPoint().x() < QPixmap(":/images/close.svg").width()
-        && event->position().toPoint().y() >= 0 && event->position().toPoint().y() < QPixmap(":/images/close.svg").height())
+    if (mIsClosable && event->pos().x() >= 0 && event->pos().x() < QPixmap(":/images/close.svg").width()
+        && event->pos().y() >= 0 && event->pos().y() < QPixmap(":/images/close.svg").height())
     {
         event->accept();
         close();

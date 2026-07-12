@@ -121,11 +121,11 @@ WBRubberBand::enm_resizingMode WBRubberBand::determineResizingMode(QPoint pos)
 
 void WBRubberBand::mousePressEvent(QMouseEvent *event)
 {
-    mResizingMode = determineResizingMode(event->position().toPoint());
+    mResizingMode = determineResizingMode(event->pos());
     mMouseIsPressed = true;
 
-    mLastPressedPoint = event->position().toPoint();
-    mLastMousePos = event->position().toPoint();
+    mLastPressedPoint = event->pos();
+    mLastMousePos = event->pos();
 
     if (None == mResizingMode)
     {
@@ -136,14 +136,14 @@ void WBRubberBand::mousePressEvent(QMouseEvent *event)
 
 void WBRubberBand::mouseMoveEvent(QMouseEvent *event)
 {
-    determineResizingMode(event->position().toPoint());
+    determineResizingMode(event->pos());
 
     if (mMouseIsPressed)
     {
         WBBoardView *view = WBApplication::boardController->controlView();
         QRect currentGeometry = geometry();
 
-        QPoint pressPoint(event->position().toPoint());
+        QPoint pressPoint(event->pos());
         QPoint pressPointGlobal(view->mapToGlobal(pressPoint));
         QPoint prevPressPointGlobal(view->mapToGlobal(mLastPressedPoint));
         QPoint movePointGlogal = (view->mapToGlobal(mLastMousePos));
@@ -216,7 +216,7 @@ void WBRubberBand::mouseMoveEvent(QMouseEvent *event)
             setGeometry(currentGeometry);
         }
 
-        mLastMousePos = event->position().toPoint();
+        mLastMousePos = event->pos();
     }
 
     QRubberBand::mouseMoveEvent(event);

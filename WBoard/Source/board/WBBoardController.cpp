@@ -2301,7 +2301,7 @@ void WBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if (mimeData)
         {
             QList<WBItem*> items = mimeData->items();
-            qStableSort(items.begin(),items.end(),zLevelLessThan);
+            std::stable_sort(items.begin(), items.end(),zLevelLessThan);
             foreach(WBItem* item, items)
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
