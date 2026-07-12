@@ -320,6 +320,9 @@ class WBGraphicsScene: public WBCoreGraphicsScene, public WBItem
 
         QRectF annotationsBoundingRect() const;
 
+    signals:
+        void strokeCompleted(WBGraphicsStroke *stroke, int tool);
+
 	public slots:
         void updateSelectionFrame();
         void updateSelectionFrameWrapper(int);

@@ -677,6 +677,7 @@ bool WBGraphicsScene::inputDeviceRelease()
                 simplifyCurrentStroke();
             }
 
+            emit strokeCompleted(mCurrentStroke, (int)currentTool);
 
             WBGraphicsStrokesGroup* pStrokes = new WBGraphicsStrokesGroup();
 
