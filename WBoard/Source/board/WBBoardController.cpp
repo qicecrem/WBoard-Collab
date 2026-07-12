@@ -145,7 +145,7 @@ void WBBoardController::initBackgroundGridSize()
     // so we approximate this ratio as (document resolution) / (screen resolution).
     // Later on, this is calculated by `updateSystemScaleFactor` and stored in `mSystemScaleFactor`.
 
-    QDesktopWidget* desktop = WBApplication::desktop();
+    QScreen* desktop = WBApplication::primaryScreen();
     qreal dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2.;
 
     //qDebug() << "dpi: " << dpi;

@@ -1,5 +1,4 @@
 #include <QtWidgets>
-#include <QTextCodec>
 
 #include "frameworks/WBPlatformUtils.h"
 #include "frameworks/WBFileSystemUtils.h"
@@ -27,12 +26,12 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
     // Suppress qDebug output in release builds
     if (type != QtDebugMsg)
     {
-        qt_message_output(type, context, msg);
+        qDefaultMessageHandler(type, context, msg);
     }
 
 #else
     // Default output in debug builds
-    qt_message_output(type, context, msg);
+    qDefaultMessageHandler(type, context, msg);
 #endif
 
     if (WBApplication::app() && WBApplication::app()->isVerbose()) {

@@ -15,7 +15,8 @@
 
 #include "core/memcheck.h"
 
-#include "qdesktopwidget.h"
+#include <QScreen>
+#include <QGuiApplication>
 
 WBDisplayManager::WBDisplayManager(QObject *parent)
     : QObject(parent)
@@ -25,14 +26,14 @@ WBDisplayManager::WBDisplayManager(QObject *parent)
     , mDisplayWidget(0)
     , mDesktopWidget(0)
 {
-    mDesktop = qApp->desktop();
+    mDesktop = QGuiApplication::primaryScreen();
 
     mUseMultiScreen = WBSettings::settings()->appUseMultiscreen->get().toBool();
 
     initScreenIndexes();
 
-    connect(mDesktop, &QDesktopWidget::resized, this, &WBDisplayManager::adjustScreens);
-    connect(mDesktop, &QDesktopWidget::workAreaResized, this, &WBDisplayManager::adjustScreens);
+    connect(mDesktop, &QScreen::geometryChanged, this, &WBDisplayManager::adjustScreens);
+    connect(mDesktop, &QScreen::availableGeometryChanged, this, &WBDisplayManager::adjustScreens);
 }
 
 
@@ -44,7 +45,12 @@ void WBDisplayManager::initScreenIndexes()
 
     if (screenCount > 0)
     {
-        mControlScreenIndex = mDesktop->primaryScreen();
+        // Find the index of the primary screen
+        QScreen* primary = QGuiApplication::primaryScreen();
+        const QList<QScreen*> screens = QGuiApplication::screens();
+        mControlScreenIndex = screens.indexOf(primary);
+        if (mControlScreenIndex < 0) mControlScreenIndex = 0;
+
         if (screenCount > 1 && WBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
             mControlScreenIndex = mControlScreenIndex^1;
@@ -110,15 +116,19 @@ WBDisplayManager::~WBDisplayManager()
 
 int WBDisplayManager::numScreens()
 {
-    int screenCount = mDesktop->screenCount();
+    int screenCount = QGuiApplication::screens().size();
     // Some window managers report two screens when the two monitors are in "cloned" mode; this hack ensures
     // that we consider this as just one screen. On most desktops, at least one of the following conditions is
     // a good indicator of the displays being in cloned or extended mode.
 #ifdef Q_OS_LINUX
-    if (screenCount > 1
-        && (mDesktop->screenNumber(mDesktop->screen(0)) == mDesktop->screenNumber(mDesktop->screen(1))
-            || mDesktop->screenGeometry(0) == mDesktop->screenGeometry(1)))
-        return 1;
+    if (screenCount > 1)
+    {
+        const QList<QScreen*> screens = QGuiApplication::screens();
+        int idx0 = screens.indexOf(screens.at(0));
+        int idx1 = screens.indexOf(screens.at(1));
+        if (idx0 == idx1 || screens.at(0)->geometry() == screens.at(1)->geometry())
+            return 1;
+    }
 #endif
     return screenCount;
 }
@@ -153,7 +163,7 @@ void WBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
             pDisplayWidget->setWindowFlags(mDisplayWidget->windowFlags());
         }
         mDisplayWidget = pDisplayWidget;
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
+        mDisplayWidget->setGeometry(screenGeometry(mDisplayScreenIndex));
         if (WBSettings::settings()->appUseMultiscreen->get().toBool())
             WBPlatformUtils::showFullScreen(mDisplayWidget);
     }
@@ -168,12 +178,12 @@ void WBDisplayManager::setPreviousDisplaysWidgets(QList<WBBoardView*> pPreviousV
 
 QRect WBDisplayManager::controlGeometry()
 {
-    return mDesktop->screenGeometry(mControlScreenIndex);
+    return screenGeometry(mControlScreenIndex);
 }
 
 QRect WBDisplayManager::displayGeometry()
 {
-    return mDesktop->screenGeometry(mDisplayScreenIndex);
+    return screenGeometry(mDisplayScreenIndex);
 }
 
 void WBDisplayManager::reinitScreens(bool swap)
@@ -194,25 +204,34 @@ void WBDisplayManager::adjustScreens(int screen)
 }
 
 
+QRect WBDisplayManager::screenGeometry(int screenIndex)
+{
+    const QList<QScreen*> screens = QGuiApplication::screens();
+    if (screenIndex >= 0 && screenIndex < screens.size())
+        return screens.at(screenIndex)->geometry();
+    return QGuiApplication::primaryScreen()->geometry();
+}
+
+
 void WBDisplayManager::positionScreens()
 {
 
     if(mDesktopWidget && mControlScreenIndex > -1)
     {
         mDesktopWidget->hide();
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        mDesktopWidget->setGeometry(screenGeometry(mControlScreenIndex));
     }
     if (mControlWidget && mControlScreenIndex > -1)
     {
         mControlWidget->hide();
-        mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        mControlWidget->setGeometry(screenGeometry(mControlScreenIndex));
         WBPlatformUtils::showFullScreen(mControlWidget);
     }
 
     if (mDisplayWidget && mDisplayScreenIndex > -1)
     {
         mDisplayWidget->hide();
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
+        mDisplayWidget->setGeometry(screenGeometry(mDisplayScreenIndex));
         WBPlatformUtils::showFullScreen(mDisplayWidget);
     }
     else if(mDisplayWidget)
@@ -230,7 +249,7 @@ void WBDisplayManager::positionScreens()
         if (mPreviousDisplayWidgets.size() > psi)
         {
             QWidget* previous = mPreviousDisplayWidgets.at(psi);
-            previous->setGeometry(mDesktop->screenGeometry(mPreviousScreenIndexes.at(psi)));
+            previous->setGeometry(screenGeometry(mPreviousScreenIndexes.at(psi)));
             WBPlatformUtils::showFullScreen(previous);
         }
     }
@@ -268,7 +287,7 @@ void WBDisplayManager::blackout()
         blackoutUi->iconButton->setVisible(screenIndex == mControlScreenIndex);
         blackoutUi->labelClickToReturn->setVisible(screenIndex == mControlScreenIndex);
 
-        blackoutWidget->setGeometry(mDesktop->screenGeometry(screenIndex));
+        blackoutWidget->setGeometry(screenGeometry(screenIndex));
 
         mBlackoutWidgets << blackoutWidget;
     }
@@ -307,4 +326,3 @@ void WBDisplayManager::setUseMultiScreen(bool pUse)
 {
     mUseMultiScreen = pUse;
 }
-

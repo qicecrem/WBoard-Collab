@@ -52,12 +52,12 @@ WBPreferencesController::WBPreferencesController(QWidget *parent)
     , mDarkBackgroundGridColorPicker(0)
     , mLightBackgroundGridColorPicker(0)
 {
-    mDesktop = qApp->desktop();
+    mDesktop = QApplication::primaryScreen();
     mPreferencesWindow = new WBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens(1);
-    connect(mDesktop, &QDesktopWidget::screenCountChanged, this, &WBPreferencesController::adjustScreens);
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, &WBPreferencesController::adjustScreens);
 
     wire();
 }

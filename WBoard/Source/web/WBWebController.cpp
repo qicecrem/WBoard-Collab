@@ -1,6 +1,5 @@
 #include <QtWidgets>
 #include <QDomDocument>
-#include <QXmlQuery>
 #include <QWebEnginePage>
 
 #include "frameworks/WBPlatformUtils.h"
@@ -307,16 +306,17 @@ void WBWebController::toogleMirroring(bool checked)
 }
 
 
-QPixmap WBWebController::getScreenPixmap()
+    QPixmap WBWebController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen)
+        screen = QApplication::primaryScreen();
+    const QRect screenRect = screen->geometry();
     QCoreApplication::flush ();
 
-    return QPixmap::grabWindow(desktop->winId(),
-                               primaryScreenRect.x(), primaryScreenRect.y(),
-                               primaryScreenRect.width(), primaryScreenRect.height());
+    return screen->grabWindow(0,
+                               screenRect.x(), screenRect.y(),
+                               screenRect.width(), screenRect.height());
 }
 
 

@@ -31,7 +31,6 @@ void WBWidgetMirror::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
 
-    painter.setBackgroundMode(Qt::OpaqueMode);
     painter.setBackground(Qt::black);
 
     mSourceWidget->render(&painter, event->rect().topLeft(), QRegion(event->rect()));

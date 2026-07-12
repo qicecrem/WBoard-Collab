@@ -720,13 +720,12 @@ void WBPodcastController::timerEvent(QTimerEvent *event)
 {
     if (mRecordingState == Recording
             && event->timerId() == mScreenGrabingTimerEventID
-            && mSourceWidget == qApp->desktop())
+            && mSourceWidget == QApplication::primaryScreen())
     {
-        QDesktopWidget * dtop = QApplication::desktop();
-        QRect dtopRect = dtop->screenGeometry(WBApplication::controlScreenIndex());
         QScreen * screen = WBApplication::controlScreen();
+        QRect dtopRect = screen->geometry();
 
-        QPixmap desktop = screen->grabWindow(dtop->effectiveWinId(),
+        QPixmap desktop = screen->grabWindow(0,
                                              dtopRect.x(), dtopRect.y(), dtopRect.width(), dtopRect.height());
 
         {
