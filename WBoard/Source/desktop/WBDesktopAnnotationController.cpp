@@ -1,4 +1,4 @@
-#include <QDesktopWidget>
+#include <QScreen>
 
 #include "WBDesktopAnnotationController.h"
 
@@ -465,12 +465,14 @@ void WBDesktopAnnotationController::screenCapture()
 
 QPixmap WBDesktopAnnotationController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
+    QScreen *screenAtCursor = QGuiApplication::screenAt(QCursor::pos());
+    if (!screenAtCursor)
+        screenAtCursor = QApplication::primaryScreen();
     QScreen * screen = WBApplication::controlScreen();
 
-    QRect rect = desktop->screenGeometry(QCursor::pos());
+    QRect rect = screenAtCursor->geometry();
 
-    return screen->grabWindow(desktop->effectiveWinId(),
+    return screen->grabWindow(0,
                               rect.x(), rect.y(), rect.width(), rect.height());
 }
 

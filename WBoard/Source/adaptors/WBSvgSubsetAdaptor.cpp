@@ -774,7 +774,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                     WBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                     if (pdfItem)
                     {
-                        QDesktopWidget* desktop = WBApplication::desktop();
+                        QScreen* desktop = QApplication::primaryScreen();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
                         // qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
                         qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
@@ -848,7 +848,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
 
                     if (textDelegate)
                     {
-                        QDesktopWidget* desktop = WBApplication::desktop();
+                        QScreen* desktop = QApplication::primaryScreen();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
                         qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
                         //textDelegate->scaleTextSize(textSizeMultiplier);
@@ -1099,7 +1099,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::writeSvgElement(WBDocumentProxy* pro
         mXmlWriter.writeAttribute(WBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
     }
 
-    QDesktopWidget* desktop = WBApplication::desktop();
+    QScreen* desktop = QApplication::primaryScreen();
 
     if (proxy->pageDpi() == 0)
         proxy->setPageDpi((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2);

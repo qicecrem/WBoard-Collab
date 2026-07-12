@@ -5,7 +5,7 @@
 #include <QWebEngineSettings>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
-#include <QDesktopWidget>
+#include <QScreen>
 
 #include "core/WBSettings.h"
 #include "core/WBSetting.h"
