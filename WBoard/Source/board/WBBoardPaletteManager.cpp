@@ -28,6 +28,8 @@
 
 #include "desktop/WBDesktopAnnotationController.h"
 
+#include "collaboration/WBCollaborationDiscovery.h"
+
 
 #include "network/WBNetworkAccessManager.h"
 //#include "network/WBServerXMLHttpRequest.h"
@@ -71,6 +73,7 @@ WBBoardPaletteManager::WBBoardPaletteManager(QWidget* container, WBBoardControll
     , mpPageNavigWidget(NULL)
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
+    , mpCollaborationPalette(nullptr)
     , mDownloadInProgress(false)
 {
     setupPalettes();
@@ -122,6 +125,20 @@ void WBBoardPaletteManager::setupDockPaletteWidgets()
 
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
+
+    // Collaboration palette
+    if (WBApplication::collaborationManager) {
+        mpCollaborationPalette = new WBCollaborationPalette(
+            WBApplication::collaborationManager, mContainer);
+
+        // Set up UDP discovery for browsing
+        WBCollaborationDiscovery *discovery = new WBCollaborationDiscovery(mpCollaborationPalette);
+        discovery->startBrowsing();
+        mpCollaborationPalette->setDiscovery(discovery);
+
+        mRightPalette->registerWidget(mpCollaborationPalette);
+        mRightPalette->addTab(mpCollaborationPalette);
+    }
 
     //  The download widget will be part of the right palette but
     //  will become visible only when the first download starts

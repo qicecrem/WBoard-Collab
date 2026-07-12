@@ -12,6 +12,7 @@
 #include "gui/WBDockDownloadWidget.h"
 #include "core/WBApplicationController.h"
 #include "gui/WBFeaturesWidget.h"
+#include "collaboration/WBCollaborationPalette.h"
 
 
 class WBWebToolsPalette;
@@ -112,6 +113,8 @@ class WBBoardPaletteManager : public QObject
         WBFeaturesWidget *mpFeaturesWidget;
 
         WBDockDownloadWidget* mpDownloadWidget;
+
+        WBCollaborationPalette* mpCollaborationPalette;
 
         bool mDownloadInProgress;
 
