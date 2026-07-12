@@ -10,7 +10,7 @@ void WBSqueezeLabel::paintEvent(QPaintEvent *event)
 {
     QFontMetrics fm = fontMetrics();
     if (fm.width(text()) > contentsRect().width()) {
-        QString elided = fm// removed: .elidedText(text(), Qt::ElideMiddle, width());
+        QString elided = fm.elidedText(text(), Qt::ElideMiddle, width());
         QString oldText = text();
         setText(elided);
         QLabel::paintEvent(event);
