@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return nullptr;
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return nullptr;
         }
 
         QXmlStreamReader xml(file.readAll());

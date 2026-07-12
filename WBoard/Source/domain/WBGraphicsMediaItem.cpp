@@ -508,7 +508,7 @@ void WBGraphicsVideoItem::setSize(int width, int height)
     mVideoItem->// setSize removed: QSize(sizeX, sizeY));
 
 
-    resize(sizeX, sizeY);
+    // resize removed
 }
 
 void WBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
