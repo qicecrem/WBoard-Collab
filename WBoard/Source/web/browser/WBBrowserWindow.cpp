@@ -101,7 +101,7 @@ WBDownloadManager_ *WBBrowserWindow::downloadManager()
     return sDownloadManager;
 }
 
-//WBHistoryManager *WBBrowserWindow::historyManager()
+//WBHistoryManager *WBBrowserWindow::page()->history()()
 //{
 //    if (!sHistoryManager) {
 //        sHistoryManager = new WBHistoryManager();

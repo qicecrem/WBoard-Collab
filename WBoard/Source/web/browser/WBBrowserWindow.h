@@ -32,7 +32,7 @@ public:
 
     //void adaptToolBar(bool wideRes);
 
-    //static WBHistoryManager *historyManager();
+    //static WBHistoryManager *page()->history()();
     static UBCookieJar *cookieJar();
     static WBDownloadManager_ *downloadManager();
 

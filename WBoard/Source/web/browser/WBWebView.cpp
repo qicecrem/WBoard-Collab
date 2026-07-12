@@ -53,7 +53,7 @@ bool WBWebPage::acceptNavigationRequest(QWebChannel *frame, const QNetworkReques
 {
     if (type == QWebEnginePage::NavigationTypeLinkClicked
         && (mKeyboardModifiers & Qt::ControlModifier
-            || mPressedButtons == Qt::MidButton))
+            || mPressedButtons == Qt::MiddleButton))
     {
         WBWebView *webView;
 
@@ -338,7 +338,7 @@ void WBWebView::mouseReleaseEvent(QMouseEvent *event)
 {
     WBWebTrapWebView::mouseReleaseEvent(event);
 
-    if (!event->isAccepted() && (mPage->mPressedButtons & Qt::MidButton))
+    if (!event->isAccepted() && (mPage->mPressedButtons & Qt::MiddleButton))
     {
         QUrl url(QApplication::clipboard()->text(QClipboard::Selection));
         if (!url.isEmpty() && url.isValid() && !url.scheme().isEmpty())

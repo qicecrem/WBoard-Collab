@@ -30,7 +30,7 @@ class WBHistoryItem
 };
 
 
-class UBAutoSaver;
+class WBAutoSaver;
 class WBHistoryModel;
 class WBHistoryFilterModel;
 class WBHistoryTreeModel;
@@ -80,7 +80,7 @@ class WBHistoryManager : public QWebEngineHistory
     private:
         void load();
 
-        UBAutoSaver *m_saveTimer;
+        WBAutoSaver *m_saveTimer;
         int m_historyLimit;
         QTimer m_expiredTimer;
         QList<WBHistoryItem> m_history;

@@ -331,7 +331,7 @@ WBWebView *WBTabWidget::newTab(bool makeCurrent)
     if (!mLineEditCompleter && count() > 0)
     {
         //WBHistoryCompletionModel *completionModel = new WBHistoryCompletionModel(this);
-        //completionModel->setSourceModel(WBBrowserWindow::historyManager()->historyFilterModel());
+        //completionModel->setSourceModel(WBBrowserWindow::page()->history()()->historyFilterModel());
         mLineEditCompleter = new QCompleter(this);
         // Should this be in Qt by default?
         QAbstractItemView *popup = mLineEditCompleter->popup();
@@ -530,7 +530,7 @@ void WBTabWidget::webViewTitleChanged(const QString &title)
     }
     if (currentIndex() == index)
         emit setCurrentTitle(title);
-    //WBBrowserWindow::historyManager()->updateHistoryItem(webView->url(), title);
+    //WBBrowserWindow::page()->history()()->updateHistoryItem(webView->url(), title);
 }
 
 void WBTabWidget::webViewUrlChanged(const QUrl &url)
@@ -596,7 +596,7 @@ void WBTabWidget::mouseReleaseEvent(QMouseEvent *event)
     {
         newTab();
     }
-    else if (event->button() == Qt::MidButton && !childAt(event->pos())
+    else if (event->button() == Qt::MiddleButton && !childAt(event->pos())
             // Remove the line below when QTabWidget does not have a one pixel frame
             && event->pos().y() < (tabBar()->y() + tabBar()->height()))
     {
@@ -653,7 +653,7 @@ QByteArray WBTabWidget::saveState() const
         {
             tabs.append(tab->url().toString());
         } else {
-            tabs.append(QString::null);
+            tabs.append(QString());
         }
     }
     stream << tabs;

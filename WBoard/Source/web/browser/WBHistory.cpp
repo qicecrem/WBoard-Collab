@@ -86,8 +86,8 @@
 static const unsigned int HISTORY_VERSION = 23;
 
 WBHistoryManager::WBHistoryManager(QObject *parent)
-    : QWebEngineHistory(parent)
-    //, m_saveTimer(new UBAutoSaver(this))
+    : /* QWebEngineHistory(parent) removed */
+    //, m_saveTimer(new WBAutoSaver(this))
     , m_historyLimit(30)
     , m_historyModel(0)
     , m_historyFilterModel(0)
@@ -264,7 +264,7 @@ void WBHistoryManager::load()
 {
     loadSettings();
 
-    QFile historyFile(UBSettings::userDataDirectory() + QLatin1String("/history"));
+    QFile historyFile(WBSettings::userDataDirectory() + QLatin1String("/history"));
     if (!historyFile.exists())
         return;
     if (!historyFile.open(QFile::ReadOnly))
@@ -349,7 +349,7 @@ void WBHistoryManager::save()
     if (first == m_history.count() - 1)
         saveAll = true;
 
-    QString directory = UBSettings::userDataDirectory();
+    QString directory = WBSettings::userDataDirectory();
     if (directory.isEmpty())
         directory = QDir::homePath() + QLatin1String("/.") + QCoreApplication::applicationName();
     if (!QFile::exists(directory))
@@ -651,7 +651,7 @@ bool WBHistoryMenu::prePopulated()
 {
     if (!m_history)
     {
-        m_history = WBBrowserWindow::historyManager();
+        m_history = WBBrowserWindow::page()->history()();
         m_historyMenuModel = new WBHistoryMenuModel(m_history->historyTreeModel(), this);
         setModel(m_historyMenuModel);
     }
@@ -1240,7 +1240,7 @@ QModelIndex WBHistoryTreeModel::mapFromSource(const QModelIndex &sourceIndex) co
         rowCount(QModelIndex());
 
     QList<int>::iterator it;
-    it = qLowerBound(m_sourceRowCache.begin(), m_sourceRowCache.end(), sourceIndex.row());
+    it = std::lower_bound(m_sourceRowCache.begin(), m_sourceRowCache.end(), sourceIndex.row());
     if (*it != sourceIndex.row())
         --it;
     int dateRow = qMax(0, it - m_sourceRowCache.begin());
@@ -1257,7 +1257,7 @@ void WBHistoryTreeModel::sourceRowsRemoved(const QModelIndex &parent, int start,
     for (int i = end; i >= start;)
     {
         QList<int>::iterator it;
-        it = qLowerBound(m_sourceRowCache.begin(), m_sourceRowCache.end(), i);
+        it = std::lower_bound(m_sourceRowCache.begin(), m_sourceRowCache.end(), i);
         // playing it safe
         if (it == m_sourceRowCache.end())
         {
