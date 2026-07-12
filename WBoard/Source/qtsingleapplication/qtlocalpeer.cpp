@@ -2,7 +2,7 @@
 #include "qtlocalpeer.h"
 #include <QCoreApplication>
 #include <QDataStream>
-#include <QTime>
+#include <QRegularExpression>
 
 #if defined(Q_OS_WIN)
 #include <QLibrary>
