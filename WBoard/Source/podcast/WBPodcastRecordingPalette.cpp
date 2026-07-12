@@ -131,7 +131,7 @@ void WBPodcastRecordingPalette::recordingProgressChanged(qint64 ms)
 
 void WBPodcastRecordingPalette::audioLevelChanged(quint8 level)
 {
-    mLevelMeter->setVolume(level);
+    mLevelMeter->audioOutput()->setVolume(level);
 }
 
 

@@ -284,7 +284,7 @@ void WBGraphicsMediaItem::toggleMute()
 void WBGraphicsMediaItem::setMute(bool bMute)
 {
     mMuted = bMute;
-    mMediaObject->setMuted(mMuted);
+    mMediaObject->audioOutput()->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
@@ -306,11 +306,11 @@ void WBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 {
     if (!shown) {
         mMuted = true;
-        mMediaObject->setMuted(mMuted);
+        mMediaObject->audioOutput()->setMuted(mMuted);
     }
     else if (!mMutedByUserAction) {
         mMuted = false;
-        mMediaObject->setMuted(mMuted);
+        mMediaObject->audioOutput()->setMuted(mMuted);
     }
 }
 void WBGraphicsMediaItem::play()

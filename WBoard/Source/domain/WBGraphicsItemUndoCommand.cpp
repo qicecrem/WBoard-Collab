@@ -119,7 +119,7 @@ void WBGraphicsItemUndoCommand::undo()
         }
     }
 
-    QMapIterator<WBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+    QMultiMapIterator<WBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
     WBGraphicsGroupContainerItem *nextGroup = NULL;
     WBGraphicsGroupContainerItem *previousGroupItem = NULL;
     bool groupChanged = false;
@@ -165,7 +165,7 @@ void WBGraphicsItemUndoCommand::redo()
             return;
         }
 
-        QMapIterator<WBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+        QMultiMapIterator<WBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
         WBGraphicsGroupContainerItem *nextGroup = NULL;
         WBGraphicsGroupContainerItem *previousGroupItem = NULL;
         bool groupChanged = false;
