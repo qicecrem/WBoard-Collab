@@ -22,7 +22,7 @@ WBAutoSaver::~WBAutoSaver()
 
 void WBAutoSaver::changeOccurred()
 {
-    if (mFirstChange.isNull())
+    if (!mFirstChange.isValid())
         mFirstChange.start();
 
     if (mFirstChange.elapsed() > MAXWAIT)
@@ -53,7 +53,7 @@ void WBAutoSaver::saveIfNeccessary()
         return;
 
     mTimer.stop();
-    mFirstChange = QTime();
+    mFirstChange.invalidate();
 
     if (!QMetaObject::invokeMethod(parent(), "save", Qt::DirectConnection))
     {

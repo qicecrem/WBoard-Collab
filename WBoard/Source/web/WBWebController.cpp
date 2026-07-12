@@ -154,9 +154,9 @@ bool WBWebController::hasEmbeddedContent()
 
         // search the presence of "+oembed"
         QString query = "\\+oembed([^>]*)>";
-        QRegExp exp(query);
-        exp.indexIn(html);
-        QStringList results = exp.capturedTexts();
+        QRegularExpression exp(query);
+        exp.globalMatch(html);
+        QStringList results = exp.match(str).capturedTexts();
         if(2 <= results.size() && "" != results.at(1)){
             // An embedded content has been found, no need to check the other ones
             bHasContent = true;
@@ -385,17 +385,17 @@ void WBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString a
     if(NULL != pHtml && NULL != pList){
         QVector<QString> urlsFound;
         // Check for <embed> content
-        QRegExp exp(QString("<%0(.*)").arg(tag));
-        exp.indexIn(*pHtml);
-        QStringList strl = exp.capturedTexts();
+        QRegularExpression exp(QString("<%0(.*)").arg(tag));
+        exp.globalMatch(*pHtml);
+        QStringList strl = exp.match(str).capturedTexts();
         if(2 <= strl.size() && strl.at(1) != ""){
             // Here we call this regular expression:
             // src\s?=\s?['"]([^'"]*)['"]
             // It says: give me all characters that are after src=" (or src = ")
-            QRegExp src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
+            QRegularExpression src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
             for(int i=1; i<strl.size(); i++){
-                src.indexIn(strl.at(i));
-                QStringList urls = src.capturedTexts();
+                src.globalMatch(strl.at(i));
+                QStringList urls = src.match(str).capturedTexts();
                 if(2 <= urls.size() && urls.at(1) != "" && !urlsFound.contains(urls.at(1))){
                     urlsFound << urls.at(1);
                     pList->append(QUrl(urls.at(1)));

@@ -362,7 +362,7 @@ void WBGraphicsTriangle::paintGraduations(QPainter *painter)
     double pixelsPerMillimeter = sPixelsPerCentimeter/10.0;
 
     // When a "centimeter" is too narrow, we only display every 5th number, and every 5th millimeter mark
-    double numbersWidth = fontMetrics.width("00");
+    double numbersWidth = fontMetrics.horizontalAdvance("00");
     bool shouldDisplayAllNumbers = (numbersWidth <= (sPixelsPerCentimeter - 5));
 
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / pixelsPerMillimeter; millimeters++)
@@ -418,7 +418,7 @@ void WBGraphicsTriangle::paintGraduations(QPainter *painter)
             || millimeters % (WBGeometryUtils::millimetersPerCentimeter*5) == 0)
         {
             QString text = QString("%1").arg((int)(millimeters / WBGeometryUtils::millimetersPerCentimeter));
-            qreal textWidth = fontMetrics.width(text);
+            qreal textWidth = fontMetrics.horizontalAdvance(text);
             qreal textHeight = fontMetrics.tightBoundingRect(text).height();
 
             requiredSpace = graduationHeight + textHeight + textWidth + SEPARATOR ;

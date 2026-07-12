@@ -198,7 +198,7 @@ QList<QGraphicsItem*> WBThumbnailWidget::selectedItems()
 
 void WBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 {
-    mClickTime = QTime::currentTime();
+    mClickTime.start();
     mMousePressPos = event->pos();
 
     WBThumbnailPixmap* sceneItem = dynamic_cast<WBThumbnailPixmap*>(itemAt(mMousePressPos));
@@ -901,7 +901,7 @@ void WBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal heigh
             QString elidedText = fm.elidedText(this->caption->toPlainText(), Qt::ElideRight, width);
 
             this->caption->setPlainText(elidedText);
-            this->caption->setWidth(.horizontalAdvance(elidedText) + 2 * this->caption->document()->documentMargin());
+            this->caption->setWidth(fm.horizontalAdvance(elidedText) + 2 * this->caption->document()->documentMargin());
             pos.setY(pos.y() + (height + h * scaleFactor) / 2 + 5); // What is this 5 ??
             qreal labelWidth = fm.horizontalAdvance(elidedText);
             pos.setX((width - labelWidth) / 2 + col * (width + border));
@@ -1042,7 +1042,7 @@ void WBDraggableThumbnail::updatePos(qreal width, qreal height)
     setPos(position);
 
     position.setY(position.y() + (height + h * scaledFactor) / 2);
-    position.setX(position.x() + (w * scaledFactor - .horizontalAdvance(mPageNumber->toPlainText())) / 2);
+    position.setX(position.x() + (w * scaledFactor - fm.horizontalAdvance(mPageNumber->toPlainText())) / 2);
 
     mPageNumber->setPos(position);
 }
@@ -1072,7 +1072,7 @@ void WBDraggableThumbnailPixmap::updatePos(qreal width, qreal height)
     thumbnailPixmap()->setPos(position);
 
     position.setY(position.y() + (height + h * scaledFactor) / 2);
-    position.setX(position.x() + (w * scaledFactor - .horizontalAdvance(mPageNumber->toPlainText())) / 2);
+    position.setX(position.x() + (w * scaledFactor - fm.horizontalAdvance(mPageNumber->toPlainText())) / 2);
 
     mPageNumber->setPos(position);
 }
