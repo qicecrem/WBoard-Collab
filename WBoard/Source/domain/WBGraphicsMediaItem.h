@@ -5,12 +5,9 @@
 #include "WBGraphicsProxyWidget.h"
 
 #include <QAudioOutput>
-#include <QMediaObject>
 #include <QMediaPlayer>
-#include <QMediaService>
-
-#include <QtMultimediaWidgets/QVideoWidget>
-#include <QtMultimedia/QVideoFrame>
+#include <QVideoWidget>
+#include <QVideoFrame>
 
 #include "core/WBApplication.h"
 #include "board/WBBoardController.h"
