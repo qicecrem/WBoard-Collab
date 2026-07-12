@@ -144,7 +144,7 @@ void WBSearchLineEdit::paintEvent(QPaintEvent *event)
 
     if (lineEdit()->text().isEmpty() && !hasFocus() && !mInactiveText.isEmpty())
     {
-        QStyleOptionFrameV2 panel;
+        QStyleOptionFrame panel;
         initStyleOption(&panel);
         QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);
         QFontMetrics fm = fontMetrics();

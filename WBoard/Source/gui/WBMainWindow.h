@@ -16,7 +16,7 @@ class WBMainWindow : public QMainWindow, public Ui::MainWindow
     Q_OBJECT
 public:
 
-	WBMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+	WBMainWindow(QWidget *parent = 0, Qt::WindowFlags flags = Qt::WindowFlags());
 	virtual ~WBMainWindow();
 
 	void addBoardWidget(QWidget *pWidget);

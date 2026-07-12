@@ -35,7 +35,7 @@ class WBHistoryModel;
 class WBHistoryFilterModel;
 class WBHistoryTreeModel;
 
-class WBHistoryManager : public QObject, public QWebEngineHistory
+class WBHistoryManager : public QWebEngineHistory
 {
     Q_OBJECT;
     Q_PROPERTY(int historyLimit READ historyLimit WRITE setHistoryLimit);

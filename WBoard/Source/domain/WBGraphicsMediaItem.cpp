@@ -52,8 +52,8 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(mMediaObject, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             Delegate(), SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
 
-    connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
-            Delegate(), SLOT(mediaStateChanged(QMediaPlayer::State)));
+    connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState)),
+            Delegate(), SLOT(mediaStateChanged(QMediaPlayer::PlaybackState)));
 
     connect(mMediaObject, SIGNAL(positionChanged(qint64)),
             Delegate(), SLOT(updateTicker(qint64)));
@@ -114,8 +114,8 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
             this, SLOT(hasVideoChanged(bool)));
 
-    connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
-            this, SLOT(mediaStateChanged(QMediaPlayer::State)));
+    connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState)),
+            this, SLOT(mediaStateChanged(QMediaPlayer::PlaybackState)));
 
     connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
             this, &WBGraphicsVideoItem::mediaError);
@@ -177,7 +177,7 @@ void WBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 }
 
 
-QMediaPlayer::State WBGraphicsMediaItem::playerState() const
+QMediaPlayer::PlaybackState WBGraphicsMediaItem::playerState() const
 {
     return mMediaObject->state();
 }
@@ -587,7 +587,7 @@ void WBGraphicsVideoItem::hasVideoChanged(bool hasVideo)
     setPlaceholderVisible(!hasVideo);
 }
 
-void WBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::State state)
+void WBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::PlaybackState state)
 {
 
 #if defined(Q_OS_OSX) || defined(Q_OS_WIN)

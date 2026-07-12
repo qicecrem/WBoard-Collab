@@ -114,15 +114,15 @@ QMap<QString, QVariant> WBMetadataDcSubsetAdaptor::load(QString pPath)
             {
                 QString docVersion = "4.1"; // untagged doc version 4.1
 
-                if (xml.name() == "title")
+                if (xml.name() == QLatin1StringView("title"))
                 {
                     metadata.insert(WBSettings::documentName, xml.readElementText());
                 }
-                else if (xml.name() == "type")
+                else if (xml.name() == QLatin1StringView("type"))
                 {
                     metadata.insert(WBSettings::documentGroupName, xml.readElementText());
                 }
-                else if (xml.name() == "date")
+                else if (xml.name() == QLatin1StringView("date"))
                 {
                     date = xml.readElementText();
                 }

@@ -77,7 +77,7 @@ void WBMediaWidget::setFile(const QString &filePath)
     mFilePath = filePath;
     mpMediaObject = new QMediaPlayer(this);
     //mpMediaObject->setTickInterval(TICK_INTERVAL);
-    connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(onStateChanged(QMediaPlayer::State)));
+    connect(mpMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState)), this, SLOT(onStateChanged(QMediaPlayer::PlaybackState)));
     connect(mpMediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(onTotalTimeChanged(qint64)));
     connect(mpMediaObject, SIGNAL(tick(qint64)), this, SLOT(onTick(qint64)));
     mpMediaObject->setMedia(QUrl::fromLocalFile(filePath));
@@ -178,7 +178,7 @@ void WBMediaWidget::adaptSizeToVideo()
   * @param newState as the new state
   * @param oldState as the old state
   */
-void WBMediaWidget::onStateChanged(QMediaPlayer::State state)
+void WBMediaWidget::onStateChanged(QMediaPlayer::PlaybackState state)
 {
     if(!mGeneratingThumbnail){
         //if(QMediaPlayer::LoadingMedia == oldState && QMediaPlayer::StoppedState == newState){

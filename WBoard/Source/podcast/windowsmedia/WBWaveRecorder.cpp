@@ -99,7 +99,7 @@ bool WBWaveRecorder::start()
 {
     if (!mIsRecording)
     {
-        mRecordingStartTime = QTime::currentTime();
+        mRecordingStartTime = QElapsedTimer::currentTime();
         mMsTimeStamp = 0;
         mIsRecording = true;
     }

@@ -89,7 +89,7 @@ QMatrix WBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 
     if (sl.size() >= 6)
     {
-        matrix.setMatrix(
+        matrix.setTransform(
                     sl.at(0).toFloat(),
                     sl.at(1).toFloat(),
                     sl.at(2).toFloat(),
@@ -321,7 +321,7 @@ WBSvgSubsetAdaptor::WBSvgSubsetReader::WBSvgSubsetReader(WBDocumentProxy* pProxy
 WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProxy* proxy)
 {
     qDebug() << "loadScene() : starting reading...";
-    QTime time;
+    QElapsedTimer time;
     time.start();
     mScene = 0;
     WBGraphicsWidgetItem *currentWidget = 0;

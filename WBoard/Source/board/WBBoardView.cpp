@@ -1009,12 +1009,12 @@ void WBBoardView::mousePressEvent (QMouseEvent *event)
 
 void WBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
-    //    static QTime lastCallTime;
+    //    static QElapsedTimer lastCallTime;
     //    if (!lastCallTime.isNull()) {
-    //        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
+    //        qDebug() << "time interval is " << lastCallTime.msecsTo(QElapsedTimer::currentTime());
     //    }
 
-    //  QTime mouseMoveTime = QTime::currentTime();
+    //  QTime mouseMoveTime = QElapsedTimer::currentTime();
     if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
         return;
     }
@@ -1068,20 +1068,20 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
             mUBRubberBand->setGeometry(bandRect);
             mUBRubberBand->show();
 
-            //          QTime startTime = QTime::currentTime();
-            //          QTime testTime = QTime::currentTime();
+            //          QTime startTime = QElapsedTimer::currentTime();
+            //          QTime testTime = QElapsedTimer::currentTime();
             QList<QGraphicsItem *> rubberItems = items(bandRect);
             //          qDebug() << "==================";
-            //          qDebug() << "| ====rubber items" << testTime.msecsTo(QTime::currentTime());
-            //          testTime = QTime::currentTime();
+            //          qDebug() << "| ====rubber items" << testTime.msecsTo(QElapsedTimer::currentTime());
+            //          testTime = QElapsedTimer::currentTime();
             foreach (QGraphicsItem *item, mJustSelectedItems) {
                 if (!rubberItems.contains(item)) {
                     item->setSelected(false);
                     mJustSelectedItems.remove(item);
                 }
             }
-            //          qDebug() << "| ===foreach length" << testTime.msecsTo(QTime::currentTime());
-            //          testTime = QTime::currentTime();
+            //          qDebug() << "| ===foreach length" << testTime.msecsTo(QElapsedTimer::currentTime());
+            //          testTime = QElapsedTimer::currentTime();
 
             int counter = 0;
             if (currentTool == WBStylusTool::Selector) {
@@ -1110,8 +1110,8 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
             }
 
             //          qDebug() << "| ==selected items count" << counter << endl
-            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << endl
-            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << endl
+            //                   << "| ==selection time" << testTime.msecsTo(QElapsedTimer::currentTime()) << endl
+            //                   << "| =elapsed time " << startTime.msecsTo(QElapsedTimer::currentTime()) << endl
             //                   << "==================";
             //          QCoreApplication::removePostedEvents(scene(), 0);
         }
@@ -1136,8 +1136,8 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
         event->accept ();
     }
 
-    //  qDebug() << "mouse move time" << mouseMoveTime.msecsTo(QTime::currentTime());
-    //  lastCallTime = QTime::currentTime();
+    //  qDebug() << "mouse move time" << mouseMoveTime.msecsTo(QElapsedTimer::currentTime());
+    //  lastCallTime = QElapsedTimer::currentTime();
 
 }
 

@@ -19,7 +19,7 @@ WBGraphicsTextItem::WBGraphicsTextItem(QGraphicsItem * parent)
     , WBGraphicsItem()
     , mTypeTextHereLabel(tr("<Type Text Here>"))
     , mMultiClickState(0)
-    , mLastMousePressTime(QTime::currentTime())
+    , mLastMousePressTime(QElapsedTimer::currentTime())
     , isActivatedTextEditor(true)
 {
     setDelegate(new WBGraphicsTextItemDelegate(this, 0));
@@ -119,7 +119,7 @@ void WBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
 
-    int elapsed = mLastMousePressTime.msecsTo(QTime::currentTime());
+    int elapsed = mLastMousePressTime.msecsTo(QElapsedTimer::currentTime());
 
     if (elapsed < WBApplication::app()->doubleClickInterval())
     {
@@ -132,7 +132,7 @@ void WBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         mMultiClickState = 1;
     }
 
-    mLastMousePressTime = QTime::currentTime();
+    mLastMousePressTime = QElapsedTimer::currentTime();
 
     if (mMultiClickState == 1)
     {

@@ -61,7 +61,7 @@ protected:
 private slots:
     void onPlayStopClicked();
     void onPauseClicked();
-    void onStateChanged(QMediaPlayer::State state);
+    void onStateChanged(QMediaPlayer::PlaybackState state);
     void onTotalTimeChanged(qint64 total);
     void onTick(qint64 currentTime);
     void onSliderChanged(int value);

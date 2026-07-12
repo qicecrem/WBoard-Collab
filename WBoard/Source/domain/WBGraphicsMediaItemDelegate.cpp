@@ -228,7 +228,7 @@ void WBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     updatePlayPauseState();
 }
 
-void WBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
+void WBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::PlaybackState state)
 {
     Q_UNUSED(state);
     // Possible states are StoppedState, PlayingState and PausedState

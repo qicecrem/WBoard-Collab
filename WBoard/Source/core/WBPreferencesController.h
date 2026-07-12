@@ -21,7 +21,7 @@
 21|    Q_OBJECT;
 22|
 23|public:
-24|    WBPreferencesDialog(WBPreferencesController* prefController, QWidget* parent = 0,Qt::WindowFlags f = 0 );
+24|    WBPreferencesDialog(WBPreferencesController* prefController, QWidget* parent = 0,Qt::WindowFlags f = Qt::WindowFlags() );
 25|    ~WBPreferencesDialog();
 26|
 27|protected:

@@ -39,7 +39,7 @@ protected:
 
 protected:
     void updateGeometries();
-    void initStyleOption(QStyleOptionFrameV2 *option) const;
+    void initStyleOption(QStyleOptionFrame *option) const;
 
     QWidget*        mLeftWidget;
     QLineEdit*      mLineEdit;

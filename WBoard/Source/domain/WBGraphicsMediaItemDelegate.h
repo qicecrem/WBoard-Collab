@@ -31,7 +31,7 @@ public slots:
     virtual void showHide(bool show);
 
     void mediaStatusChanged(QMediaPlayer::MediaStatus status);
-    void mediaStateChanged(QMediaPlayer::State state);
+    void mediaStateChanged(QMediaPlayer::PlaybackState state);
 
 protected slots:
     virtual void remove(bool canUndo = true);

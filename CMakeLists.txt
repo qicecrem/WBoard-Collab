@@ -102,6 +102,7 @@ qt_add_executable(${PROJECT_NAME}
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${WBOARD_SOURCE_DIR}
+    ${WBOARD_SOURCE_DIR}/web/browser
     ${WBOARD_UI_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}  # for generated ui_*.h
 )

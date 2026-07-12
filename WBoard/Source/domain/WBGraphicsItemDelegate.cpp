@@ -68,7 +68,7 @@ void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mIsPressed = true;
 
     // make sure delegate is selected, to avoid control being hidden
-    mPressedTime = QTime::currentTime();
+    mPressedTime = QElapsedTimer::currentTime();
 
     event->setAccepted(!mIsTransparentToMouseEvent);
 }
@@ -81,7 +81,7 @@ void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
 
     mIsPressed = false;
-    int timeto = qAbs(QTime::currentTime().msecsTo(mPressedTime));
+    int timeto = qAbs(QElapsedTimer::currentTime().msecsTo(mPressedTime));
 
     if (timeto < WBSettings::longClickInterval) {
         emit clicked();
@@ -119,7 +119,7 @@ void DelegateButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 void DelegateButton::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == mProgressTimerId) {
-        mPressProgres = qAbs(QTime::currentTime().msecsTo(mPressedTime));
+        mPressProgres = qAbs(QElapsedTimer::currentTime().msecsTo(mPressedTime));
         update();
     }
 }

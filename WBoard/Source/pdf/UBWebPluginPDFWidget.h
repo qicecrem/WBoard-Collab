@@ -35,7 +35,7 @@
 class PDFRenderer;
 class QProgressBar;
 
-class UBWebPluginPDFWidget : public UBWebPluginWidget
+class UBWebPluginPDFWidget : public WBWebPluginWidget
 {
     Q_OBJECT
 

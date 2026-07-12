@@ -645,7 +645,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
 
     qreal fontSize = 12;
-    QColor fontColor(qApp->palette().foreground().color());
+    QColor fontColor(qApp->palette().windowText().color());
     QString fontFamily = "Arial";
     QString fontStretch = "normal";
     bool italic = false;
@@ -781,7 +781,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QTextCharFormat textFormat;
      // default values
     textFormat.setFontPointSize(12);
-    textFormat.setForeground(qApp->palette().foreground().color());
+    textFormat.setForeground(qApp->palette().windowText().color());
     textFormat.setFontFamily("Arial");
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
