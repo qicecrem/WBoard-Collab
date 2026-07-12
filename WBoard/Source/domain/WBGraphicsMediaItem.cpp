@@ -41,7 +41,7 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mErrorString = "";
 
     mMediaObject = new QMediaPlayer(this);
-    mMediaObject->setMedia(pMediaFileUrl);
+    mMediaObject->setSource(pMediaFileUrl);
 
     setDelegate(new WBGraphicsMediaItemDelegate(this));
 
@@ -79,7 +79,7 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     this->setSize(320, 26);
     this->setMinimumSize(QSize(150, 26));
 
-    mMediaObject->setNotifyInterval(1000);
+    // Qt6 removed: mMediaObject->setNotifyInterval(1000);
 
 }
 
@@ -103,7 +103,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     //mMediaObject->setVideoOutput(mVideoItem);
     mHasVideoOutput = false;
 
-    mMediaObject->setNotifyInterval(50);
+    // Qt6 removed: mMediaObject->setNotifyInterval(50);
 
     setMinimumSize(QSize(320, 240));
     setSize(320, 240);
@@ -155,7 +155,7 @@ QVariant WBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
-                  mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
+                  mMediaObject->setSource(QUrl::fromLocalFile(absoluteMediaFilename));
 
         }
     }
@@ -284,7 +284,7 @@ void WBGraphicsMediaItem::toggleMute()
 void WBGraphicsMediaItem::setMute(bool bMute)
 {
     mMuted = bMute;
-    mMediaObject->setMuted(mMuted);
+    mMediaObject->audioOutput()->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
@@ -306,11 +306,11 @@ void WBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 {
     if (!shown) {
         mMuted = true;
-        mMediaObject->setMuted(mMuted);
+        mMediaObject->audioOutput()->setMuted(mMuted);
     }
     else if (!mMutedByUserAction) {
         mMuted = false;
-        mMediaObject->setMuted(mMuted);
+        mMediaObject->audioOutput()->setMuted(mMuted);
     }
 }
 void WBGraphicsMediaItem::play()
@@ -363,7 +363,7 @@ void WBGraphicsMediaItem::togglePlayPause()
     }
 
     else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
-        mMediaObject->setMedia(mediaFileUrl());
+        mMediaObject->setSource(mediaFileUrl());
         mMediaObject->play();
     }
 }
@@ -386,7 +386,7 @@ void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
             mErrorString = tr("Media playback service not found");
             break;
         default:
-            mErrorString = tr("Media error: ") + QString(errorCode) + " (" + mMediaObject->errorString() + ")";
+            mErrorString = tr("Media error: ") + QString::number(errorCode) + " (" + mMediaObject->errorString() + ")";
     }
 
     if (!mErrorString.isEmpty() ) {
@@ -608,7 +608,7 @@ void WBGraphicsVideoItem::activeSceneChanged()
     // Call setVideoOutput, if the video is visible and if it hasn't been called already
     if (!mHasVideoOutput && WBApplication::boardController->activeScene() == scene()) {
         //qDebug() << "setting video output";
-        mMediaObject->setMedia(mMediaFileUrl);
+        mMediaObject->setSource(mMediaFileUrl);
         mMediaObject->setVideoOutput(mVideoItem);
         mHasVideoOutput = true;
     }
