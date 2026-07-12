@@ -984,7 +984,7 @@ QString WBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(const QString& pUrl, co
         }
 
         QTextStream outConfig(&configFile);
-        outConfig// setCodec removed;
+        outConfig.// setCodec removed (Qt6);
 
         outConfig << configTemplate;
         configFile.close();
@@ -997,7 +997,7 @@ QString WBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(const QString& pUrl, co
         }
 
         QTextStream outIndex(&indexFile);
-        outIndex// setCodec removed;
+        outIndex.// setCodec removed (Qt6);
 
         outIndex << htmlTemplate;
         indexFile.close();
@@ -1028,21 +1028,21 @@ QString WBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     }
 
     QTextStream outConfig(&configFile);
-    outConfig// setCodec removed;
-    outConfig << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
-    outConfig << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << "\n";
-    outConfig << "    xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << "\n";
+    outConfig.// setCodec removed (Qt6);
+    outConfig << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << Qt::endl;
+    outConfig << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << Qt::endl;
+    outConfig << "    xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << Qt::endl;
     outConfig << "    id=\"http://uniboard.mnemis.com/" << pName << "\"" <<endl;
 
-    outConfig << "    version=\"1.0\"" << "\n";
-    outConfig << "    width=\"" << sizeHint.width() << "\"" << "\n";
-    outConfig << "    height=\"" << sizeHint.height() << "\"" << "\n";
-    outConfig << "    ub:resizable=\"true\">" << "\n";
+    outConfig << "    version=\"1.0\"" << Qt::endl;
+    outConfig << "    width=\"" << sizeHint.width() << "\"" << Qt::endl;
+    outConfig << "    height=\"" << sizeHint.height() << "\"" << Qt::endl;
+    outConfig << "    ub:resizable=\"true\">" << Qt::endl;
 
-    outConfig << "  <name>" << pName << "</name>" << "\n";
-    outConfig << "  <content src=\"" << pName << ".html\"/>" << "\n";
+    outConfig << "  <name>" << pName << "</name>" << Qt::endl;
+    outConfig << "  <content src=\"" << pName << ".html\"/>" << Qt::endl;
 
-    outConfig << "</widget>" << "\n";
+    outConfig << "</widget>" << Qt::endl;
 
     configFile.close();
 
@@ -1057,17 +1057,17 @@ QString WBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     }
 
     QTextStream outStartFile(&widgetHtmlFile);
-    outStartFile// setCodec removed;
+    outStartFile.// setCodec removed (Qt6);
 
-    outStartFile << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">" << "\n";
-    outStartFile << "<html>" << "\n";
-    outStartFile << "<head>" << "\n";
-    outStartFile << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">" << "\n";
-    outStartFile << "</head>" << "\n";
-    outStartFile << "  <body>" << "\n";
-    outStartFile << html << "\n";
-    outStartFile << "  </body>" << "\n";
-    outStartFile << "</html>" << "\n";
+    outStartFile << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">" << Qt::endl;
+    outStartFile << "<html>" << Qt::endl;
+    outStartFile << "<head>" << Qt::endl;
+    outStartFile << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">" << Qt::endl;
+    outStartFile << "</head>" << Qt::endl;
+    outStartFile << "  <body>" << Qt::endl;
+    outStartFile << html << Qt::endl;
+    outStartFile << "  </body>" << Qt::endl;
+    outStartFile << "</html>" << Qt::endl;
 
     widgetHtmlFile.close();
 

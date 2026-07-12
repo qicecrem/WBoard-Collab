@@ -710,7 +710,7 @@ bool WBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     WBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         WBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = parent.child(i, 0);
+        QModelIndex curChildIndex = model()->index(i, 0, parent);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -869,7 +869,7 @@ QPersistentModelIndex WBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = source.child(i, 0);
+            QModelIndex curNewParentIndexChild = model()->index(i, 0, source);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
@@ -1009,7 +1009,7 @@ bool WBDocumentTreeModel::newNodeAllowed(const QModelIndex &pSelectedIndex)  con
 
 QModelIndex WBDocumentTreeModel::goTo(const QString &dir)
 {
-    QStringList pathList = dir.split("/", QString::SkipEmptyParts);
+    QStringList pathList = dir.split("/", Qt::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         return untitledDocumentsIndex();
@@ -2284,7 +2284,7 @@ void WBDocumentController::deleteMultipleItems(QModelIndexList indexes, WBDocume
 					pureSetDocument(newProxy);
 				}
 				emit documentThumbnailsUpdated(this);
-				Sleep(100);//zhusizhi
+				QThread::msleep(100); // zhusizhi
 
                 deleteIndexAndAssociatedData(indexes.at(i));
                 
@@ -2362,7 +2362,7 @@ void WBDocumentController::deleteSingleItem(QModelIndex currentIndex, WBDocument
 				pureSetDocument(newProxy);
 			}
 			emit documentThumbnailsUpdated(this);
-			Sleep(100);//zhusizhi
+			QThread::msleep(100); // zhusizhi
             deleteIndexAndAssociatedData(currentIndex);
             
             break;

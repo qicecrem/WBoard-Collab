@@ -1,7 +1,8 @@
 #include "WBGraphicsScene.h"
 
 #include <QtWidgets>
-#include <QtWebEngine>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <QtSvg>
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
