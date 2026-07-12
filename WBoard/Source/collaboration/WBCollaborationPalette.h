@@ -1,7 +1,8 @@
 #ifndef WBCOLLABORATIONPALETTE_H
 #define WBCOLLABORATIONPALETTE_H
 
-#include <QtWidgets/QWidget>
+#include "gui/WBDockPaletteWidget.h"
+
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
@@ -13,8 +14,9 @@
 #include <QtCore/QStringList>
 
 class WBCollaborationManager;
+class WBCollaborationDiscovery;
 
-class WBCollaborationPalette : public QWidget
+class WBCollaborationPalette : public WBDockPaletteWidget
 {
     Q_OBJECT
 
@@ -22,6 +24,10 @@ public:
     explicit WBCollaborationPalette(WBCollaborationManager *manager,
                                      QWidget *parent = nullptr);
     ~WBCollaborationPalette();
+
+    bool visibleInMode(eWBDockPaletteWidgetMode mode) override;
+
+    void setDiscovery(WBCollaborationDiscovery *discovery);
 
 private slots:
     void onStartHost();

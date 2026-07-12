@@ -8,6 +8,8 @@
 
 #include "core/WBApplication.h"
 #include "core/WBSettings.h"
+#include "collaboration/WBCollaborationManager.h"
+#include "domain/WBGraphicsStroke.h"
 #include "core/WBSetting.h"
 #include "core/WBPersistenceManager.h"
 #include "core/WBApplicationController.h"
@@ -1460,6 +1462,13 @@ void WBBoardController::setActiveDocumentScene(WBDocumentProxy* pDocumentProxy, 
 
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
+
+        // Connect collaboration stroke signal
+        if (WBApplication::collaborationManager) {
+            connect(mActiveScene, &WBGraphicsScene::strokeCompleted,
+                    WBApplication::collaborationManager, &WBCollaborationManager::onStrokeCompleted,
+                    Qt::UniqueConnection);
+        }
 
         setDocument(pDocumentProxy, forceReload);
 

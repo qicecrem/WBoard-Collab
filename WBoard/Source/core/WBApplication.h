@@ -23,6 +23,7 @@ class WBPersistenceManager;
 class WBApplicationController;
 class WBDocumentController;
 class WBMainWindow;
+class WBCollaborationManager;
 
 class WBApplication : public QtSingleApplication
 {
@@ -42,6 +43,7 @@ class WBApplication : public QtSingleApplication
         static WBBoardController* boardController;
         static WBWebController* webController;
         static WBDocumentController* documentController;
+        static WBCollaborationManager* collaborationManager;
 
         static WBMainWindow* mainWindow;
 

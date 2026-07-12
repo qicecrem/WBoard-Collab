@@ -24,6 +24,7 @@
 #include "board/WBDrawingController.h"
 #include "board/WBBoardView.h"
 #include "board/WBBoardPaletteManager.h"
+#include "collaboration/WBCollaborationManager.h"
 #include "web/WBWebController.h"
 
 #include "document/WBDocumentController.h"
@@ -47,6 +48,7 @@ WBApplicationController* WBApplication::applicationController = 0;
 WBBoardController* WBApplication::boardController = 0;
 WBWebController* WBApplication::webController = 0;
 WBDocumentController* WBApplication::documentController = 0;
+WBCollaborationManager* WBApplication::collaborationManager = 0;
 
 WBMainWindow* WBApplication::mainWindow = 0;
 
@@ -270,6 +272,8 @@ int WBApplication::exec(const QString& pFileToImport)
 
     boardController = new WBBoardController(mainWindow);
     boardController->init();
+
+    collaborationManager = new WBCollaborationManager(qApp);
 
     webController = new WBWebController(mainWindow);
     documentController = new WBDocumentController(mainWindow);

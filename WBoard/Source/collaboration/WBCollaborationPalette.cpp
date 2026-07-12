@@ -9,7 +9,7 @@
 
 WBCollaborationPalette::WBCollaborationPalette(WBCollaborationManager *manager,
                                                  QWidget *parent)
-    : QWidget(parent)
+    : WBDockPaletteWidget(parent, "WBCollaborationPalette")
     , mManager(manager)
     , mHostRoomName(nullptr)
     , mHostUserName(nullptr)
@@ -28,6 +28,12 @@ WBCollaborationPalette::WBCollaborationPalette(WBCollaborationManager *manager,
     , mRoomLabel(nullptr)
     , mStack(nullptr)
 {
+    mName = QStringLiteral("Collaboration");
+    registerMode(eWBDockPaletteWidget_BOARD);
+    registerMode(eWBDockPaletteWidget_DOCUMENT);
+    registerMode(eWBDockPaletteWidget_WEB);
+    registerMode(eWBDockPaletteWidget_DESKTOP);
+
     setupUI();
 
     // Connect manager signals
@@ -47,6 +53,21 @@ WBCollaborationPalette::WBCollaborationPalette(WBCollaborationManager *manager,
 
 WBCollaborationPalette::~WBCollaborationPalette()
 {
+}
+
+bool WBCollaborationPalette::visibleInMode(eWBDockPaletteWidgetMode mode)
+{
+    Q_UNUSED(mode);
+    return true; // Always visible
+}
+
+void WBCollaborationPalette::setDiscovery(WBCollaborationDiscovery *discovery)
+{
+    if (!discovery) return;
+    connect(discovery, &WBCollaborationDiscovery::hostDiscovered,
+            this, [this](const WBCollaborationHost &host) {
+                onHostDiscovered(host.roomId, host.address.toString(), host.wsPort);
+            });
 }
 
 void WBCollaborationPalette::setupUI()
