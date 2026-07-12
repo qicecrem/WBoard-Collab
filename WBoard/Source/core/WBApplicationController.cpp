@@ -423,7 +423,7 @@ void WBApplicationController::showDocument()
 
 void WBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 {
-    int desktopWidgetIndex = qApp->desktop()->screenNumber(mMainWindow);
+    int desktopWidgetIndex = QGuiApplication::screens().indexOf(mMainWindow->screen());
 
     if (WBApplication::boardController)
         WBApplication::boardController->hide();
@@ -433,7 +433,7 @@ void WBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
     if (mMirror)
     {
-        QRect rect = qApp->desktop()->screenGeometry(desktopWidgetIndex);
+        QRect rect = QGuiApplication::screens().at(desktopWidgetIndex)->geometry();
         mMirror->setSourceRect(rect);
     }
 

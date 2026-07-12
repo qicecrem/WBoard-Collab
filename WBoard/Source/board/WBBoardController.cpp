@@ -151,7 +151,7 @@ void WBBoardController::initBackgroundGridSize()
     //qDebug() << "dpi: " << dpi;
 
     // The display manager isn't initialized yet so we have to just assume the control view is on the main display
-    qreal screenY = desktop->screenGeometry(mControlView).height();
+    qreal screenY = mControlView->screen()->geometry().height();
     qreal documentY = mActiveScene->nominalSize().height();
     qreal resolutionRatio = documentY / screenY;
 

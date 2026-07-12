@@ -147,7 +147,7 @@ void WBPodcastController::setSourceWidget(QWidget* pWidget)
 {
     if (mSourceWidget != pWidget)
     {
-        if (mSourceWidget == qApp->desktop())
+        if (mSourceWidget == QApplication::primaryScreen())
         {
             killTimer(mScreenGrabingTimerEventID);
             mScreenGrabingTimerEventID = 0;
@@ -166,8 +166,8 @@ void WBPodcastController::setSourceWidget(QWidget* pWidget)
         {
             QSizeF sourceWidgetSize(mSourceWidget->size());
 
-            if (mSourceWidget == qApp->desktop())
-                sourceWidgetSize = qApp->desktop()->availableGeometry(WBApplication::applicationController->displayManager()->controleScreenIndex()).size();
+            if (mSourceWidget == QApplication::primaryScreen())
+                sourceWidgetSize = QGuiApplication::primaryScreen()->availableGeometry(WBApplication::applicationController->displayManager()->controleScreenIndex()).size();
 
             QSizeF videoFrameSize(mVideoFrameSizeAtStart);
 
@@ -205,7 +205,7 @@ void WBPodcastController::setSourceWidget(QWidget* pWidget)
 
                 startNextChapter();
 
-                if(mSourceWidget == qApp->desktop())
+                if(mSourceWidget == QApplication::primaryScreen())
                 {
                     mScreenGrabingTimerEventID  = startTimer(1000 / mVideoFramesPerSecondAtStart);
                 }
@@ -650,7 +650,7 @@ void WBPodcastController::applicationDesktopMode(bool displayed)
 
     if (displayed)
     {
-        setSourceWidget(qApp->desktop());
+        setSourceWidget(QApplication::primaryScreen());
     }
     else
     {

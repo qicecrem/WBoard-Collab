@@ -58,7 +58,7 @@ WBDesktopAnnotationController::WBDesktopAnnotationController(QObject *parent, WB
 #endif
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
-    mTransparentDrawingView->resize(WBApplication::desktop()->width(), WBApplication::desktop()->height());
+    mTransparentDrawingView->resize(QApplication::primaryScreen()->geometry().width(), QApplication::primaryScreen()->geometry().height());
 
     mTransparentDrawingView->setMouseTracking(true);
 
@@ -292,7 +292,7 @@ void WBDesktopAnnotationController::showWindow()
 
     if (!mWindowPositionInitialized)
     {
-        QRect desktopRect = QApplication::desktop()->screenGeometry(mDesktopPalette->pos());
+        QRect desktopRect = QApplication::primaryScreen()->screenGeometry(mDesktopPalette->pos());
 
         mDesktopPalette->move(5, desktopRect.top() + 150);
 

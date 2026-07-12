@@ -1,132 +1,131 @@
-1|#include <QScreen>
-2|
-3|#include "WBScreenMirror.h"
-4|
-5|#include "core/WBSettings.h"
-6|#include "core/WBSetting.h"
-7|#include "core/WBApplication.h"
-8|#include "board/WBBoardController.h"
-9|
-10|#if defined(Q_OS_OSX)
-11|#include <ApplicationServices/ApplicationServices.h>
-12|#endif
-13|
-14|#include "core/memcheck.h"
-15|
-16|
-17|WBScreenMirror::WBScreenMirror(QWidget* parent)
-18|    : QWidget(parent)
-19|    , mScreenIndex(0)
-20|    , mSourceWidget(0)
-21|    , mTimerID(0)
-22|{
-23|    // NOOP
-24|}
-25|
-26|
-27|WBScreenMirror::~WBScreenMirror()
-28|{
-29|    // NOOP
-30|}
-31|
-32|
-33|void WBScreenMirror::paintEvent(QPaintEvent *event)
-34|{
-35|    Q_UNUSED(event);
-36|
-37|    QPainter painter(this);
-38|
-39|    painter.fillRect(0, 0, width(), height(), QBrush(Qt::black));
-40|
-41|    if (!mLastPixmap.isNull())
-42|    {
-43|        int x = (width() - mLastPixmap.width()) / 2;
-44|        int y = (height() - mLastPixmap.height()) / 2;
-45|
-46|        painter.drawPixmap(x, y, mLastPixmap);
-47|    }
-48|}
-49|
-50|
-51|void WBScreenMirror::timerEvent(QTimerEvent *event)
-52|{
-53|    Q_UNUSED(event);
-54|
-55|    grabPixmap();
-56|
-57|    update();
-58|}
-59|
-60|void WBScreenMirror::grabPixmap()
-61|{
-62|    if (mSourceWidget)
-63|    {
-64|        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
-65|        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
-66|
-67|        mRect.setTopLeft(topLeft);
-68|        mRect.setBottomRight(bottomRight);
-69|        mLastPixmap = mSourceWidget->grab();
-70|    }
-71|    else{
-72|        // WHY HERE?
-73|        // this is the case we are showing the desktop but the is no widget and we use the last widget rectagle to know
-74|        // what we have to grab. Not very good way of doing
-75|        QScreen * desktop = QApplication::primaryScreen();
-76|        QScreen * screen = WBApplication::controlScreen();
-77|        mLastPixmap = screen->grabWindow(desktop->effectiveWinId(), mRect.x(), mRect.y(), mRect.width(), mRect.height());
-78|    }
-79|
-80|    if (!mLastPixmap.isNull())
-81|        mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-82|}
-83|
-84|
-85|void WBScreenMirror::setSourceWidget(QWidget *sourceWidget)
-86|{
-87|    mSourceWidget = sourceWidget;
-88|
-89|    mScreenIndex = QApplication::primaryScreen()->screenNumber(sourceWidget);
-90|
-91|    grabPixmap();
-92|
-93|    update();
-94|}
-95|
-96|
-97|void WBScreenMirror::start()
-98|{
-99|    qDebug() << "mirroring START";
-100|    WBApplication::boardController->freezeW3CWidgets(true);
-101|    if (mTimerID == 0)
-102|    {
-103|        int ms = 125;
-104|
-105|        bool success;
-106|        int fps = WBSettings::settings()->mirroringRefreshRateInFps->get().toInt(&success);
-107|
-108|        if (success && fps > 0)
-109|        {
-110|            ms = 1000 / fps;
-111|        }
-112|
-113|        mTimerID = startTimer(ms);
-114|    }
-115|    else
-116|    {
-117|        qDebug() << "WBScreenMirror::start() : Timer already running ...";
-118|    }
-119|}
-120|
-121|
-122|void WBScreenMirror::stop()
-123|{
-124|    qDebug() << "mirroring STOP";
-125|    WBApplication::boardController->freezeW3CWidgets(false);
-126|    if (mTimerID != 0)
-127|    {
-128|        killTimer(mTimerID);
-129|        mTimerID = 0;
-130|    }
-131|}
-132|
+#include <QScreen>
+
+#include "WBScreenMirror.h"
+
+#include "core/WBSettings.h"
+#include "core/WBSetting.h"
+#include "core/WBApplication.h"
+#include "board/WBBoardController.h"
+
+#if defined(Q_OS_OSX)
+#include <ApplicationServices/ApplicationServices.h>
+#endif
+
+#include "core/memcheck.h"
+
+
+WBScreenMirror::WBScreenMirror(QWidget* parent)
+    : QWidget(parent)
+    , mScreenIndex(0)
+    , mSourceWidget(0)
+    , mTimerID(0)
+{
+    // NOOP
+}
+
+
+WBScreenMirror::~WBScreenMirror()
+{
+    // NOOP
+}
+
+
+void WBScreenMirror::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+
+    painter.fillRect(0, 0, width(), height(), QBrush(Qt::black));
+
+    if (!mLastPixmap.isNull())
+    {
+        int x = (width() - mLastPixmap.width()) / 2;
+        int y = (height() - mLastPixmap.height()) / 2;
+
+        painter.drawPixmap(x, y, mLastPixmap);
+    }
+}
+
+
+void WBScreenMirror::timerEvent(QTimerEvent *event)
+{
+    Q_UNUSED(event);
+
+    grabPixmap();
+
+    update();
+}
+
+void WBScreenMirror::grabPixmap()
+{
+    if (mSourceWidget)
+    {
+        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
+        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
+
+        mRect.setTopLeft(topLeft);
+        mRect.setBottomRight(bottomRight);
+        mLastPixmap = mSourceWidget->grab();
+    }
+    else{
+        // WHY HERE?
+        // this is the case we are showing the desktop but the is no widget and we use the last widget rectagle to know
+        // what we have to grab. Not very good way of doing
+        QScreen * desktop = QApplication::primaryScreen();
+        QScreen * screen = WBApplication::controlScreen();
+        mLastPixmap = screen->grabWindow(0, mRect.x(), mRect.y(), mRect.width(), mRect.height());
+    }
+
+    if (!mLastPixmap.isNull())
+        mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
+
+void WBScreenMirror::setSourceWidget(QWidget *sourceWidget)
+{
+    mSourceWidget = sourceWidget;
+
+    mScreenIndex = QApplication::primaryScreen()->screenNumber(sourceWidget);
+
+    grabPixmap();
+
+    update();
+}
+
+
+void WBScreenMirror::start()
+{
+    qDebug() << "mirroring START";
+    WBApplication::boardController->freezeW3CWidgets(true);
+    if (mTimerID == 0)
+    {
+        int ms = 125;
+
+        bool success;
+        int fps = WBSettings::settings()->mirroringRefreshRateInFps->get().toInt(&success);
+
+        if (success && fps > 0)
+        {
+            ms = 1000 / fps;
+        }
+
+        mTimerID = startTimer(ms);
+    }
+    else
+    {
+        qDebug() << "WBScreenMirror::start() : Timer already running ...";
+    }
+}
+
+
+void WBScreenMirror::stop()
+{
+    qDebug() << "mirroring STOP";
+    WBApplication::boardController->freezeW3CWidgets(false);
+    if (mTimerID != 0)
+    {
+        killTimer(mTimerID);
+        mTimerID = 0;
+    }
+}
