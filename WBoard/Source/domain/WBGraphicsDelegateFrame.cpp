@@ -250,7 +250,7 @@ void WBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
         painter.end();
 
         pixCursor.setMask(bmpMask);
-        controlViewport->setCursor(pixCursor);
+        controlViewport->setCursor(QCursor(QBitmap::fromImage(pixCursor.toImage())));
     }
 }
 
