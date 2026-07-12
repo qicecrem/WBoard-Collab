@@ -340,7 +340,7 @@ qreal WBGraphicsTextItem::pixelsPerPoint() const
     //qDebug() << "Point size: " << pointSize;
 
     if (pointSize == 0)
-        return QUuid();
+        return nullptr;
 
     return pixelSize/pointSize;
 }

@@ -67,7 +67,7 @@ const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
-QString WBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
+QString WBSvgSubsetAdaptor::toSvgTransform(const QTransform& matrix)
 {
     return QString("matrix(%1, %2, %3, %4, %5, %6)")
             .arg(matrix.m11(), 0 , 'g')
@@ -79,9 +79,9 @@ QString WBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 }
 
 
-QMatrix WBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
+QTransform WBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 {
-    QMatrix matrix;
+    QTransform matrix;
     QString ts = transform;
     ts.replace("matrix(", "");
     ts.replace(")", "");
@@ -89,7 +89,7 @@ QMatrix WBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 
     if (sl.size() >= 6)
     {
-        matrix.setTransform(
+        matrix.setMatrix(
                     sl.at(0).toFloat(),
                     sl.at(1).toFloat(),
                     sl.at(2).toFloat(),
@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return 0;
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -228,7 +228,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         return scene;
     }
 
-    return QUuid();
+    return 0;
 }
 
 
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return 0;
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -384,7 +384,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
 
                 if (!svgViewBox.isNull())
                 {
-                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), Qt::SkipEmptyParts);
+                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
 
                     QRectF sceneRect;
                     if (ts.size() >= 4)
@@ -465,7 +465,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                 QStringRef pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
                 if (!pageNominalSize.isNull())
                 {
-                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), Qt::SkipEmptyParts);
+                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), QString::SkipEmptyParts);
 
                     QSize sceneSize;
                     if (ts.size() >= 2)
@@ -1199,7 +1199,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
                         QVariant layer = sg->data(WBGraphicsItemData::ItemLayerType);
                         mXmlWriter.writeAttribute(WBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
-                        QMatrix matrix = sg->sceneTransform();
+                        QTransform matrix = sg->sceneTransform();
                         if (!matrix.isIdentity())
                             mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
 
@@ -1417,7 +1417,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
 
 void WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *groupDomDocument)
 {
-    QUuid uuid = QUuid::fromString(WBGraphicsScene::getPersonalUuid(groupItem));
+    QUuid uuid = WBGraphicsScene::getPersonalUuid(groupItem);
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
         curGroupElement.setAttribute(aId, uuid.toString());
@@ -1432,7 +1432,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
-            QUuid tmpUuid = QUuid::fromString(WBGraphicsScene::getPersonalUuid(item));
+            QUuid tmpUuid = WBGraphicsScene::getPersonalUuid(item);
             if (!tmpUuid.isNull()) {
                 if (item->type() == WBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);
@@ -1627,11 +1627,11 @@ WBGraphicsPolygonItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItemFromPol
 
     if (!svgPoints.isNull())
     {
-        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), Qt::SkipEmptyParts);
+        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
 
         foreach(const QString sPoint, ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -1752,7 +1752,7 @@ WBGraphicsPolygonItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItemFromLin
     else
     {
         qWarning() << "cannot make sense of 'line' value";
-        return QUuid();
+        return 0;
     }
 
     QStringRef strokeWidth = mXmlReader.attributes().value("stroke-width");
@@ -1898,13 +1898,13 @@ QList<WBGraphicsPolygonItem*> WBSvgSubsetAdaptor::WBSvgSubsetReader::polygonItem
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                                                    Qt::SkipEmptyParts);
+                                                    QString::SkipEmptyParts);
 
         QList<QPointF> points;
 
         foreach(const QString sPoint, ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -1982,7 +1982,7 @@ WBGraphicsPixmapItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pixmapItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return QUuid();
+        return 0;
     }
 
     graphicsItemFromSvg(pixmapItem);
@@ -2023,7 +2023,7 @@ WBGraphicsSvgItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::svgItemFromSvg()
     else
     {
         qWarning() << "cannot make sens of image href value";
-        return QUuid();
+        return 0;
     }
 
     graphicsItemFromSvg(svgItem);
@@ -2075,7 +2075,7 @@ WBGraphicsPDFItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::pdfItemFromPDF()
     if (parts.count() != 2)
     {
         qWarning() << "invalid pdf href value" << href;
-        return QUuid();
+        return 0;
     }
 
     QString pdfPath = parts[0];
@@ -2143,7 +2143,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::audioItemFromSvg()
     if (audioHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return QUuid();
+        return 0;
     }
 
     QString href = mDocumentPath + "/" + audioHref.toString();
@@ -2178,7 +2178,7 @@ WBGraphicsMediaItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::videoItemFromSvg()
     if (videoHref.isNull())
     {
         qWarning() << "cannot make sens of video href value";
-        return QUuid();
+        return 0;
     }
 
     QString href = mDocumentPath + "/" + videoHref.toString();
@@ -2213,7 +2213,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
 
-    QMatrix itemMatrix;
+    QTransform itemMatrix;
 
     if (!svgTransform.isNull())
     {
@@ -2472,7 +2472,7 @@ WBGraphicsAppleWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsAppleW
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return QUuid();
+        return 0;
     }
 
     QString href = widgetUrl.toString();
@@ -2498,7 +2498,7 @@ WBGraphicsW3CWidgetItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsW3CWidge
     if (widgetUrl.isNull())
     {
         qWarning() << "cannot make sens of widget src value";
-        return QUuid();
+        return 0;
     }
 
     QString href = widgetUrl.toString();
@@ -2611,7 +2611,7 @@ WBGraphicsTextItem* WBSvgSubsetAdaptor::WBSvgSubsetReader::textItemFromSvg()
         {
             delete textItem;
             textItem = 0;
-            return QUuid();
+            return 0;
         }
 
         mXmlReader.readNext();
