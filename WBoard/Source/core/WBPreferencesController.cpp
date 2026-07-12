@@ -57,7 +57,7 @@ WBPreferencesController::WBPreferencesController(QWidget *parent)
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens(1);
-    connect(qGuiApp, &QGuiApplication::screenAdded, this, &WBPreferencesController::adjustScreens);
+    connect(mDesktop, &QScreen::screenCountChanged, this, &WBPreferencesController::adjustScreens);
 
     wire();
 }
