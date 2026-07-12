@@ -79,7 +79,7 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     this->setSize(320, 26);
     this->// setMinimumSize removed: QSize(150, 26));
 
-    mMediaObject->// setNotifyInterval removed: 1000;
+    // mMediaObject->setNotifyInterval(1000);
 
 }
 
@@ -106,7 +106,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     mMediaObject->// setNotifyInterval removed: 50;
 
     // setMinimumSize removed: QSize(320, 240));
-    setSize(320, 240);
+    resize(320, 240);
 
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
@@ -384,7 +384,7 @@ void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
             break;
         // ServiceMissingError merged into ResourceError in Qt6
         default:
-            mErrorString = tr("Media error: ") + QString(errorCode) + " (" + mMediaObject->errorString() + ")";
+            mErrorString = tr("Media error: ") + QString::number(static_cast<int>(errorCode)) + " (" + mMediaObject->errorString() + ")";
     }
 
     if (!mErrorString.isEmpty() ) {
@@ -508,7 +508,7 @@ void WBGraphicsVideoItem::setSize(int width, int height)
     mVideoItem->// setSize removed: QSize(sizeX, sizeY));
 
 
-    WBGraphicsMediaItem::setSize(sizeX, sizeY);
+    resize(sizeX, sizeY);
 }
 
 void WBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)

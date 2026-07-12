@@ -1,3 +1,4 @@
+#include <QRegExp>
 #include "WBStringUtils.h"
 
 #include "core/memcheck.h"

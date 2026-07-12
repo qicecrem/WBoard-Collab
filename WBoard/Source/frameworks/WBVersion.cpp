@@ -1,3 +1,4 @@
+#include <QRegExp>
 #include "WBVersion.h"
 
 #include <QtCore>
