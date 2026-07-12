@@ -1,0 +1,34 @@
+# Build directories
+build/
+out/
+*.xcodeproj
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+# Object files
+*.o
+*.obj
+*.moc
+
+# MOC generated
+moc_*.cpp
+ui_*.h
+
+# Test binary
+test_collaboration
+
+# Qt Creator
+*.pro.user
+*.qbs
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

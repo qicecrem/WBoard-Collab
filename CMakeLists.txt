@@ -82,15 +82,8 @@ list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*pdf/UB.*\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/ffmpeg/.*")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*podcast/WBPodcastController\\.(cpp|h)$")
 
-# Also exclude .rc files
-list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*\\.rc$")
-
-# Collaboration module
-file(GLOB WBOARD_COLLAB_SOURCES
-    ${WBOARD_SOURCE_DIR}/collaboration/*.cpp
-    ${WBOARD_SOURCE_DIR}/collaboration/*.h
-)
-list(APPEND WBOARD_SOURCES ${WBOARD_COLLAB_SOURCES})
+# Also exclude .rc files (Windows resource files)
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*\.rc$")
 
 # Resources
 set(WBOARD_QRC ${WBOARD_RESOURCES_DIR}/WBoard.qrc)

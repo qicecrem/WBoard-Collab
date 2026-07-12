@@ -270,10 +270,10 @@ int WBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
     connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
 
+    collaborationManager = new WBCollaborationManager(qApp);
+
     boardController = new WBBoardController(mainWindow);
     boardController->init();
-
-    collaborationManager = new WBCollaborationManager(qApp);
 
     webController = new WBWebController(mainWindow);
     documentController = new WBDocumentController(mainWindow);
