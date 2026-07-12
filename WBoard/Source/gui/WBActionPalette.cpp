@@ -136,7 +136,9 @@ void WBActionPalette::groupActions()
         ++i;
     }
 
-    connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
+    connect(mButtonGroup, &QButtonGroup::buttonClicked, this, [this](QAbstractButton* btn){
+        emit buttonGroupClicked(mButtonGroup->id(btn));
+    });
 }
 
 

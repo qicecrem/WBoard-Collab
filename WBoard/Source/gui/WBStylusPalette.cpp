@@ -54,7 +54,9 @@ WBStylusPalette::WBStylusPalette(QWidget *parent, Qt::Orientation orient)
         {
             mButtonGroup->addButton(mButtons[i], i);
         }
-        connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
+        connect(mButtonGroup, &QButtonGroup::buttonClicked, this, [this](QAbstractButton* btn){
+            emit buttonGroupClicked(mButtonGroup->id(btn));
+        });
     }
 
     adjustSizeAndPosition();
