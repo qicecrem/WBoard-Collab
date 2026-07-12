@@ -688,7 +688,7 @@ void WBBoardView::handleItemMousePress(QMouseEvent *event)
     if (itemShouldReceiveMousePressEvent(movingItem)){
         QGraphicsView::mousePressEvent (event);
 
-        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos()), transform()));
+        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), transform()));
   
         if (item && (item->type() == QGraphicsProxyWidget::Type) && item->parentObject() && item->parentObject()->type() != QGraphicsProxyWidget::Type)
         {
@@ -904,7 +904,7 @@ void WBBoardView::mousePressEvent (QMouseEvent *event)
     }
 
     mMouseDownPos = event->pos ();
-    movingItem = scene()->itemAt(this->mapToScene(event->localPos()), QTransform());
+    movingItem = scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform());
 
     if (event->button () == Qt::LeftButton && isInteractive())
     {
@@ -1109,9 +1109,9 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
                 }
             }
 
-            //          qDebug() << "| ==selected items count" << counter << std::endl
-            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << std::endl
-            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << std::endl
+            //          qDebug() << "| ==selected items count" << counter << Qt::endl
+            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << Qt::endl
+            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << Qt::endl
             //                   << "==================";
             //          QCoreApplication::removePostedEvents(scene(), 0);
         }
@@ -1162,7 +1162,7 @@ void WBBoardView::mouseReleaseEvent (QMouseEvent *event)
             graphicsItem->Delegate()->commitUndoStep();
 
         bool bReleaseIsNeed = true;
-        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos()), QTransform())))
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
@@ -1227,7 +1227,7 @@ void WBBoardView::mouseReleaseEvent (QMouseEvent *event)
     else if (currentTool == WBStylusTool::Text)
     {
         bool bReleaseIsNeed = true;
-        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos()), QTransform())))
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;

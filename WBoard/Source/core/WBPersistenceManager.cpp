@@ -117,14 +117,14 @@ void WBPersistenceManager::createDocumentProxiesStructure(bool interactive)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 loadFolderTreeFromXml("", xmlDom.firstChildElement());
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << std::endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << Qt::endl
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << std::endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << Qt::endl
                      << "Error:" << inFile.errorString();
         }
     }
@@ -277,7 +277,7 @@ void WBPersistenceManager::closing()
 
         outFile.close();
     } else {
-        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << std::endl
+        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << Qt::endl
                  << "Error string:" << outFile.errorString();
     }
 }
