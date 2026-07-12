@@ -19,7 +19,7 @@
 
 #include "core/memcheck.h"
 
-#include "qdesktopwidget.h"
+#include <QScreen>
 
 qreal WBPreferencesController::sSliderRatio = 10.0;
 qreal WBPreferencesController::sMinPenWidth = 0.5;
