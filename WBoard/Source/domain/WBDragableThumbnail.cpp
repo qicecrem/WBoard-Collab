@@ -1,4 +1,5 @@
 #include "WBDragableThumbnail.h"
+#include <QGraphicsPixmapItem>
 
 #include <QPainter>
 #include <QMimeData>
@@ -94,7 +95,8 @@ void WBDraggableThumbnail::mousePressEvent(QMouseEvent *event)
     if (!child)
       return;
 
-    QPixmap pixmap = *child->pixmap();
+    QGraphicsPixmapItem* pixItem = dynamic_cast<QGraphicsPixmapItem*>(child);
+    QPixmap pixmap = pixItem ? pixItem->pixmap() : QPixmap();
 
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);

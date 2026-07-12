@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return nullptr;
+            return QUuid();
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return nullptr;
+            return QUuid();
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -512,7 +512,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::WBSvgSubsetReader::loadScene(WBDocumentProx
                 QStringView ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
 
                 if (!ubUuid.isNull())
-                    strokesGroup->setUuid(ubUuid.toString());
+                    strokesGroup->setUuid(ubUuid.toString().isEmpty() ? QUuid() : QUuid::fromString(ubUuid.toString()));
                 else
                     strokesGroup->setUuid(QUuid::createUuid());
 
@@ -2218,7 +2218,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        gItem->setMatrix(itemMatrix);
+        gItem->setTransform(itemMatrix);
     }
 
     QStringView svgX = mXmlReader.attributes().value("x");

@@ -382,9 +382,7 @@ void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
         case QMediaPlayer::FormatError:
             mErrorString = tr("Unsupported media format");
             break;
-        case QMediaPlayer::ResourceError:
-            mErrorString = tr("Media playback service not found");
-            break;
+        // ServiceMissingError merged into ResourceError in Qt6
         default:
             mErrorString = tr("Media error: ") + QString(errorCode) + " (" + mMediaObject->errorString() + ")";
     }

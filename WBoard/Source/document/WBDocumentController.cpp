@@ -710,7 +710,7 @@ bool WBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     WBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         WBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = model()->index(i, 0, parent);
+        QModelIndex curChildIndex = static_cast<QAbstractItemView*>(this)->model()->index(i, 0, parent);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -869,7 +869,7 @@ QPersistentModelIndex WBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = model()->index(i, 0, source);
+            QModelIndex curNewParentIndexChild = static_cast<QAbstractItemView*>(this)->model()->index(i, 0, source);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
