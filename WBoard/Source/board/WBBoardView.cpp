@@ -1109,9 +1109,9 @@ void WBBoardView::mouseMoveEvent (QMouseEvent *event)
                 }
             }
 
-            //          qDebug() << "| ==selected items count" << counter << Qt::endl
-            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << Qt::endl
-            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << Qt::endl
+            //          qDebug() << "| ==selected items count" << counter << "\n"
+            //                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << "\n"
+            //                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << "\n"
             //                   << "==================";
             //          QCoreApplication::removePostedEvents(scene(), 0);
         }
