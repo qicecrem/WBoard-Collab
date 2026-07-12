@@ -41,7 +41,7 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mErrorString = "";
 
     mMediaObject = new QMediaPlayer(this);
-    mMediaObject->setSource(pMediaFileUrl);
+    mMediaObject->setMedia(pMediaFileUrl);
 
     setDelegate(new WBGraphicsMediaItemDelegate(this));
 
@@ -76,10 +76,10 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     Delegate()->createControls();
     Delegate()->frame()->setOperationMode(WBGraphicsDelegateFrame::ResizingHorizontally);
 
-    resize(320, 26);
-    // this->setMinimumSize removed (Qt6)
+    this->setSize(320, 26);
+    this->setMinimumSize(QSize(150, 26));
 
-    // mMediaObject->setNotifyInterval(1000);
+    mMediaObject->setNotifyInterval(1000);
 
 }
 
@@ -103,10 +103,10 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     //mMediaObject->setVideoOutput(mVideoItem);
     mHasVideoOutput = false;
 
-    // mMediaObject->setNotifyInterval removed (Qt6)
+    mMediaObject->setNotifyInterval(50);
 
-    // setMinimumSize removed: QSize(320, 240));
-    // resize removed (QGraphicsItem has no resize)
+    setMinimumSize(QSize(320, 240));
+    setSize(320, 240);
 
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
@@ -155,7 +155,7 @@ QVariant WBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
-                  mMediaObject->setSource(QUrl::fromLocalFile(absoluteMediaFilename));
+                  mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
 
         }
     }
@@ -223,7 +223,7 @@ void WBGraphicsMediaItem::setMinimumSize(const QSize& size)
     if (rect().height() < mMinimumSize.height())
         height = mMinimumSize.height();
 
-    resize(width, height);
+    this->setSize(width, height);
 }
 
 void WBGraphicsMediaItem::setUuid(const QUuid &pUuid)
@@ -284,7 +284,7 @@ void WBGraphicsMediaItem::toggleMute()
 void WBGraphicsMediaItem::setMute(bool bMute)
 {
     mMuted = bMute;
-    mMediaObject->audioOutput()->setMuted(mMuted);
+    mMediaObject->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
@@ -306,11 +306,11 @@ void WBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 {
     if (!shown) {
         mMuted = true;
-        mMediaObject->audioOutput()->setMuted(mMuted);
+        mMediaObject->setMuted(mMuted);
     }
     else if (!mMutedByUserAction) {
         mMuted = false;
-        mMediaObject->audioOutput()->setMuted(mMuted);
+        mMediaObject->setMuted(mMuted);
     }
 }
 void WBGraphicsMediaItem::play()
@@ -363,7 +363,7 @@ void WBGraphicsMediaItem::togglePlayPause()
     }
 
     else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
-        mMediaObject->setSource(mediaFileUrl());
+        mMediaObject->setMedia(mediaFileUrl());
         mMediaObject->play();
     }
 }
@@ -382,9 +382,11 @@ void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
         case QMediaPlayer::FormatError:
             mErrorString = tr("Unsupported media format");
             break;
-        // ServiceMissingError merged into ResourceError in Qt6
+        case QMediaPlayer::ResourceError:
+            mErrorString = tr("Media playback service not found");
+            break;
         default:
-            mErrorString = tr("Media error: ") + QString::number(static_cast<int>(errorCode)) + " (" + mMediaObject->errorString() + ")";
+            mErrorString = tr("Media error: ") + QString(errorCode) + " (" + mMediaObject->errorString() + ")";
     }
 
     if (!mErrorString.isEmpty() ) {
@@ -505,10 +507,10 @@ void WBGraphicsVideoItem::setSize(int width, int height)
     else
         sizeY = height;
 
-    mVideoItem->// setSize removed: QSize(sizeX, sizeY));
+    mVideoItem->setSize(QSize(sizeX, sizeY));
 
 
-    // resize removed
+    WBGraphicsMediaItem::setSize(sizeX, sizeY);
 }
 
 void WBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
@@ -524,7 +526,7 @@ void WBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
     // and in those cases, the new size is reported as (0, 0).
 
     if (newSize != QSizeF(0,0))
-        resize(newSize.width(), newSize.height());
+        this->setSize(newSize.width(), newSize.height());
 
     else // Make sure the toolbar doesn't disappear
         Delegate()->showToolBar(false);
@@ -606,7 +608,7 @@ void WBGraphicsVideoItem::activeSceneChanged()
     // Call setVideoOutput, if the video is visible and if it hasn't been called already
     if (!mHasVideoOutput && WBApplication::boardController->activeScene() == scene()) {
         //qDebug() << "setting video output";
-        mMediaObject->setSource(mMediaFileUrl);
+        mMediaObject->setMedia(mMediaFileUrl);
         mMediaObject->setVideoOutput(mVideoItem);
         mHasVideoOutput = true;
     }
