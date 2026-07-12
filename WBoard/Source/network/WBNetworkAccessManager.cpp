@@ -70,7 +70,7 @@ QNetworkReply* WBNetworkAccessManager::createRequest(Operation op, const QNetwor
 
 QNetworkReply *WBNetworkAccessManager::get(const QNetworkRequest &request)
 {
-    QElapsedTimer loadStartTime;
+    QTime loadStartTime;
     loadStartTime.start();
     QNetworkReply *networkReply = QNetworkAccessManager::get(request);
     return networkReply;

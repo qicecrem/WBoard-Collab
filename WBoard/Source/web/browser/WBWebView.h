@@ -103,7 +103,7 @@ private:
     QUrl mInitialUrl;
     int mProgress;
     WBWebPage *mPage;
-    QElapsedTimer mLoadStartTime;
+    QTime mLoadStartTime;
 };
 
 #endif //WBWEBVIEW_H

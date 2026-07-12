@@ -1009,7 +1009,7 @@ void WBBoardView::mousePressEvent (QMouseEvent *event)
 
 void WBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
-    //    static QElapsedTimer lastCallTime;
+    //    static QTime lastCallTime;
     //    if (!lastCallTime.isNull()) {
     //        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
     //    }

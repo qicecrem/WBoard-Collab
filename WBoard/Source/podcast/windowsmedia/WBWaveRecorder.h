@@ -62,7 +62,7 @@ class WBWaveRecorder : public QObject
 
         int mBufferLengthInMs;
 
-        QElapsedTimer mRecordingStartTime;
+        QTime mRecordingStartTime;
 
         int mNbChannels;
         int mSampleRate;

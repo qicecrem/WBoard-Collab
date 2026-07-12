@@ -98,7 +98,7 @@ class WBGraphicsTextItem : public QGraphicsTextItem, public WBItem, public WBRes
         qreal mTextHeight;
 
         int mMultiClickState;
-        QElapsedTimer mLastMousePressTime;
+        QTime mLastMousePressTime;
 
         QColor mColorOnDarkBackground;
         QColor mColorOnLightBackground;

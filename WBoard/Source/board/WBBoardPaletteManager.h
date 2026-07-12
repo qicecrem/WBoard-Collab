@@ -93,16 +93,16 @@ class WBBoardPaletteManager : public QObject
         QPointF mPos;
         qreal mScaleFactor;
 
-        QElapsedTimer mPageButtonPressedTime;
+        QTime mPageButtonPressedTime;
         bool mPendingPageButtonPressed;
 
-        QElapsedTimer mZoomButtonPressedTime;
+        QTime mZoomButtonPressedTime;
         bool mPendingZoomButtonPressed;
 
-        QElapsedTimer mPanButtonPressedTime;
+        QTime mPanButtonPressedTime;
         bool mPendingPanButtonPressed;
 
-        QElapsedTimer mEraseButtonPressedTime;
+        QTime mEraseButtonPressedTime;
         bool mPendingEraseButtonPressed;
 
         WBPageNavigationWidget* mpPageNavigWidget;

@@ -20,7 +20,7 @@ protected:
 
 private:
     QBasicTimer mTimer;
-    QElapsedTimer mFirstChange;
+    QTime mFirstChange;
 
 };
 

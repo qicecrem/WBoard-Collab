@@ -98,9 +98,9 @@ class WBDesktopAnnotationController : public QObject
 
         WBRightPalette* mRightPalette;
 
-        QElapsedTimer mPenHoldTimer;
-        QElapsedTimer mMarkerHoldTimer;
-        QElapsedTimer mEraserHoldTimer;
+        QTime mPenHoldTimer;
+        QTime mMarkerHoldTimer;
+        QTime mEraserHoldTimer;
         QTimer mHoldTimerPen;
         QTimer mHoldTimerMarker;
         QTimer mHoldTimerEraser;
