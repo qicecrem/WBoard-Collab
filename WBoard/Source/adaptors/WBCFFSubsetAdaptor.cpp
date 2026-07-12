@@ -322,10 +322,10 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QPolygonF polygon;
 
     if (!svgPoints.isNull()) {
-        QStringList ts = svgPoints.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+        QStringList ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -411,7 +411,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
         
-        QUuid uuid = QUuid::createUuid();
+        QUuid uuid = QUuid::createUuid().toString();
         mRefToUuidMap.insert(element.attribute(aId), uuid.toString());
         svgItem->setUuid(uuid);
 
@@ -438,10 +438,10 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '),
-                                                    Qt::SkipEmptyParts);
+                                                    QString::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), Qt::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -561,7 +561,7 @@ void WBCFFSubsetAdaptor::WBCFFSubsetReader::parseTextAttributes(const QDomElemen
     //consider inch has 72 liens
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = element.attribute(aFontSize);
-    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::primaryScreen()->logicalDotsPerInchY();
+    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->logicalDotsPerInchY();
 
     QString fontColorText = element.attribute(aFill);
     if (!fontColorText.isNull()) fontColor = colorFromString(fontColorText);
@@ -656,7 +656,7 @@ bool WBCFFSubsetAdaptor::WBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     QFont startFont(fontFamily, fontSize, fontWeight, italic);
     height = QFontMetrics(startFont).height();
-    width = QFontMetrics(startFont).horizontalAdvance(element.text()) + 5;
+    width = QFontMetrics(startFont).width(element.text()) + 5;
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
@@ -1177,9 +1177,7 @@ WBGraphicsGroupContainerItem *WBCFFSubsetAdaptor::WBCFFSubsetReader::parseIwbGro
 
 
 
-    const QStringList keys = strokesGroupsContainer.keys();
-    const QSet<QString> keySet(keys.begin(), keys.end());
-    foreach (QString key, keySet)
+    foreach (QString key, strokesGroupsContainer.keys().toSet())
     {
         WBGraphicsStrokesGroup* pStrokesGroup = new WBGraphicsStrokesGroup();
         WBGraphicsStroke *currentStroke = new WBGraphicsStroke();
@@ -1367,7 +1365,7 @@ QColor WBCFFSubsetAdaptor::WBCFFSubsetReader::colorFromString(const QString& clr
     //init regexp with pattern
     //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
     QRegExp regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
-    if (regexp.match(clrString))
+    if (regexp.exactMatch(clrString))
     {
         if (regexp.capturedTexts().count() == 4 && regexp.capturedTexts().at(0).length() == clrString.length())
         {
@@ -1398,11 +1396,11 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    foreach(QString trStr, trString.split(" ", Qt::SkipEmptyParts))
+    foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
         QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.match(trStr)) {
+        if (regexp.exactMatch(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
             if (item)
             {    
@@ -1414,7 +1412,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
         
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
         regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.match(trStr)) {
+        if (regexp.exactMatch(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
             dxr = regexp.capturedTexts().at(2).toDouble();
             dyr = regexp.capturedTexts().at(3).toDouble();
@@ -1428,7 +1426,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
 
         //check pattern for strings like 'translate(11.0, 12.34)'
         regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
-        if (regexp.match(trStr)) {
+        if (regexp.exactMatch(trStr)) {
             dx = regexp.capturedTexts().at(1).toDouble();
             dy = regexp.capturedTexts().at(2).toDouble();
             tr.translate(dx,dy);
@@ -1440,7 +1438,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
 
 bool WBCFFSubsetAdaptor::WBCFFSubsetReader::getViewBoxDimenstions(const QString& viewBox)
 {
-    QStringList capturedTexts = viewBox.split(" ", Qt::SkipEmptyParts);
+    QStringList capturedTexts = viewBox.split(" ", QString::SkipEmptyParts);
     if (capturedTexts.count())
     {
         if (4 == capturedTexts.count())
@@ -1465,7 +1463,7 @@ QSvgGenerator* WBCFFSubsetAdaptor::WBCFFSubsetReader::createSvgGenerator(qreal w
     QSvgGenerator* generator = new QSvgGenerator();
 //    qWarning() << QString("Making generator with file %1, size (%2, %3) and viewbox (%4 %5 %6 %7)").arg(mTempFilePath)
 //        .arg(width).arg(height).arg(0.0).arg(0.0).arg(width).arg(width);
-    generator->setResolution(QApplication::primaryScreen()->logicalDotsPerInchY());
+    generator->setResolution(QApplication::desktop()->logicalDotsPerInchY());
     generator->setFileName(mTempFilePath);
     generator->setSize(QSize(width, height));
     generator->setViewBox(QRectF(0, 0, width, height));
