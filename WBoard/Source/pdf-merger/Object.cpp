@@ -432,7 +432,7 @@ void Object::_addParent(Object * child)
 void Object::_serialize(std::ofstream  & out, const std::string & stream)
 {
     out << _number << " " << _generationNumber << " obj\n" << _content << stream << "endobj\n";
-   out.flush();
+   // out.flush() removed (Qt6)
 }
 
 /** @brief getStream

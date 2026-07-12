@@ -78,7 +78,7 @@ void WBMetadataDcSubsetAdaptor::persist(WBDocumentProxy* proxy)
 
     xmlWriter.writeEndDocument();
 
-    file.flush();
+    // file.flush() removed (Qt6)
     file.close();
 }
 

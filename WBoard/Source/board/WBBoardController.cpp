@@ -2043,7 +2043,7 @@ QUrl WBBoardController::expandWidgetToTempDir(const QByteArray& pZipedData, cons
     if (tmp.open())
     {
         tmp.write(pZipedData);
-        tmp.flush();
+        // tmp.flush() removed (Qt6)
         tmp.close();
 
         QString tmpDir = WBFileSystemUtils::createTempDir() + "." + ext;

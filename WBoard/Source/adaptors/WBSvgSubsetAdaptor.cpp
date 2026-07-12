@@ -1409,7 +1409,7 @@ bool WBSvgSubsetAdaptor::WBSvgSubsetWriter::persistScene(WBDocumentProxy* proxy,
         return false;
     }
     file.write(buffer.data());
-    file.flush();
+    // file.flush() removed (Qt6)
     file.close();
 
     return true;

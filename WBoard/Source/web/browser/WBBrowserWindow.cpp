@@ -113,7 +113,7 @@ WBDownloadManager_ *WBBrowserWindow::downloadManager()
 
 QSize WBBrowserWindow::sizeHint() const
 {
-    QRect desktopRect = QApplication::primaryScreen()->screenGeometry(WBApplication::controlScreenIndex());
+    QRect desktopRect = QApplication::primaryScreen()->geometry(WBApplication::controlScreenIndex());
     QSize size = desktopRect.size() * qreal(0.9);
     return size;
 }

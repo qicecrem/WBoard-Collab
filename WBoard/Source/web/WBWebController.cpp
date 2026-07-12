@@ -312,7 +312,7 @@ QPixmap WBWebController::getScreenPixmap()
 {
     QScreen *desktop = QApplication::primaryScreen();
     // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
+    const QRect primaryScreenRect = desktop->geometry(QCursor::pos());
     QCoreApplication::flush ();
 
     return QApplication::primaryScreen()->grabWindow(desktop->winId(),

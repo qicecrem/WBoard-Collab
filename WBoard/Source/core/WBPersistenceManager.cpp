@@ -1152,7 +1152,7 @@ bool WBPersistenceManager::addFileToDocument(WBDocumentProxy* pDocumentProxy,
             if (newFile.open(QIODevice::WriteOnly))
             {
                 qint64 n = newFile.write(*data);
-                newFile.flush();
+                newFile.close(); // flush removed (Qt6)
                 newFile.close();
                 return n == data->size();
             }
