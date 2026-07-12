@@ -32,7 +32,7 @@
 #include <QtCore>
 #include <QtNetwork>
 
-#include "network/UBNetworkAccessManager.h"
+#include "WBNetworkAccessManager.h"
 
 #include "core/memcheck.h"
 

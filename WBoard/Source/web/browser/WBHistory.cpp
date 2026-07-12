@@ -79,7 +79,7 @@
 #include <QWebEngineSettings>
 
 #include "core/UBSettings.h"
-#include "network/UBAutoSaver.h"
+#include "network/WBAutoSaver.h"
 
 #include "core/memcheck.h"
 

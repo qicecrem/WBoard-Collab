@@ -29,7 +29,7 @@
 
 #include "UBHttpFileDownloader.h"
 
-#include "network/UBNetworkAccessManager.h"
+#include "WBNetworkAccessManager.h"
 
 #include "core/memcheck.h"
 

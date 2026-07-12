@@ -70,9 +70,9 @@
 
 #include "UBCookieJar.h"
 
-#include "UBAutoSaver.h"
+#include "WBAutoSaver.h"
 
-#include "core/UBSettings.h"
+#include "core/WBSettings.h"
 
 #include <QtGui>
 #include <QtWebKit>

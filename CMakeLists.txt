@@ -74,6 +74,9 @@ list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*windowsmedia/.*")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*qtlockedfile_win\\.cpp$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBWindowCaptureDelegate_win.*")
 
+# Exclude UB*/QtWebKit legacy network files (Qt4/5, removed in Qt6)
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*network/UB.*\\.(cpp|h)$")
+
 # Also exclude .rc files
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*\\.rc$")
 
