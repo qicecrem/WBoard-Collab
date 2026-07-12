@@ -684,7 +684,7 @@ WBBrushPropertiesFrame::WBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     for (int i = 1 ; i < WBSettings::settings()->colorPaletteSize ; i++)
     {
         WBColorPicker *picker = new WBColorPicker(darkBackgroundFrame);
-        picker->setObjectName(QString::fromUtf8("penDarkBackgroundColor") + i);
+        picker->setObjectName(QString::fromUtf8("penDarkBackgroundColor") + QString::number(i));
         picker->setMinimumSize(QSize(32, 32));
         picker->setFrameShape(QFrame::StyledPanel);
         picker->setFrameShadow(QFrame::Raised);

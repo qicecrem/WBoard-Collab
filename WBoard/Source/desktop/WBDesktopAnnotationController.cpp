@@ -292,7 +292,7 @@ void WBDesktopAnnotationController::showWindow()
 
     if (!mWindowPositionInitialized)
     {
-        QRect desktopRect = QApplication::primaryScreen()->screenGeometry(mDesktopPalette->pos());
+        QRect desktopRect = QGuiApplication::screenAt(mDesktopPalette->pos())->geometry();
 
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
