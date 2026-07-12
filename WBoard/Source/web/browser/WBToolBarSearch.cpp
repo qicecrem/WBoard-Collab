@@ -70,7 +70,7 @@ void WBToolbarSearch::searchNow()
     if (newList.size() >= mMaxSavedSearches)
         newList.removeLast();
 
-    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+    QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
     if (!globalSettings->testAttribute(QWebEngineSettings::JavascriptEnabled))//PrivateBrowsingEnabled
     {
         mStringListModel->setStringList(newList);

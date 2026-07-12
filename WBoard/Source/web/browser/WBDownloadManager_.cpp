@@ -465,7 +465,7 @@ void WBDownloadManager_::updateRow()
     downloadsView->setRowHeight(row, item->minimumSizeHint().height());
 
     bool remove = false;
-	QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+	QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
 
     if (!item->downloading() && globalSettings->testAttribute(QWebEngineSettings::JavascriptEnabled))//PrivateBrowsingEnabled
         remove = true;

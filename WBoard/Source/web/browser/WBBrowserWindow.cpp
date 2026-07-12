@@ -41,7 +41,7 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
         //, mSearchAction(0)
         , mUniboardMainWindow(uniboardMainWindow)
 {	
-    QWebEngineSettings *defaultSettings = QWebEngineSettings::globalSettings();
+    QWebEngineSettings *defaultSettings = QWebEngineProfile::defaultProfile()->settings();
     defaultSettings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     defaultSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 

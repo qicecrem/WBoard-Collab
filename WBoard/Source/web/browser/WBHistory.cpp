@@ -202,7 +202,7 @@ void WBHistoryManager::checkForExpired()
 
 void WBHistoryManager::addHistoryItem(const WBHistoryItem &item)
 {
-	QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+	QWebEngineSettings *globalSettings = QWebEngineProfile::defaultProfile()->settings();
     if (globalSettings->testAttribute(QWebEngineSettings::PrintElementBackgrounds))//PrivateBrowsingEnabled
         return;
 

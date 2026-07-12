@@ -347,7 +347,7 @@ void WBMagnifier::slot_refresh()
 
 void WBMagnifier::grabPoint()
 {
-    QMatrix transM = WBApplication::boardController->controlView()->matrix();
+    QTransform transM = WBApplication::boardController->controlView()->matrix();
     QPointF itemPos = gView->mapFromGlobal(updPointGrab);
 
     qreal zWidth = width() / (params.zoom * transM.m11());
@@ -380,7 +380,7 @@ void WBMagnifier::grabPoint()
 
 void WBMagnifier::grabPoint(const QPoint &pGrab)
 {
-    QMatrix transM = WBApplication::boardController->controlView()->matrix();
+    QTransform transM = WBApplication::boardController->controlView()->matrix();
     updPointGrab = pGrab;
     QPointF itemPos = gView->mapFromGlobal(pGrab);
 

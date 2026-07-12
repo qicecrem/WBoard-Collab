@@ -4,6 +4,7 @@
 #include <QWidget>
 
 using std::endl;
+#include <QRegularExpression>
 #include "WBFeaturesWidget.h"
 #include "gui/WBThumbnailWidget.h"
 #include "frameworks/WBFileSystemUtils.h"
@@ -748,7 +749,7 @@ WBFeaturesWebView::WBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpSankoreAPI = new WBWidgetUniboardAPI(WBApplication::boardController->activeScene());
     //mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     //connect(mpView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    mpWebSettings = QWebEngineSettings::globalSettings();
+    mpWebSettings = QWebEngineProfile::defaultProfile()->settings();
     mpWebSettings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     mpWebSettings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     mpWebSettings->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
@@ -1381,7 +1382,7 @@ bool WBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegExp().exactMatch(path);
+    return filterRegularExpression().exactMatch(path);
 }
 
 bool WBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1400,7 +1401,7 @@ bool WBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegExp().exactMatch( feature.getName() );
+            && filterRegularExpression().exactMatch( feature.getName() );
 }
 
 bool WBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
