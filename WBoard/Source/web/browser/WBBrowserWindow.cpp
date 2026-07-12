@@ -1,3 +1,4 @@
+#include <QWebEngineProfile>
 #include "WBBrowserWindow.h"
 
 #include <QtWidgets>
@@ -197,7 +198,7 @@ QUrl WBBrowserWindow::guessUrlFromString(const QString &string)
     QRegExp test(QLatin1String("^[a-zA-Z]+\\:.*"));
 
     // Check if it looks like a qualified URL. Try parsing it and see.
-    bool hasSchema = test.exactMatch(urlStr);
+    bool hasSchema = test.match(urlStr);
     if (hasSchema)
     {
         int dotCount = urlStr.count(".");

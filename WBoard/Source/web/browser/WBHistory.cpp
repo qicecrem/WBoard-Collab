@@ -68,6 +68,7 @@
 **
 ****************************************************************************/
 
+#include <QWebEngineProfile>
 #include "WBHistory.h"
 
 #include "WBBrowserWindow.h"

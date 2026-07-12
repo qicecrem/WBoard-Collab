@@ -1,3 +1,4 @@
+#include <QWebEngineProfile>
 #include "WBToolBarSearch.h"
 
 #include <QtWidgets>

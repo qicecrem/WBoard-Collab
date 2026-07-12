@@ -1367,7 +1367,7 @@ QColor WBCFFSubsetAdaptor::WBCFFSubsetReader::colorFromString(const QString& clr
     //init regexp with pattern
     //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
     QRegExp regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
-    if (regexp.exactMatch(clrString))
+    if (regexp.match(clrString))
     {
         if (regexp.capturedTexts().count() == 4 && regexp.capturedTexts().at(0).length() == clrString.length())
         {
@@ -1402,7 +1402,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
     {
         //check pattern for strings like 'rotate(10)'
         QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
+        if (regexp.match(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
             if (item)
             {    
@@ -1414,7 +1414,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
         
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
         regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
+        if (regexp.match(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
             dxr = regexp.capturedTexts().at(2).toDouble();
             dyr = regexp.capturedTexts().at(3).toDouble();
@@ -1428,7 +1428,7 @@ QTransform WBCFFSubsetAdaptor::WBCFFSubsetReader::transformFromString(const QStr
 
         //check pattern for strings like 'translate(11.0, 12.34)'
         regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
-        if (regexp.exactMatch(trStr)) {
+        if (regexp.match(trStr)) {
             dx = regexp.capturedTexts().at(1).toDouble();
             dy = regexp.capturedTexts().at(2).toDouble();
             tr.translate(dx,dy);

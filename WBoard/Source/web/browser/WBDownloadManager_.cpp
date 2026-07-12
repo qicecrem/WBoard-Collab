@@ -1,3 +1,4 @@
+#include <QWebEngineProfile>
 #include "WBDownloadManager_.h"
 
 #include <QtWidgets>

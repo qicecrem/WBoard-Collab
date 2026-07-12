@@ -33,7 +33,7 @@ class WBDocumentReplaceDialog : public QDialog
 
 public:
     WBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent = 0, Qt::WindowFlags pFlags = Qt::WindowFlags());
-    void setRegexp(const QRegExp pRegExp);
+    void setRegexp(const QRegularExpression& pRegExp);
     bool validString(const QString &pStr);
     void setFileNameAndList(const QString &fileName, const QStringList &pLst);
     QString  labelTextWithName(const QString &documentName) const;

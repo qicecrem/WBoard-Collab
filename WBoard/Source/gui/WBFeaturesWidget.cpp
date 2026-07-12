@@ -3,6 +3,7 @@
 #include <QtWebChannel/QWebChannel>
 #include <QWidget>
 
+#include <QWebEngineProfile>
 #include "WBFeaturesWidget.h"
 #include "gui/WBThumbnailWidget.h"
 #include "frameworks/WBFileSystemUtils.h"
