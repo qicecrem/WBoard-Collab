@@ -2284,7 +2284,7 @@ void WBDocumentController::deleteMultipleItems(QModelIndexList indexes, WBDocume
 					pureSetDocument(newProxy);
 				}
 				emit documentThumbnailsUpdated(this);
-				Sleep(100);//zhusizhi
+				usleep(1000 * (100);//zhusizhi
 
                 deleteIndexAndAssociatedData(indexes.at(i));
                 
@@ -2362,7 +2362,7 @@ void WBDocumentController::deleteSingleItem(QModelIndex currentIndex, WBDocument
 				pureSetDocument(newProxy);
 			}
 			emit documentThumbnailsUpdated(this);
-			Sleep(100);//zhusizhi
+			usleep(1000 * (100);//zhusizhi
             deleteIndexAndAssociatedData(currentIndex);
             
             break;

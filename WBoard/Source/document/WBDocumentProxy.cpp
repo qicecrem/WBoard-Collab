@@ -54,7 +54,7 @@ void WBDocumentProxy::init()
     setMetaData(WBSettings::documentGroupName, "");
 
     QDateTime now = QDateTime::currentDateTime();
-    setMetaData(WBSettings::documentName, now.toString(Qt::SystemLocaleShortDate));
+    setMetaData(WBSettings::documentName, now.toString(QLocale::system().dateFormat(QLocale::ShortFormat)));
 
     setUuid(QUuid::createUuid());
 

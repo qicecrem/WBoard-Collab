@@ -64,7 +64,7 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)),
             this, SLOT(showOnDisplayChanged(bool)));
 
-    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+    connect(mMediaObject, &QMediaPlayer::errorOccurred,
             this, &WBGraphicsMediaItem::mediaError);
 }
 
@@ -117,7 +117,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState)),
             this, SLOT(mediaStateChanged(QMediaPlayer::PlaybackState)));
 
-    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+    connect(mMediaObject, &QMediaPlayer::errorOccurred,
             this, &WBGraphicsVideoItem::mediaError);
 
     setAcceptHoverEvents(true);
@@ -382,7 +382,7 @@ void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
         case QMediaPlayer::FormatError:
             mErrorString = tr("Unsupported media format");
             break;
-        case QMediaPlayer::ServiceMissingError:
+        case QMediaPlayer::ResourceError:
             mErrorString = tr("Media playback service not found");
             break;
         default:
