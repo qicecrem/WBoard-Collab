@@ -76,8 +76,8 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     Delegate()->createControls();
     Delegate()->frame()->setOperationMode(WBGraphicsDelegateFrame::ResizingHorizontally);
 
-    this->setSize(320, 26);
-    this->// setMinimumSize removed: QSize(150, 26));
+    resize(320, 26);
+    // this->setMinimumSize removed (Qt6)
 
     // mMediaObject->setNotifyInterval(1000);
 
@@ -103,10 +103,10 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     //mMediaObject->setVideoOutput(mVideoItem);
     mHasVideoOutput = false;
 
-    mMediaObject->// setNotifyInterval removed: 50;
+    // mMediaObject->setNotifyInterval removed (Qt6)
 
     // setMinimumSize removed: QSize(320, 240));
-    resize(320, 240);
+    // resize removed (QGraphicsItem has no resize)
 
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
@@ -223,7 +223,7 @@ void WBGraphicsMediaItem::setMinimumSize(const QSize& size)
     if (rect().height() < mMinimumSize.height())
         height = mMinimumSize.height();
 
-    this->setSize(width, height);
+    resize(width, height);
 }
 
 void WBGraphicsMediaItem::setUuid(const QUuid &pUuid)
@@ -524,7 +524,7 @@ void WBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
     // and in those cases, the new size is reported as (0, 0).
 
     if (newSize != QSizeF(0,0))
-        this->setSize(newSize.width(), newSize.height());
+        resize(newSize.width(), newSize.height());
 
     else // Make sure the toolbar doesn't disappear
         Delegate()->showToolBar(false);
