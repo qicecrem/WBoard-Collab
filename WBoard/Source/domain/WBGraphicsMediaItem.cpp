@@ -368,7 +368,7 @@ void WBGraphicsMediaItem::togglePlayPause()
     }
 }
 
-void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
+void WBGraphicsMediaItem::mediaError(int errorCode)
 {
     // QMediaPlayer::errorString() isn't very descriptive, so we generate our own message
 

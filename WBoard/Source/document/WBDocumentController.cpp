@@ -710,7 +710,7 @@ bool WBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     WBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         WBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = model()->index(i, 0, parent);
+        QModelIndex curChildIndex = this->model()->index(i, 0, parent);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -869,7 +869,7 @@ QPersistentModelIndex WBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = model()->index(i, 0, source);
+            QModelIndex curNewParentIndexChild = this->model()->index(i, 0, source);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
@@ -2500,7 +2500,7 @@ QModelIndex WBDocumentController::findPreviousSiblingNotSelected(const QModelInd
         }
     }else{
         //if the parent exist keep searching, else stop the search
-        QModelIndex parent = index.model()->parent(index);
+        QModelIndex parent = index.this->model()->parent(index);
 
         if(parent.isValid())
         {
