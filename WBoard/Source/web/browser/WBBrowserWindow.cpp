@@ -1,4 +1,5 @@
 #include <QWebEngineProfile>
+#include <QRegExp>
 #include "WBBrowserWindow.h"
 
 #include <QtWidgets>

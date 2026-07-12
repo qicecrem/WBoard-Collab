@@ -1,3 +1,4 @@
+#include <QRegExp>
 #include "WBPlatformUtils.h"
 
 #include <QtWidgets>

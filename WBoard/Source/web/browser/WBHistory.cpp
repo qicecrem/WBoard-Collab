@@ -78,7 +78,7 @@
 #include <QWebEngineView>
 #include <QWebEngineSettings>
 
-#include "core/UBSettings.h"
+#include "core/WBSettings.h"
 #include "network/WBAutoSaver.h"
 
 #include "core/memcheck.h"

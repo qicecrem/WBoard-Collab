@@ -1,4 +1,4 @@
-#include <QRegularExpression>
+#include <QRegExp>
 #include <QStringList>
 #include <QDomDocument>
 #include <QDomElement>
@@ -33,14 +33,14 @@ void WBOEmbedParser::parse(const QString& html)
 {
     mContents.clear();
     QString query = "<link([^>]*)>";
-    QRegularExpression exp(query);
+    QRegExp exp(query);
     QStringList results;
     int count = 0;
     int pos = 0;
-    while ((pos = exp.globalMatch(html, pos)) != -1) {
+    while ((pos = exp.indexIn(html, pos)) != -1) {
         ++count;
         pos += exp.matchedLength();
-        QStringList res = exp.match(str).capturedTexts();
+        QStringList res = exp.capturedTexts();
         if("" != res.at(1)){
             results << res.at(1);
         }

@@ -1,7 +1,9 @@
 #include <QtWidgets>
 #include <QDomDocument>
+// QXmlQuery removed in Qt6
 #include <QWebEnginePage>
 
+#include <QRegExp>
 #include "frameworks/WBPlatformUtils.h"
 
 #include "WBWebController.h"
@@ -154,9 +156,9 @@ bool WBWebController::hasEmbeddedContent()
 
         // search the presence of "+oembed"
         QString query = "\\+oembed([^>]*)>";
-        QRegularExpression exp(query);
-        exp.globalMatch(html);
-        QStringList results = exp.match(str).capturedTexts();
+        QRegExp exp(query);
+        exp.indexIn(html);
+        QStringList results = exp.capturedTexts();
         if(2 <= results.size() && "" != results.at(1)){
             // An embedded content has been found, no need to check the other ones
             bHasContent = true;
@@ -306,17 +308,16 @@ void WBWebController::toogleMirroring(bool checked)
 }
 
 
-    QPixmap WBWebController::getScreenPixmap()
+QPixmap WBWebController::getScreenPixmap()
 {
-    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
-    if (!screen)
-        screen = QApplication::primaryScreen();
-    const QRect screenRect = screen->geometry();
+    QDesktopWidget *desktop = QApplication::primaryScreen();
+    // we capture the screen in which the mouse is.
+    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
     QCoreApplication::flush ();
 
-    return screen->grabWindow(0,
-                               screenRect.x(), screenRect.y(),
-                               screenRect.width(), screenRect.height());
+    return QPixmap::grabWindow(desktop->winId(),
+                               primaryScreenRect.x(), primaryScreenRect.y(),
+                               primaryScreenRect.width(), primaryScreenRect.height());
 }
 
 
@@ -385,17 +386,17 @@ void WBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString a
     if(NULL != pHtml && NULL != pList){
         QVector<QString> urlsFound;
         // Check for <embed> content
-        QRegularExpression exp(QString("<%0(.*)").arg(tag));
-        exp.globalMatch(*pHtml);
-        QStringList strl = exp.match(str).capturedTexts();
+        QRegExp exp(QString("<%0(.*)").arg(tag));
+        exp.indexIn(*pHtml);
+        QStringList strl = exp.capturedTexts();
         if(2 <= strl.size() && strl.at(1) != ""){
             // Here we call this regular expression:
             // src\s?=\s?['"]([^'"]*)['"]
             // It says: give me all characters that are after src=" (or src = ")
-            QRegularExpression src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
+            QRegExp src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
             for(int i=1; i<strl.size(); i++){
-                src.globalMatch(strl.at(i));
-                QStringList urls = src.match(str).capturedTexts();
+                src.indexIn(strl.at(i));
+                QStringList urls = src.capturedTexts();
                 if(2 <= urls.size() && urls.at(1) != "" && !urlsFound.contains(urls.at(1))){
                     urlsFound << urls.at(1);
                     pList->append(QUrl(urls.at(1)));
