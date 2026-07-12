@@ -17,12 +17,8 @@ static PProcessIdToSessionId pProcessIdToSessionId = 0;
 #endif
 
 namespace QtLP_Private {
-#include "qtlockedfile.cpp"
-#if defined(Q_OS_WIN)
-#include "qtlockedfile_win.cpp"
-#else
+
 #include "qtlockedfile_unix.cpp"
-#endif
 }
 
 const char* QtLocalPeer::ack = "ack";

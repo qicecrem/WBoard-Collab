@@ -15,8 +15,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-namespace QtLP_Private {
-
 bool QtLockedFile::lock(LockMode mode, bool block)
 {
     if (!isOpen()) {
@@ -42,7 +40,7 @@ bool QtLockedFile::lock(LockMode mode, bool block)
 
     int result;
     do {
-        result = ::flock(fd, flags);
+        result = flock(fd, flags);
     } while (result != 0 && errno == EINTR);
 
     if (result == 0) {
@@ -69,7 +67,7 @@ bool QtLockedFile::unlock()
 
     int result;
     do {
-        result = ::flock(fd, LOCK_UN);
+        result = flock(fd, LOCK_UN);
     } while (result != 0 && errno == EINTR);
 
     if (result == 0) {
@@ -85,5 +83,3 @@ QtLockedFile::~QtLockedFile()
     if (isLocked())
         unlock();
 }
-
-} // namespace QtLP_Private

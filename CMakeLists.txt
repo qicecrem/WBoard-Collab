@@ -71,9 +71,10 @@ file(GLOB_RECURSE WBOARD_UI_FILES
 # Exclude Windows-only files
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*_win\\.(cpp|h)$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*windowsmedia/.*")
-# Exclude Windows lock files, use qtlockedfile_unix.cpp directly
+# Exclude Windows lock files, use qtlockedfile_unix.cpp directly (included by qtlocalpeer.cpp)
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*qtlockedfile_win\\.cpp$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*qtsingleapplication/qtlockedfile\\.cpp$")
+list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*qtsingleapplication/qtlockedfile_unix\\.cpp$")
 list(FILTER WBOARD_SOURCES EXCLUDE REGEX ".*WBWindowCaptureDelegate_win.*")
 
 # Exclude UB*/QtWebKit legacy files (Qt4/5, removed in Qt6)
