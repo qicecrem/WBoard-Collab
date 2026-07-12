@@ -1,8 +1,7 @@
 #include "WBGraphicsScene.h"
 
 #include <QtWidgets>
-#include <QWebEnginePage>
-#include <QWebEngineView>
+#include <QtWebEngine>
 #include <QtSvg>
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
@@ -1608,7 +1607,7 @@ WBGraphicsWidgetItem* WBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
     else
     {
         qDebug() << "WBGraphicsScene::addWidget: Unknown widget Type";
-        return nullptr;
+        return 0;
     }
 }
 

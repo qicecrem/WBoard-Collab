@@ -710,7 +710,7 @@ bool WBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     WBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         WBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = this->static_cast<QTreeView*>(this)->model()->index(i, 0, parent);
+        QModelIndex curChildIndex = parent.child(i, 0);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -869,7 +869,7 @@ QPersistentModelIndex WBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = this->static_cast<QTreeView*>(this)->model()->index(i, 0, source);
+            QModelIndex curNewParentIndexChild = source.child(i, 0);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
@@ -1009,7 +1009,7 @@ bool WBDocumentTreeModel::newNodeAllowed(const QModelIndex &pSelectedIndex)  con
 
 QModelIndex WBDocumentTreeModel::goTo(const QString &dir)
 {
-    QStringList pathList = dir.split("/", Qt::SkipEmptyParts);
+    QStringList pathList = dir.split("/", QString::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         return untitledDocumentsIndex();
@@ -2284,7 +2284,7 @@ void WBDocumentController::deleteMultipleItems(QModelIndexList indexes, WBDocume
 					pureSetDocument(newProxy);
 				}
 				emit documentThumbnailsUpdated(this);
-				usleep(1000 * (100);//zhusizhi
+				Sleep(100);//zhusizhi
 
                 deleteIndexAndAssociatedData(indexes.at(i));
                 
@@ -2362,7 +2362,7 @@ void WBDocumentController::deleteSingleItem(QModelIndex currentIndex, WBDocument
 				pureSetDocument(newProxy);
 			}
 			emit documentThumbnailsUpdated(this);
-			usleep(1000 * (100);//zhusizhi
+			Sleep(100);//zhusizhi
             deleteIndexAndAssociatedData(currentIndex);
             
             break;
@@ -2500,7 +2500,7 @@ QModelIndex WBDocumentController::findPreviousSiblingNotSelected(const QModelInd
         }
     }else{
         //if the parent exist keep searching, else stop the search
-        QModelIndex parent = index.this->static_cast<QTreeView*>(this)->model()->parent(index);
+        QModelIndex parent = index.model()->parent(index);
 
         if(parent.isValid())
         {

@@ -117,7 +117,7 @@ void WBSvgSubsetAdaptor::upgradeScene(WBDocumentProxy* proxy, const int pageInde
     QDomElement elSvg = doc.documentElement(); // SVG tag
     QString ubVersion = elSvg.attributeNS(WBSettings::uniboardDocumentNamespaceUri, "version", "4.1"); // default to 4.1
 
-    if (ubVersion.startsWith(QLatin1StringView("4.1")) || ubVersion.startsWith(QLatin1StringView("4.2")) || ubVersion.startsWith(QLatin1StringView("4.3")))
+    if (ubVersion.startsWith("4.1") || ubVersion.startsWith("4.2") || ubVersion.startsWith("4.3"))
     {
         // migrate to 4.2.1 (or latter)
         WBGraphicsScene *scene = loadScene(proxy, pageIndex);
@@ -218,7 +218,7 @@ WBGraphicsScene* WBSvgSubsetAdaptor::loadScene(WBDocumentProxy* proxy, const int
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return 0;
         }
 
         WBGraphicsScene* scene = loadScene(proxy, file.readAll());
@@ -268,7 +268,7 @@ QUuid WBSvgSubsetAdaptor::sceneUuid(WBDocumentProxy* proxy, const int pageIndex)
         if (!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Cannot open file " << fileName << " for reading ...";
-            return QUuid();
+            return 0;
         }
 
         QXmlStreamReader xml(file.readAll());
@@ -1570,7 +1570,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetWriter::polygonItemToSvgPolygon(WBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->transform()));
+        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->matrix()));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
 
         qreal alpha = polygonItem->brush().color().alphaF();
@@ -2218,7 +2218,7 @@ void WBSvgSubsetAdaptor::WBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        gItem->setTransform(itemMatrix);
+        gItem->setMatrix(itemMatrix);
     }
 
     QStringView svgX = mXmlReader.attributes().value("x");

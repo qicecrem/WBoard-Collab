@@ -41,7 +41,7 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mErrorString = "";
 
     mMediaObject = new QMediaPlayer(this);
-    mMediaObject->setSource(pMediaFileUrl);
+    mMediaObject->setMedia(pMediaFileUrl);
 
     setDelegate(new WBGraphicsMediaItemDelegate(this));
 
@@ -64,7 +64,7 @@ WBGraphicsMediaItem::WBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)),
             this, SLOT(showOnDisplayChanged(bool)));
 
-    connect(mMediaObject, &QMediaPlayer::errorOccurred,
+    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
             this, &WBGraphicsMediaItem::mediaError);
 }
 
@@ -79,7 +79,7 @@ WBGraphicsAudioItem::WBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
     this->setSize(320, 26);
     this->setMinimumSize(QSize(150, 26));
 
-    mMediaObject->// setNotifyInterval removed in Qt6: setNotifyInterval(1000);
+    mMediaObject->setNotifyInterval(1000);
 
 }
 
@@ -103,7 +103,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     //mMediaObject->setVideoOutput(mVideoItem);
     mHasVideoOutput = false;
 
-    mMediaObject->// setNotifyInterval removed in Qt6: setNotifyInterval(50);
+    mMediaObject->setNotifyInterval(50);
 
     setMinimumSize(QSize(320, 240));
     setSize(320, 240);
@@ -117,7 +117,7 @@ WBGraphicsVideoItem::WBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::PlaybackState)),
             this, SLOT(mediaStateChanged(QMediaPlayer::PlaybackState)));
 
-    connect(mMediaObject, &QMediaPlayer::errorOccurred,
+    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
             this, &WBGraphicsVideoItem::mediaError);
 
     setAcceptHoverEvents(true);
@@ -155,7 +155,7 @@ QVariant WBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
-                  mMediaObject->setSource(QUrl::fromLocalFile(absoluteMediaFilename));
+                  mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
 
         }
     }
@@ -284,7 +284,7 @@ void WBGraphicsMediaItem::toggleMute()
 void WBGraphicsMediaItem::setMute(bool bMute)
 {
     mMuted = bMute;
-    mMediaObject->audioOutput()->setMuted(mMuted);
+    mMediaObject->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
@@ -306,11 +306,11 @@ void WBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 {
     if (!shown) {
         mMuted = true;
-        mMediaObject->audioOutput()->setMuted(mMuted);
+        mMediaObject->setMuted(mMuted);
     }
     else if (!mMutedByUserAction) {
         mMuted = false;
-        mMediaObject->audioOutput()->setMuted(mMuted);
+        mMediaObject->setMuted(mMuted);
     }
 }
 void WBGraphicsMediaItem::play()
@@ -363,12 +363,12 @@ void WBGraphicsMediaItem::togglePlayPause()
     }
 
     else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
-        mMediaObject->setSource(mediaFileUrl());
+        mMediaObject->setMedia(mediaFileUrl());
         mMediaObject->play();
     }
 }
 
-void WBGraphicsMediaItem::mediaError(int errorCode)
+void WBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
 {
     // QMediaPlayer::errorString() isn't very descriptive, so we generate our own message
 
@@ -382,7 +382,7 @@ void WBGraphicsMediaItem::mediaError(int errorCode)
         case QMediaPlayer::FormatError:
             mErrorString = tr("Unsupported media format");
             break;
-        case QMediaPlayer::ResourceError:
+        case QMediaPlayer::ServiceMissingError:
             mErrorString = tr("Media playback service not found");
             break;
         default:
@@ -608,7 +608,7 @@ void WBGraphicsVideoItem::activeSceneChanged()
     // Call setVideoOutput, if the video is visible and if it hasn't been called already
     if (!mHasVideoOutput && WBApplication::boardController->activeScene() == scene()) {
         //qDebug() << "setting video output";
-        mMediaObject->setSource(mMediaFileUrl);
+        mMediaObject->setMedia(mMediaFileUrl);
         mMediaObject->setVideoOutput(mVideoItem);
         mHasVideoOutput = true;
     }
@@ -616,7 +616,7 @@ void WBGraphicsVideoItem::activeSceneChanged()
     WBGraphicsMediaItem::activeSceneChanged();
 }
 
-void WBGraphicsVideoItem::mediaError(int errorCode)
+void WBGraphicsVideoItem::mediaError(QMediaPlayer::Error errorCode)
 {
     setPlaceholderVisible(errorCode != QMediaPlayer::NoError);
 }

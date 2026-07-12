@@ -984,7 +984,7 @@ QString WBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(const QString& pUrl, co
         }
 
         QTextStream outConfig(&configFile);
-        // setCodec removed (Qt6)
+        outConfig// setCodec removed;
 
         outConfig << configTemplate;
         configFile.close();
@@ -997,7 +997,7 @@ QString WBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(const QString& pUrl, co
         }
 
         QTextStream outIndex(&indexFile);
-        // setCodec removed (Qt6)
+        outIndex// setCodec removed;
 
         outIndex << htmlTemplate;
         indexFile.close();
@@ -1028,7 +1028,7 @@ QString WBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     }
 
     QTextStream outConfig(&configFile);
-    // setCodec removed (Qt6)
+    outConfig// setCodec removed;
     outConfig << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
     outConfig << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << "\n";
     outConfig << "    xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << "\n";
@@ -1057,7 +1057,7 @@ QString WBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     }
 
     QTextStream outStartFile(&widgetHtmlFile);
-    // setCodec removed (Qt6)
+    outStartFile// setCodec removed;
 
     outStartFile << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">" << "\n";
     outStartFile << "<html>" << "\n";
