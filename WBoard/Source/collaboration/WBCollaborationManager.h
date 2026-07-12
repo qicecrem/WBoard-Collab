@@ -46,6 +46,10 @@ public:
     // --- Hook into WBGraphicsScene ---
     void installOnScene(WBGraphicsScene *scene);
 
+    // --- Internal guard ---
+    bool isApplyingRemote() const { return mApplyingRemote; }
+    void setApplyingRemote(bool v) { mApplyingRemote = v; }
+
 signals:
     void modeChanged(Mode mode);
     void userJoined(const QString &userName);
@@ -60,9 +64,11 @@ signals:
 
 public slots:
     void onStrokeCompleted(WBGraphicsStroke *stroke, int tool);
+    void onItemsRemoved(const QJsonArray &removedUuids, const QJsonArray &addedData);
 
 private slots:
     void onRemoteStrokeReceived(const QJsonObject &data);
+    void onRemoteEraseReceived(const QJsonObject &data);
     void onRemoteCursorReceived(const QString &userName, const QJsonObject &data);
     void onClientUserJoined(const QString &userName);
     void onClientUserLeft(const QString &userName);
@@ -70,9 +76,12 @@ private slots:
     void onClientConnected();
     void onClientDisconnected();
     void onClientError(const QString &error);
+    void onUndoStackIndexChanged(int index);
+    void onRemoteCommandReceived(const QJsonObject &data);
 
 private:
     void applyRemoteStroke(const QJsonObject &data);
+    void applyRemoteErase(const QJsonObject &data);
 
     Mode mMode;
     QString mUserName;
@@ -84,6 +93,8 @@ private:
     WBGraphicsScene *mScene;
 
     QStringList mRemoteUsers;
+    int mUndoIndex;
+    bool mApplyingRemote;
 };
 
 #endif // WBCOLLABORATIONMANAGER_H

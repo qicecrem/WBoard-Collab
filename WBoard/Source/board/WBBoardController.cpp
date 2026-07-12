@@ -1468,6 +1468,9 @@ void WBBoardController::setActiveDocumentScene(WBDocumentProxy* pDocumentProxy, 
             connect(mActiveScene, &WBGraphicsScene::strokeCompleted,
                     WBApplication::collaborationManager, &WBCollaborationManager::onStrokeCompleted,
                     Qt::UniqueConnection);
+            connect(mActiveScene, &WBGraphicsScene::itemsRemoved,
+                    WBApplication::collaborationManager, &WBCollaborationManager::onItemsRemoved,
+                    Qt::UniqueConnection);
         }
 
         setDocument(pDocumentProxy, forceReload);

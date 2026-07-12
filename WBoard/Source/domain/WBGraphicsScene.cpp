@@ -714,6 +714,38 @@ bool WBGraphicsScene::inputDeviceRelease()
                 WBApplication::undoStack->push(udcmd);
         }
 
+        // Emit eraser/modification data for collaboration
+        if (!mRemovedItems.isEmpty()) {
+            QJsonArray removedUuids;
+            QJsonArray addedData;
+            for (auto *item : mRemovedItems) {
+                QUuid uid = item->data(WBGraphicsItemData::ItemUuid).toUuid();
+                if (!uid.isNull())
+                    removedUuids.append(uid.toString());
+            }
+            for (auto *item : mAddedItems) {
+                auto *poly = qgraphicsitem_cast<WBGraphicsPolygonItem*>(item);
+                if (poly) {
+                    QJsonObject polyObj;
+                    QJsonArray pts;
+                    for (const QPointF &pt : poly->polygon())
+                        pts.append(QJsonArray{pt.x(), pt.y()});
+                    polyObj[QStringLiteral("polygon")] = pts;
+                    polyObj[QStringLiteral("color")] = poly->color().name();
+                    polyObj[QStringLiteral("zValue")] = poly->zValue();
+                    if (poly->stroke()) {
+                        // Send stroke color info via first polygon in stroke
+                        auto strokePolys = poly->stroke()->polygons();
+                        if (!strokePolys.isEmpty())
+                            polyObj[QStringLiteral("strokeColor")] = strokePolys.first()->color().name();
+                    }
+                    addedData.append(polyObj);
+                }
+            }
+            if (!removedUuids.isEmpty() || !addedData.isEmpty())
+                emit itemsRemoved(removedUuids, addedData);
+        }
+
         mRemovedItems.clear();
         mAddedItems.clear();
         accepted = true;

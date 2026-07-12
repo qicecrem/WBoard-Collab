@@ -3,6 +3,9 @@
 
 #include <QtWidgets>
 
+#include <QJsonArray>
+#include <QJsonObject>
+
 #include "frameworks/WBCoreGraphicsScene.h"
 
 #include "core/WB.h"
@@ -322,6 +325,7 @@ class WBGraphicsScene: public WBCoreGraphicsScene, public WBItem
 
     signals:
         void strokeCompleted(WBGraphicsStroke *stroke, int tool);
+        void itemsRemoved(const QJsonArray &removedUuids, const QJsonArray &addedItemsData);
 
 	public slots:
         void updateSelectionFrame();
